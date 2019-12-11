@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class NavBar extends Vue {}
@@ -26,12 +26,16 @@ export default class NavBar extends Vue {}
   line-height: 50px;
   .navbar-left {
     width: 60px;
+    text-align: center;
+    line-height: 50px;
   }
   .navbar-center {
     flex: 1;
   }
   .navbar-right {
     width: 60px;
+    text-align: center;
+    line-height: 50px;
   }
 }
 </style>

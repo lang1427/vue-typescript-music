@@ -7,6 +7,15 @@ import 'font-awesome/css/font-awesome.css'
 
 Vue.config.productionTip = false
 
+Vue.filter('finalPlayCount', (playCount: number): number | string => {
+  if (playCount < 100000) {
+    return playCount
+  } else if (playCount >= 100000 && playCount < 100000000) {
+    return (playCount / 10000).toFixed(0) + '万'
+  }
+  return (playCount / 100000000).toFixed(0) + '亿'
+})
+
 new Vue({
   router,
   store,

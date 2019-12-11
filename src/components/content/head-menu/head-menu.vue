@@ -5,11 +5,9 @@
         <span class="fa-list-ul"></span>
       </div>
       <div class="center" slot="center">
-        <span class="menu-item" v-for="item of headTitles" :key="item">{{
-          item
-        }}</span>
+        <span class="menu-item" v-for="item of headTitles" :key="item">{{ item }}</span>
       </div>
-      <div slot="right">
+      <div slot="right" @click="goSearch">
         <span class="fa-search"></span>
       </div>
     </navbar>
@@ -17,8 +15,8 @@
 </template>
 
 <script lang="ts">
-import navbar from 'components/common/navbar/navbar.vue'
-import { Component, Vue } from 'vue-property-decorator'
+import navbar from "components/common/navbar/navbar.vue";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component({
   components: {
@@ -26,7 +24,11 @@ import { Component, Vue } from 'vue-property-decorator'
   }
 })
 export default class HeadMenu extends Vue {
-  private headTitles: string[] = ['我的', '发现', '云村', '视频']
+  private headTitles: string[] = ["我的", "发现", "云村", "视频"];
+
+  goSearch() {
+    this.$router.push("/search");
+  }
 }
 </script>
 
@@ -38,7 +40,6 @@ export default class HeadMenu extends Vue {
     width: 100%;
     height: 100%;
     display: inline-block;
-    text-align: center;
     font-size: 20px;
   }
   .center {

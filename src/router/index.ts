@@ -4,6 +4,8 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const find = () => import(/*webpackChunkName:'find'*/ 'views/find/index.vue')
+const search = () =>
+  import(/*webpackChunkName:'search'*/ 'views/search/index.vue')
 
 const routes = [
   {
@@ -14,6 +16,11 @@ const routes = [
     path: '/find',
     name: 'find',
     component: find
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: search
   }
 ]
 

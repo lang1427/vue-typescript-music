@@ -8,17 +8,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class Recommend extends Vue {
   private recommendList: object[] = [
-    { ico: 'fa-calendar-o', name: '推荐新音乐' },
-    { ico: 'fa-music', name: '推荐歌单' },
-    { ico: 'fa-video-camera', name: '推荐电台' },
-    { ico: 'fa-volume-up', name: '推荐节目' },
-    { ico: 'fa-vimeo', name: '推荐MV' }
-  ]
+    { ico: "fa-music", name: "推荐新音乐" },
+    { ico: "fa-video-camera", name: "推荐电台" },
+    { ico: "fa-list-ol", name: "排行榜" },
+    { ico: "fa-volume-up", name: "推荐节目" },
+    { ico: "fa-vimeo", name: "推荐MV" }
+  ];
 }
 </script>
 
@@ -36,6 +36,7 @@ export default class Recommend extends Vue {
       border-radius: 50%;
       background-color: @klColor;
       color: white;
+      font-size: 18px;
     }
     .title {
       padding-top: 3px;
