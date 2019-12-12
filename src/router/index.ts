@@ -6,6 +6,8 @@ Vue.use(VueRouter)
 const find = () => import(/*webpackChunkName:'find'*/ 'views/find/index.vue')
 const search = () =>
   import(/*webpackChunkName:'search'*/ 'views/search/index.vue')
+const searchResult = () =>
+  import(/*webpackChunkName:'searchResult'*/ 'views/searchResult/index.vue')
 
 const routes = [
   {
@@ -21,6 +23,11 @@ const routes = [
     path: '/search',
     name: 'search',
     component: search
+  },
+  {
+    path: '/searchresult',
+    name: 'searchresult',
+    component: searchResult
   }
 ]
 

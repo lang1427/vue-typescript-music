@@ -7,6 +7,8 @@ import 'font-awesome/css/font-awesome.css'
 
 Vue.config.productionTip = false
 
+Vue.prototype.$bus = new Vue()
+
 Vue.filter('finalPlayCount', (playCount: number): number | string => {
   if (playCount < 100000) {
     return playCount

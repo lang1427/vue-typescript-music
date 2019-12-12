@@ -1,37 +1,46 @@
 <template>
-  <navbar class="search-tab">
+  <navbar class="topbar">
     <div slot="left" @click="back">
       <span class="fa-arrow-left back"></span>
     </div>
     <div class="search-input-box" slot="center">
-      <input class="search-input" type="text" v-model="searchContent" placeholder />
+      <input class="search-input" type="text" v-model="trueSearchContent" />
     </div>
-    <div slot="right">
-      <span class="fa-user singer"></span>
+    <div slot="right" @click="empty">
+      <span class="fa-close close"></span>
     </div>
   </navbar>
 </template>
 
 <script lang='ts'>
 import navbar from "components/common/navbar/navbar.vue";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
 @Component({
   components: {
     navbar
   }
 })
-export default class SearchTab extends Vue {
-  private searchContent: string = "";
+export default class Topbar extends Vue {
+  @Prop() searchContent!: string;
+  @Watch("searchContent")
+  changeSearchContent(newVla: string) {
+    this.trueSearchContent = newVla;
+  }
+  /**使用data（trueSearchContent） 和 watch（searchContent） 实现prop的双向绑定  */
+  trueSearchContent: string = "";
 
   back() {
     this.$router.back();
+  }
+  empty() {
+    this.trueSearchContent = "";
   }
 }
 </script>
 
 <style lang="less" scoped>
-.search-tab {
+.topbar {
   position: fixed;
   top: 0;
   right: 0;
@@ -39,7 +48,7 @@ export default class SearchTab extends Vue {
   padding: 0;
   background-color: white;
   .back,
-  .singer {
+  .close {
     font-size: 20px;
   }
   .search-input-box {
