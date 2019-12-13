@@ -1,7 +1,8 @@
 <template>
   <div class="search-result">
     <search-result-bar :searchContent="searchValue" />
-    <result-list :resultlist="searchResultList" />
+    <div style="padding-top:50px"></div>
+    <nav-bar></nav-bar>
   </div>
 </template>
 
@@ -9,29 +10,29 @@
 interface ISearchResult {
   code: number;
   result: object;
+  songs: object;
 }
 import searchResultBar from "./childComp/topbar.vue";
-import resultList from "./childComp/result-list.vue";
-import { searchResultData } from "@/service/search";
+import navBar from "./childComp/navbar.vue";
+import { search } from "@/service/search";
 
 import { Component, Vue } from "vue-property-decorator";
 
 @Component({
   components: {
     searchResultBar,
-    resultList
+    navBar
   }
 })
 export default class SearchResult extends Vue {
-  searchValue: string = "";
-  searchResultList: object = {};
+  private searchValue: string = "";
 
   created() {
     (<any>this).$bus.$on("searchResult", (keywords: string) => {
       this.searchValue = keywords;
-      searchResultData(keywords).then((res: ISearchResult) => {
+      search(keywords, 1018, 5, 1).then((res: ISearchResult) => {
         if (res.code === 200) {
-          this.searchResultList = res.result;
+          console.log(res.result);
         }
       });
     });

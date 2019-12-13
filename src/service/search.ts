@@ -7,17 +7,25 @@ export function hotSearch() {
   })
 }
 
-/** 搜索结果 keywords:搜索关键字
- * artist : 歌手
- * album : 专辑
- * mv : MV视频
- * radio : 电台
- */
-export function searchResultData(keywords: string) {
+/**搜索
+ * keywords：搜索关键字
+ * type：类型：（1.单曲  10.专辑   100.歌手  1000.歌单  1002.用户  1004.MV  1006.歌词  1009.电台  1014.视频  1018.综合）
+ * limit：返回数量（默认30）
+ * offset：页数（默认0）
+ * */
+export function search(
+  keywords: string,
+  type: number = 1,
+  limit?: number,
+  offset?: number
+) {
   return service({
-    url: '/search/multimatch',
+    url: '/search',
     params: {
-      keywords
+      keywords,
+      limit,
+      offset,
+      type
     }
   })
 }
