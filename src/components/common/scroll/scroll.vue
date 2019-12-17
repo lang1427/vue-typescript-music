@@ -1,0 +1,70 @@
+<template>
+  <!-- 使用 ： 需要设置scroll的高度 并且在scroll插槽里只能有一个子元素 -->
+  <div class="scroll-wrapper" ref="scrollWrapper">
+    <slot></slot>
+  </div>
+</template>
+
+<script lang='ts'>
+import BScroll from "better-scroll";
+
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+
+@Component
+export default class ScrollWrapper extends Vue {
+  @Prop({ default: 0 }) probeType!: number; // 0 :不监听滚动的位置 ，1：超过一段时间监听 ， 2：滚动时监听 ， 3：实时监听（滚动结束后的惯性滚动依然监听）
+  @Prop({
+    default: "vertical",
+    validator(value) {
+      return ["vertical", "horizontal"].indexOf(value) !== -1;
+    }
+  })
+  direction!: string; // 滚动方向 可选值：（horizontal：横向，vertical：纵向（默认））
+
+  scroll: any = null;
+
+  /**生命钩子 */
+  mounted() {
+    this.scroll = new BScroll((this.$refs as any).scrollWrapper, {
+      click: true, // 取消 阻止默认浏览器的元素click 事件
+      probeType: this.probeType,
+      scrollX: !this.Dir,
+      scrollY: this.Dir
+    });
+  }
+  activated() {
+    this.enable();
+  }
+  deactivated() {
+    this.disable();
+  }
+  beforeDestroy() {
+    this.disable();
+  }
+
+  /** methods */
+
+  scrollTo(x: number, y: number, easing: number = 500) {
+    this.scroll && this.scroll.scrollTo(x, y, easing);
+  }
+
+  enable() {
+    this.scroll && this.scroll.enable();
+  }
+  disable() {
+    // 禁用 better-scroll
+    this.scroll && this.scroll.disable();
+  }
+
+  /**计算属性 */
+  get Dir(): boolean {
+    if (this.direction === "horizontal") {
+      return false;
+    }
+    return true;
+  }
+}
+</script>
+
+<style lang="less" scoped>
+</style>
