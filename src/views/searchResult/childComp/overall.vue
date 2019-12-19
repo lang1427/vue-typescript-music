@@ -1,5 +1,5 @@
 <template>
-  <scroll class="scroll-overall" :freeScroll="true" v-if="Object.keys(overallList).length!=0">
+  <scroll class="overall-scroll" :freeScroll="true" v-if="Object.keys(overallList).length!=0">
     <div class="overall">
       <div class="single">
         <div class="head">
@@ -57,7 +57,7 @@
             </div>
             <div class="info">
               <p>{{ item.title }}</p>
-              <p class="desc">{{ item.durationms |newTime }} by {{ item.creator[0].userName }}</p>
+              <p class="desc">{{ item.durationms | newTime }} by {{ item.creator[0].userName }}</p>
             </div>
           </div>
         </div>
@@ -153,7 +153,7 @@
 
 <script lang='ts'>
 import scroll from "components/common/scroll/scroll.vue";
-import { formatDate } from "@/utils/formatDate.js";
+import { formatDate } from "@/utils/formatDate";
 
 import { Component, Vue, Prop } from "vue-property-decorator";
 
@@ -179,7 +179,7 @@ export default class OverAll extends Vue {
 </script>
 
 <style lang="less" scoped>
-.scroll-overall {
+.overall-scroll {
   position: absolute;
   left: 0;
   right: 0;

@@ -4,13 +4,13 @@
     <div style="padding-top:50px"></div>
     <nav-bar class="navbar" :text="title" @changeHandler="itemClick">
       <section slot="综合">
-        <overall :overallList="currentSearchResult" />
+        <overall :overallList="currentSearchResult.overallList" />
       </section>
       <section slot="单曲">
-        <single />
+        <single :singleList="currentSearchResult.singleList.result.songs" />
       </section>
       <section slot="视频">
-        <result-video />
+        <result-video :videoList="currentSearchResult.videoList.result.videos" />
       </section>
       <section slot="歌手">
         <singer />
@@ -32,9 +32,31 @@
 </template>
 
 <script lang='ts'>
+/**
+ *  1.初始状态（created） 默认请求 类型为综合 的数据
+ *  2.点击对应的navbar，请求对应类型的数据
+ * 问题 ：①.请求过后在来回点击的情况下，会再次触发请求，怎么解决？
+ *  记录点击过navbar的状态 到一个数组中，进行判断，如果存在已点击，则return出去，否则发送对应类型请求
+ *       ②.请求过来的数据怎么保存？（不能保存在一个空对象中，需要多个对象进行保存）
+ *  在currentSearchResult对象中，定义每个类型对应的对象，将每一个请求过来的数据保存到对应的对象中
+ *     怎么保存到对应的对象中？
+ *  Object.keys(currentSearchResult) 遍历 对象，返回成为数组，得到currentSearchResult的每一个属性（对象）
+ * 通过当前点击索引可以拿到遍历之后当前对应的currentSearchResult的对象 进行保存
+ *
+ */
 interface ISearchResult {
   code: number;
   result: object;
+}
+interface ICurrentSearchResult {
+  overallList: object;
+  singleList: object;
+  videoList: object;
+  singerList: object;
+  albumList: object;
+  songSheetList: object;
+  radioList: object;
+  userList: object;
 }
 import searchResultBar from "./childComp/topbar.vue";
 import navBar from "components/common/scrollNavBar/scroll-nav-bar.vue";
@@ -79,16 +101,47 @@ export default class SearchResult extends Vue {
   ];
   private searchType: number[] = [1018, 1, 1014, 100, 10, 1000, 1009, 1002];
   private currentSearchType: number = this.searchType[0];
-  private currentSearchResult: object = {};
+  private currentSearchResult: ICurrentSearchResult = {
+    overallList: {},
+    singleList: {
+      page: 1,
+      result: {}
+    },
+    videoList: {
+      page: 1,
+      result: {}
+    },
+    singerList: {
+      page: 1,
+      result: {}
+    },
+    albumList: {
+      page: 1,
+      result: {}
+    },
+    songSheetList: {
+      page: 1,
+      result: {}
+    },
+    radioList: {
+      page: 1,
+      result: {}
+    },
+    userList: {
+      page: 1,
+      result: {}
+    }
+  };
+  private count: number = 30;
 
   created() {
+    // 初次进入 获取 综合类型
     (<any>this).$bus.$on("searchResult", (keywords: string) => {
       this.searchValue = keywords;
       search(keywords, this.currentSearchType, 5, 1).then(
         (res: ISearchResult) => {
           if (res.code === 200) {
-            console.log(res.result);
-            this.currentSearchResult = res.result;
+            this.currentSearchResult.overallList = res.result;
           }
         }
       );
@@ -100,6 +153,31 @@ export default class SearchResult extends Vue {
 
   itemClick(index: number) {
     this.currentSearchType = this.searchType[index];
+    let page: number = 1;
+    // for (let key in this.currentSearchResult) {
+    //   console.log(this.currentSearchResult[key]);
+    // }
+    let searchResultArr = Object.keys(this.currentSearchResult);
+    let currentResultArr = searchResultArr[index];
+    search(this.searchValue, this.currentSearchType, this.count, page).then(
+      (res: ISearchResult) => {
+        if (res.code === 200) {
+          (this.currentSearchResult as any)[currentResultArr].result =
+            res.result;
+        }
+      }
+    );
+  }
+  async getSearch(
+    keywords: string,
+    type: number,
+    limit: number,
+    offset: number
+  ) {
+    let res = await search(keywords, type, limit, offset);
+    if (res.code === 200) {
+      console.log(res);
+    }
   }
 }
 </script>
