@@ -1,27 +1,32 @@
 <template>
-  <scroll v-if="videoList.length!=0" class="video-scroll">
-    <div class="video">
-      <div class="list-items" v-for="item of videoList" :key="item.vid">
-        <div class="items-img">
-          <img :src="item.coverUrl" alt />
-        </div>
-        <div class="info">
-          <p class="title">{{ item.title }}</p>
-          <p class="desc">{{ item.durationms }} by {{ item.creator[0].userName }}</p>
+  <div>
+    <scroll v-if="videoList.length!=0" class="video-scroll">
+      <div class="video">
+        <div class="list-items" v-for="item of videoList" :key="item.vid">
+          <div class="items-img">
+            <img :src="item.coverUrl" alt />
+          </div>
+          <div class="info">
+            <p class="title">{{ item.title }}</p>
+            <p class="desc">{{ item.durationms }} by {{ item.creator[0].userName }}</p>
+          </div>
         </div>
       </div>
-    </div>
-  </scroll>
+    </scroll>
+    <loading v-else />
+  </div>
 </template>
 
 <script lang='ts'>
 import scroll from "components/common/scroll/scroll.vue";
+import { loadingMixin } from "@/utils/mixin";
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
   components: {
     scroll
-  }
+  },
+  mixins: [loadingMixin]
 })
 export default class Video extends Vue {
   @Prop({

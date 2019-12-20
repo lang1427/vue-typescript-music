@@ -1,15 +1,86 @@
 <template>
-  <div class="album">专辑</div>
+  <div>
+    <scroll v-if="albumList.length!=0" class="album-scroll">
+      <div class="album">
+        <div class="list-items" v-for="item of albumList" :key="item.id">
+          <div class="items-img">
+            <img :src="item.blurPicUrl" alt />
+          </div>
+          <div class="info">
+            <div class="name">{{ item.name }}</div>
+            <div class="desc">{{ item.artist.name }} {{ item.publishTime | newTime }}</div>
+          </div>
+        </div>
+      </div>
+    </scroll>
+    <loading v-else />
+  </div>
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from "vue-property-decorator";
+import scroll from "components/common/scroll/scroll.vue";
 
-@Component
-export default class Album extends Vue {}
+import { formatDate } from "@/utils/formatDate";
+import { loadingMixin } from "@/utils/mixin";
+import { Component, Vue, Prop } from "vue-property-decorator";
+
+@Component({
+  components: {
+    scroll
+  },
+  mixins: [loadingMixin],
+  filters: {
+    newTime(date: number): string {
+      let newDate = new Date(date);
+      return formatDate(newDate, "yyyy.M.d");
+    }
+  }
+})
+export default class Album extends Vue {
+  @Prop({
+    default() {
+      return [];
+    }
+  })
+  albumList!: object[];
+}
 </script>
 
 <style lang="less" scoped>
-.album {
+.album-scroll {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 90px;
+  bottom: 0;
+  overflow: hidden;
+  .album {
+    padding: 10px 10px 0;
+    .list-items {
+      padding: 5px 0;
+      display: flex;
+      align-items: center;
+      .items-img {
+        width: 60px;
+        img {
+          width: 100%;
+          height: 60px;
+          border-radius: 50%;
+          display: block;
+        }
+      }
+      .info {
+        flex: 1;
+        margin-left: 10px;
+        .name {
+        }
+        .desc {
+          padding-top: 3px;
+          font-size: 12px;
+          color: #999;
+        }
+      }
+    }
+  }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="radio">电台</div>
+  <div class="radio">暂无内容</div>
 </template>
 
 <script lang='ts'>
@@ -11,5 +11,8 @@ export default class Radio extends Vue {}
 
 <style lang="less" scoped>
 .radio {
+  text-align: center;
+  margin-top: 30px;
+  color: #999;
 }
 </style>

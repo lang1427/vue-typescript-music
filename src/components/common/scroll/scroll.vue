@@ -49,6 +49,10 @@ export default class ScrollWrapper extends Vue {
   scrollTo(x: number, y: number, easing: number = 500) {
     this.scroll && this.scroll.scrollTo(x, y, easing);
   }
+  refresh() {
+    //重新计算 better-scroll，当 DOM 结构发生变化的时候务必要调用确保滚动的效果正常
+    this.scroll && this.scroll.refresh();
+  }
 
   enable() {
     this.scroll && this.scroll.enable();

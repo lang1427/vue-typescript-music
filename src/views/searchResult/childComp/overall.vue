@@ -1,159 +1,169 @@
 <template>
-  <scroll class="overall-scroll" :freeScroll="true" v-if="Object.keys(overallList).length!=0">
-    <div class="overall">
-      <div class="single">
-        <div class="head">
-          <h3 class="title">单曲</h3>
-          <span class="play-more">播放全部</span>
-        </div>
-        <div class="body">
-          <div class="list-items" v-for="item of overallList.song.songs" :key="item.id">
-            <div class="info">
-              <p class="single-name">{{ item.name }}</p>
-              <p class="info-name">{{ item.ar[0].name }}-{{ item.al.name }}</p>
-            </div>
-            <!-- 暂时不做 -->
-            <!-- <div class="operation">
+  <div>
+    <scroll
+      ref="overall-scroll"
+      class="overall-scroll"
+      :freeScroll="true"
+      v-if="Object.keys(overallList).length!=0"
+    >
+      <div class="overall">
+        <div class="single" v-if="overallList.song">
+          <div class="head">
+            <h3 class="title">单曲</h3>
+            <span class="play-more">播放全部</span>
+          </div>
+          <div class="body">
+            <div class="list-items" v-for="item of overallList.song.songs" :key="item.id">
+              <div class="info">
+                <p class="single-name">{{ item.name }}</p>
+                <p class="info-name">{{ item.ar[0].name }}-{{ item.al.name }}</p>
+              </div>
+              <!-- 暂时不做 -->
+              <!-- <div class="operation">
             <span>播放MV</span>
             <span>更多操作</span>
-            </div>-->
-          </div>
-        </div>
-        <div class="bottom" v-if="overallList.song.more">
-          {{ overallList.song.moreText }}
-          <i class="fa-angle-right"></i>
-        </div>
-      </div>
-      <div class="song-sheet">
-        <div class="head">
-          <h3 class="title">歌单</h3>
-        </div>
-        <div class="body">
-          <div class="list-items" v-for="item of overallList.playList.playLists" :key="item.id">
-            <div class="items-img">
-              <img :src="item.coverImgUrl" alt />
-            </div>
-            <div class="info">
-              <p>{{ item.name }}</p>
-              <p
-                class="desc"
-              >{{ item.trackCount }}首 by {{ item.creator.nickname }} 播放{{ item.playCount | finalPlayCount }}次</p>
+              </div>-->
             </div>
           </div>
-        </div>
-        <div class="bottom" v-if="overallList.playList.more">
-          {{ overallList.playList.moreText }}
-          <i class="fa-angle-right"></i>
-        </div>
-      </div>
-      <div class="video">
-        <div class="head">
-          <h3 class="title">视频</h3>
-        </div>
-        <div class="body">
-          <div class="list-items" v-for="item of overallList.video.videos" :key="item.id">
-            <div class="items-img">
-              <img :src="item.coverUrl" alt />
-            </div>
-            <div class="info">
-              <p>{{ item.title }}</p>
-              <p class="desc">{{ item.durationms | newTime }} by {{ item.creator[0].userName }}</p>
-            </div>
+          <div class="bottom" v-if="overallList.song.more">
+            {{ overallList.song.moreText }}
+            <i class="fa-angle-right"></i>
           </div>
         </div>
-        <div class="bottom" v-if="overallList.video.more">
-          {{ overallList.video.moreText }}
-          <i class="fa-angle-right"></i>
-        </div>
-      </div>
-      <div class="artist">
-        <div class="head">
-          <h3 class="title">歌手</h3>
-        </div>
-        <div class="body">
-          <div class="list-items" v-for="item of overallList.artist.artists" :key="item.id">
-            <div class="items-img">
-              <img :src="item.picUrl" alt />
-            </div>
-            <div class="name">{{ item.name }}</div>
-            <div class="settled-in">
-              <span class="fa-user-circle"></span>已入驻
+        <div class="song-sheet" v-if="overallList.playList">
+          <div class="head">
+            <h3 class="title">歌单</h3>
+          </div>
+          <div class="body">
+            <div class="list-items" v-for="item of overallList.playList.playLists" :key="item.id">
+              <div class="items-img">
+                <img :src="item.coverImgUrl" @load="imgLoad" />
+              </div>
+              <div class="info">
+                <p>{{ item.name }}</p>
+                <p
+                  class="desc"
+                >{{ item.trackCount }}首 by {{ item.creator.nickname }} 播放{{ item.playCount | finalPlayCount }}次</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="bottom" v-if="overallList.artist.more">
-          {{ overallList.artist.moreText }}
-          <i class="fa-angle-right"></i>
-        </div>
-      </div>
-      <div class="album">
-        <div class="head">
-          <h3 class="title">专辑</h3>
-        </div>
-        <div class="body">
-          <div class="list-items" v-for="item of overallList.album.albums" :key="item.id">
-            <div class="items-img">
-              <img :src="item.picUrl" alt />
-            </div>
-            <div class="info">
-              <p>{{ item.name }}</p>
-              <p class="desc">{{ item.artist.name }} {{ item.publishTime }}</p>
-            </div>
+          <div class="bottom" v-if="overallList.playList.more">
+            {{ overallList.playList.moreText }}
+            <i class="fa-angle-right"></i>
           </div>
         </div>
-        <div class="bottom" v-if="overallList.album.more">
-          {{ overallList.album.moreText }}
-          <i class="fa-angle-right"></i>
-        </div>
-      </div>
-      <div class="djRadio">
-        <div class="head">
-          <h3 class="title">电台</h3>
-        </div>
-        <div class="body">
-          <div class="list-items" v-for="item of overallList.djRadio.djRadios" :key="item.id">
-            <div class="items-img">
-              <img :src="item.picUrl" alt />
-            </div>
-            <div class="info">
-              <p>{{ item.name }}</p>
-              <p class="desc">{{ item.dj.nickname }}</p>
+        <div class="video" v-if="overallList.video">
+          <div class="head">
+            <h3 class="title">视频</h3>
+          </div>
+          <div class="body">
+            <div class="list-items" v-for="item of overallList.video.videos" :key="item.id">
+              <div class="items-img">
+                <img :src="item.coverUrl" @load="imgLoad" />
+              </div>
+              <div class="info">
+                <p>{{ item.title }}</p>
+                <p class="desc">{{ item.durationms | newTime }} by {{ item.creator[0].userName }}</p>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="bottom" v-if="overallList.djRadio.more">
-          {{ overallList.djRadio.moreText }}
-          <i class="fa-angle-right"></i>
-        </div>
-      </div>
-      <div class="user">
-        <div class="head">
-          <h3 class="title">用户</h3>
-        </div>
-        <div class="body">
-          <div class="list-items" v-for="item of overallList.user.users" :key="item.id">
-            <div class="items-img">
-              <img :src="item.avatarUrl" alt />
-            </div>
-            <div class="info">
-              <p>{{ item.nickname }}</p>
-              <p class="desc">{{ item.signature }}</p>
-            </div>
-            <div class="follow">+关注</div>
+          <div class="bottom" v-if="overallList.video.more">
+            {{ overallList.video.moreText }}
+            <i class="fa-angle-right"></i>
           </div>
         </div>
-        <div class="bottom" v-if="overallList.user.more">
-          {{ overallList.user.moreText }}
-          <i class="fa-angle-right"></i>
+        <div class="artist" v-if="overallList.artist">
+          <div class="head">
+            <h3 class="title">歌手</h3>
+          </div>
+          <div class="body">
+            <div class="list-items" v-for="item of overallList.artist.artists" :key="item.id">
+              <div class="items-img">
+                <img :src="item.picUrl" @load="imgLoad" />
+              </div>
+              <div class="name">{{ item.name }}</div>
+              <div class="settled-in">
+                <span class="fa-user-circle"></span>已入驻
+              </div>
+            </div>
+          </div>
+          <div class="bottom" v-if="overallList.artist.more">
+            {{ overallList.artist.moreText }}
+            <i class="fa-angle-right"></i>
+          </div>
+        </div>
+        <div class="album" v-if="overallList.album">
+          <div class="head">
+            <h3 class="title">专辑</h3>
+          </div>
+          <div class="body">
+            <div class="list-items" v-for="item of overallList.album.albums" :key="item.id">
+              <div class="items-img">
+                <img :src="item.picUrl" @load="imgLoad" />
+              </div>
+              <div class="info">
+                <p>{{ item.name }}</p>
+                <p class="desc">{{ item.artist.name }} {{ item.publishTime }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="bottom" v-if="overallList.album.more">
+            {{ overallList.album.moreText }}
+            <i class="fa-angle-right"></i>
+          </div>
+        </div>
+        <div class="djRadio" v-if="overallList.djRadio">
+          <div class="head">
+            <h3 class="title">电台</h3>
+          </div>
+          <div class="body">
+            <div class="list-items" v-for="item of overallList.djRadio.djRadios" :key="item.id">
+              <div class="items-img">
+                <img :src="item.picUrl" @load="imgLoad" />
+              </div>
+              <div class="info">
+                <p>{{ item.name }}</p>
+                <p class="desc">{{ item.dj.nickname }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="bottom" v-if="overallList.djRadio.more">
+            {{ overallList.djRadio.moreText }}
+            <i class="fa-angle-right"></i>
+          </div>
+        </div>
+        <div class="user" v-if="overallList.user">
+          <div class="head">
+            <h3 class="title">用户</h3>
+          </div>
+          <div class="body">
+            <div class="list-items" v-for="item of overallList.user.users" :key="item.id">
+              <div class="items-img">
+                <img :src="item.avatarUrl" @load="imgLoad" />
+              </div>
+              <div class="info">
+                <p>{{ item.nickname }}</p>
+                <p class="desc">{{ item.signature }}</p>
+              </div>
+              <div class="follow">+关注</div>
+            </div>
+          </div>
+          <div class="bottom" v-if="overallList.user.more">
+            {{ overallList.user.moreText }}
+            <i class="fa-angle-right"></i>
+          </div>
         </div>
       </div>
-    </div>
-  </scroll>
+    </scroll>
+    <loading v-else />
+  </div>
 </template>
 
 <script lang='ts'>
 import scroll from "components/common/scroll/scroll.vue";
 import { formatDate } from "@/utils/formatDate";
+import { debounce } from "@/utils/debounce.js";
+import { loadingMixin } from "@/utils/mixin";
 
 import { Component, Vue, Prop } from "vue-property-decorator";
 
@@ -161,6 +171,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
   components: {
     scroll
   },
+  mixins: [loadingMixin],
   filters: {
     newTime(durationms: number) {
       let data = new Date(durationms);
@@ -175,6 +186,9 @@ export default class OverAll extends Vue {
     }
   })
   overallList!: object;
+  imgLoad() {
+    console.log("加载。。。");
+  }
 }
 </script>
 

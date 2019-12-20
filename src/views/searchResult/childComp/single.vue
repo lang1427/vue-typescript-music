@@ -1,32 +1,37 @@
 <template>
-  <scroll v-if="singleList.length!=0" class="single-scroll">
-    <div class="single">
-      <div class="head">
-        <div class="play-all">
-          <span class="fa-play-circle-o"></span> 播放全部
+  <div>
+    <scroll v-if="singleList.length!=0" class="single-scroll">
+      <div class="single">
+        <div class="head">
+          <div class="play-all">
+            <span class="fa-play-circle-o"></span> 播放全部
+          </div>
+          <div class="checkbox">
+            <span class="fa-list-ul"></span> 多选
+          </div>
         </div>
-        <div class="checkbox">
-          <span class="fa-list-ul"></span> 多选
+        <div class="body">
+          <div class="list-items" v-for="item of singleList" :key="item.id">
+            <p class="name">{{ item.name }}</p>
+            <p class="desc">{{ item.artists[0].name }} - {{ item.album.name }}</p>
+          </div>
         </div>
       </div>
-      <div class="body">
-        <div class="list-items" v-for="item of singleList" :key="item.id">
-          <p class="name">{{ item.name }}</p>
-          <p class="desc">{{ item.artists[0].name }} - {{ item.album.name }}</p>
-        </div>
-      </div>
-    </div>
-  </scroll>
+    </scroll>
+    <loading v-else />
+  </div>
 </template>
 
 <script lang='ts'>
 import scroll from "components/common/scroll/scroll.vue";
+import { loadingMixin } from "@/utils/mixin";
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
   components: {
     scroll
-  }
+  },
+  mixins: [loadingMixin]
 })
 export default class Single extends Vue {
   @Prop({

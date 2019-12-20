@@ -13,19 +13,19 @@
         <result-video :videoList="currentSearchResult.videoList.result.videos" />
       </section>
       <section slot="歌手">
-        <singer />
+        <singer :singerList="currentSearchResult.singerList.result.artists" />
       </section>
       <section slot="专辑">
-        <album />
+        <album :albumList="currentSearchResult.albumList.result.albums" />
       </section>
       <section slot="歌单">
-        <song-sheet />
+        <song-sheet :songSheetList="currentSearchResult.songSheetList.result.playlists" />
       </section>
       <section slot="主播电台">
         <radio />
       </section>
       <section slot="用户">
-        <user />
+        <user :userList="currentSearchResult.userList.result.userprofiles" />
       </section>
     </nav-bar>
   </div>
@@ -133,6 +133,7 @@ export default class SearchResult extends Vue {
     }
   };
   private count: number = 30;
+  private clickedNavbar: number[] = [];
 
   created() {
     // 初次进入 获取 综合类型
@@ -153,20 +154,33 @@ export default class SearchResult extends Vue {
 
   itemClick(index: number) {
     this.currentSearchType = this.searchType[index];
-    let page: number = 1;
-    // for (let key in this.currentSearchResult) {
-    //   console.log(this.currentSearchResult[key]);
-    // }
-    let searchResultArr = Object.keys(this.currentSearchResult);
-    let currentResultArr = searchResultArr[index];
-    search(this.searchValue, this.currentSearchType, this.count, page).then(
-      (res: ISearchResult) => {
-        if (res.code === 200) {
-          (this.currentSearchResult as any)[currentResultArr].result =
-            res.result;
+
+    if (index === 0) {
+      return;
+    } else {
+      let res = true;
+      for (let item of this.clickedNavbar) {
+        if (item === index) {
+          res = false;
         }
       }
-    );
+
+      if (res) {
+        /** 发送请求，并保存已被点击的状态 */
+        let page: number = 1;
+        let searchResultArr = Object.keys(this.currentSearchResult);
+        let currentResultArr = searchResultArr[index];
+        search(this.searchValue, this.currentSearchType, this.count, page).then(
+          (res: ISearchResult) => {
+            if (res.code === 200) {
+              (this.currentSearchResult as any)[currentResultArr].result =
+                res.result;
+            }
+          }
+        );
+        this.clickedNavbar.push(index);
+      }
+    }
   }
   async getSearch(
     keywords: string,
