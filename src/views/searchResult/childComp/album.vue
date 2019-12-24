@@ -1,10 +1,16 @@
 <template>
   <div>
-    <scroll v-if="albumList.length!=0" class="album-scroll">
+    <scroll
+      v-if="albumList.length!=0"
+      class="album-scroll"
+      ref="albumScroll"
+      :pullUpLoad="true"
+      @pullingUp="pullingUp"
+    >
       <div class="album">
-        <div class="list-items" v-for="item of albumList" :key="item.id">
+        <div class="list-items" v-for="(item,index) of albumList" :key="index">
           <div class="items-img">
-            <img :src="item.blurPicUrl" alt />
+            <img :src="item.blurPicUrl" @load="imgLoad" />
           </div>
           <div class="info">
             <div class="name">{{ item.name }}</div>
@@ -43,6 +49,17 @@ export default class Album extends Vue {
     }
   })
   albumList!: object[];
+
+  imgLoad() {
+    (this.$refs.albumScroll as any).refresh();
+  }
+
+  pullingUp() {
+    this.$emit("pullingUp", 4);
+    setTimeout(() => {
+      (<any>this.$refs.albumScroll).finishPullUp();
+    }, 200);
+  }
 }
 </script>
 

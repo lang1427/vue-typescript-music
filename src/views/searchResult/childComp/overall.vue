@@ -1,7 +1,7 @@
 <template>
   <div>
     <scroll
-      ref="overall-scroll"
+      ref="overallScroll"
       class="overall-scroll"
       :freeScroll="true"
       v-if="Object.keys(overallList).length!=0"
@@ -57,7 +57,7 @@
             <h3 class="title">视频</h3>
           </div>
           <div class="body">
-            <div class="list-items" v-for="item of overallList.video.videos" :key="item.id">
+            <div class="list-items" v-for="item of overallList.video.videos" :key="item.vid">
               <div class="items-img">
                 <img :src="item.coverUrl" @load="imgLoad" />
               </div>
@@ -103,7 +103,7 @@
               </div>
               <div class="info">
                 <p>{{ item.name }}</p>
-                <p class="desc">{{ item.artist.name }} {{ item.publishTime }}</p>
+                <p class="desc">{{ item.artist.name }} {{ item.publishTime | ymd }}</p>
               </div>
             </div>
           </div>
@@ -176,6 +176,10 @@ import { Component, Vue, Prop } from "vue-property-decorator";
     newTime(durationms: number) {
       let data = new Date(durationms);
       return formatDate(data, "mm:ss");
+    },
+    ymd(date: Date) {
+      let newDate = new Date(date);
+      return formatDate(newDate, "yyyy.M.d");
     }
   }
 })
@@ -187,7 +191,7 @@ export default class OverAll extends Vue {
   })
   overallList!: object;
   imgLoad() {
-    console.log("加载。。。");
+    (this.$refs.overallScroll as any).refresh();
   }
 }
 </script>

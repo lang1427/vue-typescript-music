@@ -1,10 +1,16 @@
 <template>
   <div>
-    <scroll v-if="userList.length!=0" class="user-scroll">
+    <scroll
+      v-if="userList.length!=0"
+      class="user-scroll"
+      ref="userScroll"
+      :pullUpLoad="true"
+      @pullingUp="pullingUp"
+    >
       <div class="user">
-        <div class="list-items" v-for="item of userList" :key="item.id">
+        <div class="list-items" v-for="(item,index) of userList" :key="index">
           <div class="items-img">
-            <img :src="item.avatarUrl" alt />
+            <img :src="item.avatarUrl" @load="imgLoad" />
           </div>
           <div class="info">
             <div class="name">{{ item.nickname }}</div>
@@ -36,6 +42,17 @@ export default class User extends Vue {
     }
   })
   userList!: object[];
+
+  imgLoad() {
+    (this.$refs.userScroll as any).refresh();
+  }
+
+  pullingUp() {
+    this.$emit("pullingUp", 7);
+    setTimeout(() => {
+      (<any>this.$refs.userScroll).finishPullUp();
+    }, 200);
+  }
 }
 </script>
 

@@ -39,12 +39,6 @@ export default class Search extends Vue {
 
 <style lang="less" scoped>
 .search {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  height: 100vh;
   background-color: white;
   padding: 0 10px;
 }

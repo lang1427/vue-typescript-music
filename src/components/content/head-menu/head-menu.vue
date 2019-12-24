@@ -5,7 +5,13 @@
         <span class="fa-list-ul"></span>
       </div>
       <div class="center" slot="center">
-        <span class="menu-item" v-for="item of headTitles" :key="item">{{ item }}</span>
+        <span
+          class="menu-item"
+          :class="{'item-active':index===currentIndex}"
+          v-for="(item,index) of headTitles"
+          @click="menuClick(index)"
+          :key="item"
+        >{{ item }}</span>
       </div>
       <div slot="right" @click="goSearch">
         <span class="fa-search"></span>
@@ -25,6 +31,11 @@ import { Component, Vue } from "vue-property-decorator";
 })
 export default class HeadMenu extends Vue {
   private headTitles: string[] = ["我的", "发现", "云村", "视频"];
+  private currentIndex: number = 1;
+
+  menuClick(index: number) {
+    this.currentIndex = index;
+  }
 
   goSearch() {
     this.$router.push("/search");
@@ -34,7 +45,7 @@ export default class HeadMenu extends Vue {
 
 <style lang="less" scoped>
 .head-menu {
-  background-color: @klColor;
+  // background-color: @klColor;
   .fa-list-ul,
   .fa-search {
     width: 100%;
@@ -47,6 +58,10 @@ export default class HeadMenu extends Vue {
     .menu-item {
       flex: 1;
       text-align: center;
+      &.item-active {
+        font-weight: 700;
+        font-size: 15px;
+      }
     }
   }
 }

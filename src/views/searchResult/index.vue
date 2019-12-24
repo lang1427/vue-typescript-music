@@ -1,31 +1,37 @@
 <template>
   <div class="search-result">
-    <search-result-bar :searchContent="searchValue" />
+    <search-result-bar />
     <div style="padding-top:50px"></div>
     <nav-bar class="navbar" :text="title" @changeHandler="itemClick">
       <section slot="综合">
         <overall :overallList="currentSearchResult.overallList" />
       </section>
       <section slot="单曲">
-        <single :singleList="currentSearchResult.singleList.result.songs" />
+        <single @pullingUp="addPage" :singleList="currentSearchResult.singleList.result.songs" />
       </section>
       <section slot="视频">
-        <result-video :videoList="currentSearchResult.videoList.result.videos" />
+        <result-video
+          @pullingUp="addPage"
+          :videoList="currentSearchResult.videoList.result.videos"
+        />
       </section>
       <section slot="歌手">
-        <singer :singerList="currentSearchResult.singerList.result.artists" />
+        <singer @pullingUp="addPage" :singerList="currentSearchResult.singerList.result.artists" />
       </section>
       <section slot="专辑">
-        <album :albumList="currentSearchResult.albumList.result.albums" />
+        <album @pullingUp="addPage" :albumList="currentSearchResult.albumList.result.albums" />
       </section>
       <section slot="歌单">
-        <song-sheet :songSheetList="currentSearchResult.songSheetList.result.playlists" />
+        <song-sheet
+          @pullingUp="addPage"
+          :songSheetList="currentSearchResult.songSheetList.result.playlists"
+        />
       </section>
       <section slot="主播电台">
         <radio />
       </section>
       <section slot="用户">
-        <user :userList="currentSearchResult.userList.result.userprofiles" />
+        <user @pullingUp="addPage" :userList="currentSearchResult.userList.result.userprofiles" />
       </section>
     </nav-bar>
   </div>
@@ -88,7 +94,7 @@ import { Component, Vue } from "vue-property-decorator";
   }
 })
 export default class SearchResult extends Vue {
-  private searchValue: string = "";
+  // private searchValue: string = "";
   private title: string[] = [
     "综合", // 1018
     "单曲", // 1
@@ -98,9 +104,9 @@ export default class SearchResult extends Vue {
     "歌单", // 1000
     "主播电台", // 1009
     "用户" // 1002
-  ];
-  private searchType: number[] = [1018, 1, 1014, 100, 10, 1000, 1009, 1002];
-  private currentSearchType: number = this.searchType[0];
+  ]; // 传入navbar的标题
+  private searchType: number[] = [1018, 1, 1014, 100, 10, 1000, 1009, 1002]; // 搜索类型
+  private currentSearchType: number = this.searchType[0]; // 当前搜索的类型
   private currentSearchResult: ICurrentSearchResult = {
     overallList: {},
     singleList: {
@@ -131,26 +137,36 @@ export default class SearchResult extends Vue {
       page: 1,
       result: {}
     }
-  };
-  private count: number = 30;
-  private clickedNavbar: number[] = [];
+  }; // 当前搜索的结果集合（用于对navbar对应点击的请求保存数据）
+  private resultData: string[] = [
+    "0",
+    "songs",
+    "videos",
+    "artists",
+    "albums",
+    "playlists",
+    "0",
+    "userprofiles"
+  ]; // 当前搜索结果的数组，其中第一个（综合）和电台为null，后面为对应的服务器返回来的对象数组,用于数量+1
+  private count: number = 30; // 请求过来的数量
+  private clickedNavbar: number[] = []; // 记录点击过navbar的index的数组
 
   created() {
     // 初次进入 获取 综合类型
-    (<any>this).$bus.$on("searchResult", (keywords: string) => {
-      this.searchValue = keywords;
-      search(keywords, this.currentSearchType, 5, 1).then(
-        (res: ISearchResult) => {
-          if (res.code === 200) {
-            this.currentSearchResult.overallList = res.result;
-          }
+    // (<any>this).$bus.$on("searchResult", (keywords: string) => {
+    //   this.searchValue = keywords;
+    search(this.$store.state.searchKeyWrold, this.currentSearchType, 5, 1).then(
+      (res: ISearchResult) => {
+        if (res.code === 200) {
+          this.currentSearchResult.overallList = res.result;
         }
-      );
-    });
+      }
+    );
+    // });
   }
-  destroyed() {
-    (<any>this).$bus.$off("searchResult");
-  }
+  // destroyed() {
+  //   (<any>this).$bus.$off("searchResult");
+  // }
 
   itemClick(index: number) {
     this.currentSearchType = this.searchType[index];
@@ -169,29 +185,45 @@ export default class SearchResult extends Vue {
         /** 发送请求，并保存已被点击的状态 */
         let page: number = 1;
         let searchResultArr = Object.keys(this.currentSearchResult);
-        let currentResultArr = searchResultArr[index];
-        search(this.searchValue, this.currentSearchType, this.count, page).then(
-          (res: ISearchResult) => {
-            if (res.code === 200) {
-              (this.currentSearchResult as any)[currentResultArr].result =
-                res.result;
-            }
+        let currentResultObj = searchResultArr[index];
+        search(
+          this.$store.state.searchKeyWrold,
+          this.currentSearchType,
+          this.count,
+          page
+        ).then((res: ISearchResult) => {
+          if (res.code === 200) {
+            (this.currentSearchResult as any)[currentResultObj].result =
+              res.result;
           }
-        );
+        });
         this.clickedNavbar.push(index);
       }
     }
   }
-  async getSearch(
-    keywords: string,
-    type: number,
-    limit: number,
-    offset: number
-  ) {
-    let res = await search(keywords, type, limit, offset);
-    if (res.code === 200) {
-      console.log(res);
-    }
+
+  /** 翻页操作，需要子组件传入对应的index */
+  addPage(index: number) {
+    /* 用于获取当前搜索结果的对象（包含page和result） */
+    let searchResultArr = Object.keys(this.currentSearchResult);
+    let currentResultObj = searchResultArr[index];
+    const page = (this.currentSearchResult as any)[currentResultObj].page + 1; //  当前的数量+1
+    /** 用于获取当前搜索结果的数组（只有result下的数据） */
+    let currentResultArr = this.resultData[index];
+    // console.log(
+    //   (this.currentSearchResult as any)[currentResultObj].result[currentResultArr]
+    // );
+    search(
+      this.$store.state.searchKeyWrold,
+      this.currentSearchType,
+      this.count,
+      page
+    ).then((res: ISearchResult) => {
+      (this.currentSearchResult as any)[currentResultObj].result[
+        currentResultArr
+      ].push(...(<any>res.result)[currentResultArr]);
+      (this.currentSearchResult as any)[currentResultObj].page += 1;
+    });
   }
 }
 </script>

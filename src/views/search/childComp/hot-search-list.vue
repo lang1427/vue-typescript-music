@@ -34,11 +34,11 @@ export default class HotSearchList extends Vue {
   })
   hotsearch!: object[];
 
-  private keywords: string = "";
+  // private keywords: string = "";
 
-  beforeDestroy() {
-    (<any>this).$bus.$emit("searchResult", this.keywords);
-  }
+  // beforeDestroy() {   使用 vuex 将搜索关键字 发射出去
+  //   (<any>this).$bus.$emit("searchResult", this.keywords);
+  // }
 
   goSearchResult(searchWord: string) {
     /** $bus事件总线第一次不能执行的问题
@@ -48,8 +48,9 @@ export default class HotSearchList extends Vue {
     // this.$nextTick(function() {  // 这里的$nextTick 无效
     //   this.$bus.$emit("searchResult", searchWord);
     // });
-    this.keywords = searchWord;
-
+    // this.keywords = searchWord;
+    this.$store.commit("changeSearchKey", searchWord);
+    this.$store.dispatch("addHistorySearchArr", searchWord);
     this.$router.push(`/searchresult?keywords=${searchWord}`);
   }
 }
@@ -57,7 +58,6 @@ export default class HotSearchList extends Vue {
 
 <style lang="less" scoped>
 .hot-search-list {
-  padding-top: 50px;
   .hot-list {
     .list-item {
       display: flex;

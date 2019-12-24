@@ -4,7 +4,7 @@
       <span class="fa-arrow-left back"></span>
     </div>
     <div class="search-input-box" slot="center">
-      <input class="search-input" type="text" v-model="trueSearchContent" />
+      <input class="search-input" type="text" v-model="$store.state.searchKeyWrold" />
     </div>
     <div slot="right" @click="empty">
       <span class="fa-close close"></span>
@@ -22,19 +22,21 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
   }
 })
 export default class Topbar extends Vue {
-  @Prop() searchContent!: string;
-  @Watch("searchContent")
-  changeSearchContent(newVla: string) {
-    this.trueSearchContent = newVla;
-  }
-  /**使用data（trueSearchContent） 和 watch（searchContent） 实现prop的双向绑定  */
-  trueSearchContent: string = "";
+  // @Prop() searchContent!: string;
+  // @Watch("searchContent")
+  // changeSearchContent(newVla: string) {
+  //   this.trueSearchContent = newVla;
+  // }
+  // /**使用data（trueSearchContent） 和 watch（searchContent） 实现prop的双向绑定  */
+  // trueSearchContent: string = "";
 
+  // private SearchContent: string = '';
   back() {
     this.$router.back();
   }
   empty() {
-    this.trueSearchContent = "";
+    // this.trueSearchContent = "";
+    this.$store.commit("changeSearchKey", "");
   }
 }
 </script>

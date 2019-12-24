@@ -1,10 +1,16 @@
 <template>
   <div>
-    <scroll v-if="videoList.length!=0" class="video-scroll">
+    <scroll
+      v-if="videoList.length!=0"
+      class="video-scroll"
+      ref="videoScroll"
+      :pullUpLoad="true"
+      @pullingUp="pullingUp"
+    >
       <div class="video">
-        <div class="list-items" v-for="item of videoList" :key="item.vid">
+        <div class="list-items" v-for="(item,index) of videoList" :key="index">
           <div class="items-img">
-            <img :src="item.coverUrl" alt />
+            <img :src="item.coverUrl" @load="imgLoad" />
           </div>
           <div class="info">
             <p class="title">{{ item.title }}</p>
@@ -35,6 +41,17 @@ export default class Video extends Vue {
     }
   })
   videoList!: object[];
+
+  imgLoad() {
+    (this.$refs.videoScroll as any).refresh();
+  }
+
+  pullingUp() {
+    this.$emit("pullingUp", 2);
+    setTimeout(() => {
+      (<any>this.$refs.videoScroll).finishPullUp();
+    }, 200);
+  }
 }
 </script>
 

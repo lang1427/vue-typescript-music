@@ -1,6 +1,12 @@
 <template>
   <div>
-    <scroll v-if="singleList.length!=0" class="single-scroll">
+    <scroll
+      v-if="singleList.length!=0"
+      class="single-scroll"
+      ref="singleScroll"
+      :pullUpLoad="true"
+      @pullingUp="pullingUp"
+    >
       <div class="single">
         <div class="head">
           <div class="play-all">
@@ -11,7 +17,7 @@
           </div>
         </div>
         <div class="body">
-          <div class="list-items" v-for="item of singleList" :key="item.id">
+          <div class="list-items" v-for="(item,index) of singleList" :key="index">
             <p class="name">{{ item.name }}</p>
             <p class="desc">{{ item.artists[0].name }} - {{ item.album.name }}</p>
           </div>
@@ -40,6 +46,13 @@ export default class Single extends Vue {
     }
   })
   singleList!: object[];
+
+  pullingUp() {
+    this.$emit("pullingUp", 1);
+    setTimeout(() => {
+      (<any>this.$refs.singleScroll).finishPullUp();
+    }, 200);
+  }
 }
 </script>
 

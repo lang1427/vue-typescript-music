@@ -1,10 +1,16 @@
 <template>
   <div>
-    <scroll v-if="singerList.length!=0" class="singer-scroll">
+    <scroll
+      v-if="singerList.length!=0"
+      class="singer-scroll"
+      ref="singerScroll"
+      :pullUpLoad="true"
+      @pullingUp="pullingUp"
+    >
       <div class="singer">
-        <div class="list-items" v-for="item of singerList" :key="item.id">
+        <div class="list-items" v-for="(item,index) of singerList" :key="index">
           <div class="items-img">
-            <img :src="item.img1v1Url" alt />
+            <img :src="item.img1v1Url" @load="imgLoad" />
           </div>
           <div class="name">{{ item.name }}</div>
           <div class="settled-in">
@@ -36,6 +42,17 @@ export default class Singer extends Vue {
     }
   })
   singerList!: object[];
+
+  imgLoad() {
+    (this.$refs.singerScroll as any).refresh();
+  }
+
+  pullingUp() {
+    this.$emit("pullingUp", 3);
+    setTimeout(() => {
+      (<any>this.$refs.singerScroll).finishPullUp();
+    }, 200);
+  }
 }
 </script>
 

@@ -1,10 +1,16 @@
 <template>
   <div>
-    <scroll v-if="songSheetList.length!=0" class="song-sheet-scroll">
+    <scroll
+      v-if="songSheetList.length!=0"
+      class="song-sheet-scroll"
+      ref="songsheetScroll"
+      :pullUpLoad="true"
+      @pullingUp="pullingUp"
+    >
       <div class="song-sheet">
-        <div class="list-items" v-for="item of songSheetList" :key="item.id">
+        <div class="list-items" v-for="(item,index) of songSheetList" :key="index">
           <div class="items-img">
-            <img :src="item.coverImgUrl" alt />
+            <img :src="item.coverImgUrl" @load="imgLoad" />
           </div>
           <div class="info">
             <div class="name">{{ item.name }}</div>
@@ -37,6 +43,17 @@ export default class SongSheet extends Vue {
     }
   })
   songSheetList!: object[];
+
+  imgLoad() {
+    (this.$refs.songsheetScroll as any).refresh();
+  }
+
+  pullingUp() {
+    this.$emit("pullingUp", 5);
+    setTimeout(() => {
+      (<any>this.$refs.songsheetScroll).finishPullUp();
+    }, 200);
+  }
 }
 </script>
 
