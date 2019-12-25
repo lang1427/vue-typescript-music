@@ -43,7 +43,7 @@ export default class Video extends Vue {
   videoList!: object[];
 
   imgLoad() {
-    (this.$refs.videoScroll as any).refresh();
+    this.$refs.videoScroll && (this.$refs.videoScroll as any).refresh();
   }
 
   pullingUp() {

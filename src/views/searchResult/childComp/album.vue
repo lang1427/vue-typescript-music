@@ -51,7 +51,7 @@ export default class Album extends Vue {
   albumList!: object[];
 
   imgLoad() {
-    (this.$refs.albumScroll as any).refresh();
+    this.$refs.albumScroll && (this.$refs.albumScroll as any).refresh();
   }
 
   pullingUp() {
@@ -89,8 +89,8 @@ export default class Album extends Vue {
       .info {
         flex: 1;
         margin-left: 10px;
-        .name {
-        }
+        // .name {
+        // }
         .desc {
           padding-top: 3px;
           font-size: 12px;

@@ -88,8 +88,8 @@ export default class Single extends Vue {
     .body {
       .list-items {
         padding: 5px 0;
-        .name {
-        }
+        // .name {
+        // }
         .desc {
           color: #999;
           font-size: 12px;

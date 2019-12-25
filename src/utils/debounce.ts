@@ -7,8 +7,8 @@ export function debounce(funcName: any, delay: number = 50) {
   let timer: any = null
 
   return function(this: any) {
-    if (timer) clearInterval(timer)
-    timer = window.setInterval(() => {
+    if (timer) clearTimeout(timer)
+    timer = window.setTimeout(() => {
       funcName.apply(this)
     }, delay)
   }

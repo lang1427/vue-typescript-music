@@ -1,5 +1,5 @@
 <template>
-  <div class="hot-search-list">
+  <div class="hot-search-list" @touchstart="touchStart">
     <h3 class="title">热搜榜</h3>
     <div class="hot-list">
       <div
@@ -33,6 +33,10 @@ export default class HotSearchList extends Vue {
     }
   })
   hotsearch!: object[];
+
+  touchStart() {
+    (<any>this).$bus.$emit("isShow", false);
+  }
 
   // private keywords: string = "";
 

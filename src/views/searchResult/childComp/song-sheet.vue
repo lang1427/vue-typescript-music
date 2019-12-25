@@ -45,7 +45,7 @@ export default class SongSheet extends Vue {
   songSheetList!: object[];
 
   imgLoad() {
-    (this.$refs.songsheetScroll as any).refresh();
+    this.$refs.songsheetScroll && (this.$refs.songsheetScroll as any).refresh();
   }
 
   pullingUp() {
@@ -81,8 +81,8 @@ export default class SongSheet extends Vue {
       .info {
         flex: 1;
         margin-left: 10px;
-        .name {
-        }
+        // .name {
+        // }
         .desc {
           padding-top: 3px;
           font-size: 12px;

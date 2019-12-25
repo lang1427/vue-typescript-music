@@ -191,7 +191,8 @@ export default class OverAll extends Vue {
   })
   overallList!: object;
   imgLoad() {
-    (this.$refs.overallScroll as any).refresh();
+    // 解决 refresh() of  undefined 的问题
+    this.$refs.overallScroll && (this.$refs.overallScroll as any).refresh();
   }
 }
 </script>

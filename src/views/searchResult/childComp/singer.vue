@@ -44,7 +44,7 @@ export default class Singer extends Vue {
   singerList!: object[];
 
   imgLoad() {
-    (this.$refs.singerScroll as any).refresh();
+    this.$refs.singerScroll && (this.$refs.singerScroll as any).refresh();
   }
 
   pullingUp() {

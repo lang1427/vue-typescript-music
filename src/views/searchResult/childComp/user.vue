@@ -44,7 +44,7 @@ export default class User extends Vue {
   userList!: object[];
 
   imgLoad() {
-    (this.$refs.userScroll as any).refresh();
+    this.$refs.userScroll && (this.$refs.userScroll as any).refresh();
   }
 
   pullingUp() {
@@ -83,8 +83,8 @@ export default class User extends Vue {
         flex: 1;
         margin-left: 10px;
         overflow: hidden;
-        .name {
-        }
+        // .name {
+        // }
         .desc {
           padding-top: 3px;
           font-size: 12px;
