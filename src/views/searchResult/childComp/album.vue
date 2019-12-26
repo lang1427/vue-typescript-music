@@ -54,11 +54,18 @@ export default class Album extends Vue {
     this.$refs.albumScroll && (this.$refs.albumScroll as any).refresh();
   }
 
+  mounted() {
+    (<any>this).$bus.$on("finishPullUp", () => {
+      this.$refs.albumScroll && (<any>this.$refs.albumScroll).finishPullUp();
+      this.$refs.albumScroll && (<any>this.$refs.albumScroll).refresh();
+    });
+  }
+  destroyed() {
+    (<any>this).$bus.$off("finishPullUp");
+  }
+
   pullingUp() {
     this.$emit("pullingUp", 4);
-    setTimeout(() => {
-      (<any>this.$refs.albumScroll).finishPullUp();
-    }, 200);
   }
 }
 </script>

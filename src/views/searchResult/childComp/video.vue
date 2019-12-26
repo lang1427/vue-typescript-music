@@ -42,15 +42,22 @@ export default class Video extends Vue {
   })
   videoList!: object[];
 
+  mounted() {
+    (<any>this).$bus.$on("finishPullUp", () => {
+      this.$refs.videoScroll && (<any>this.$refs.videoScroll).finishPullUp();
+      this.$refs.videoScroll && (<any>this.$refs.videoScroll).refresh();
+    });
+  }
+  destroyed() {
+    (<any>this).$bus.$off("finishPullUp");
+  }
+
   imgLoad() {
     this.$refs.videoScroll && (this.$refs.videoScroll as any).refresh();
   }
 
   pullingUp() {
     this.$emit("pullingUp", 2);
-    setTimeout(() => {
-      (<any>this.$refs.videoScroll).finishPullUp();
-    }, 200);
   }
 }
 </script>

@@ -44,15 +44,23 @@ export default class SongSheet extends Vue {
   })
   songSheetList!: object[];
 
+  mounted() {
+    (<any>this).$bus.$on("finishPullUp", () => {
+      this.$refs.songsheetScroll &&
+        (<any>this.$refs.songsheetScroll).finishPullUp();
+      this.$refs.songsheetScroll && (<any>this.$refs.songsheetScroll).refresh();
+    });
+  }
+  destroyed() {
+    (<any>this).$bus.$off("finishPullUp");
+  }
+
   imgLoad() {
     this.$refs.songsheetScroll && (this.$refs.songsheetScroll as any).refresh();
   }
 
   pullingUp() {
     this.$emit("pullingUp", 5);
-    setTimeout(() => {
-      (<any>this.$refs.songsheetScroll).finishPullUp();
-    }, 200);
   }
 }
 </script>

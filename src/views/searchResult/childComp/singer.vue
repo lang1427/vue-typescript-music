@@ -43,15 +43,22 @@ export default class Singer extends Vue {
   })
   singerList!: object[];
 
+  mounted() {
+    (<any>this).$bus.$on("finishPullUp", () => {
+      this.$refs.singerScroll && (<any>this.$refs.singerScroll).finishPullUp();
+      this.$refs.singerScroll && (<any>this.$refs.singerScroll).refresh();
+    });
+  }
+  destroyed() {
+    (<any>this).$bus.$off("finishPullUp");
+  }
+
   imgLoad() {
     this.$refs.singerScroll && (this.$refs.singerScroll as any).refresh();
   }
 
   pullingUp() {
     this.$emit("pullingUp", 3);
-    setTimeout(() => {
-      (<any>this.$refs.singerScroll).finishPullUp();
-    }, 200);
   }
 }
 </script>

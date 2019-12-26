@@ -43,15 +43,22 @@ export default class User extends Vue {
   })
   userList!: object[];
 
+  mounted() {
+    (<any>this).$bus.$on("finishPullUp", () => {
+      this.$refs.userScroll && (<any>this.$refs.userScroll).finishPullUp();
+      this.$refs.userScroll && (<any>this.$refs.userScroll).refresh();
+    });
+  }
+  destroyed() {
+    (<any>this).$bus.$off("finishPullUp");
+  }
+
   imgLoad() {
     this.$refs.userScroll && (this.$refs.userScroll as any).refresh();
   }
 
   pullingUp() {
     this.$emit("pullingUp", 7);
-    setTimeout(() => {
-      (<any>this.$refs.userScroll).finishPullUp();
-    }, 200);
   }
 }
 </script>

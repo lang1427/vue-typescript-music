@@ -46,12 +46,21 @@ export default class Single extends Vue {
     }
   })
   singleList!: object[];
+  timer: any = null;
+
+  mounted() {
+    (<any>this).$bus.$on("finishPullUp", () => {
+      this.$refs.singleScroll && (<any>this.$refs.singleScroll).finishPullUp();
+      this.$refs.singleScroll && (<any>this.$refs.singleScroll).refresh();
+    });
+  }
+  destroyed() {
+    (<any>this).$bus.$off("finishPullUp");
+  }
 
   pullingUp() {
     this.$emit("pullingUp", 1);
-    setTimeout(() => {
-      (<any>this.$refs.singleScroll).finishPullUp();
-    }, 200);
+    // (<any>this.$refs.singleScroll).finishPullUp();
   }
 }
 </script>

@@ -18,15 +18,70 @@
                 <p class="single-name">{{ item.name }}</p>
                 <p class="info-name">{{ item.ar[0].name }}-{{ item.al.name }}</p>
               </div>
-              <!-- 暂时不做 -->
-              <!-- <div class="operation">
-            <span>播放MV</span>
-            <span>更多操作</span>
-              </div>-->
             </div>
           </div>
-          <div class="bottom" v-if="overallList.song.more">
+          <div class="bottom" v-if="overallList.song.more" @click="goMarryView(1)">
             {{ overallList.song.moreText }}
+            <i class="fa-angle-right"></i>
+          </div>
+        </div>
+        <div class="video" v-if="overallList.video">
+          <div class="head">
+            <h3 class="title">视频</h3>
+          </div>
+          <div class="body">
+            <div class="list-items" v-for="item of overallList.video.videos" :key="item.vid">
+              <div class="items-img">
+                <img :src="item.coverUrl" @load="imgLoad" />
+              </div>
+              <div class="info">
+                <p>{{ item.title }}</p>
+                <p class="desc">{{ item.durationms | newTime }} by {{ item.creator[0].userName }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="bottom" v-if="overallList.video.more" @click="goMarryView(2)">
+            {{ overallList.video.moreText }}
+            <i class="fa-angle-right"></i>
+          </div>
+        </div>
+        <div class="artist" v-if="overallList.artist">
+          <div class="head">
+            <h3 class="title">歌手</h3>
+          </div>
+          <div class="body">
+            <div class="list-items" v-for="item of overallList.artist.artists" :key="item.id">
+              <div class="items-img">
+                <img :src="item.picUrl" @load="imgLoad" />
+              </div>
+              <div class="name">{{ item.name }}</div>
+              <div class="settled-in">
+                <span class="fa-user-circle"></span>已入驻
+              </div>
+            </div>
+          </div>
+          <div class="bottom" v-if="overallList.artist.more" @click="goMarryView(3)">
+            {{ overallList.artist.moreText }}
+            <i class="fa-angle-right"></i>
+          </div>
+        </div>
+        <div class="album" v-if="overallList.album">
+          <div class="head">
+            <h3 class="title">专辑</h3>
+          </div>
+          <div class="body">
+            <div class="list-items" v-for="item of overallList.album.albums" :key="item.id">
+              <div class="items-img">
+                <img :src="item.picUrl" @load="imgLoad" />
+              </div>
+              <div class="info">
+                <p>{{ item.name }}</p>
+                <p class="desc">{{ item.artist.name }} {{ item.publishTime | ymd }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="bottom" v-if="overallList.album.more" @click="goMarryView(4)">
+            {{ overallList.album.moreText }}
             <i class="fa-angle-right"></i>
           </div>
         </div>
@@ -47,68 +102,8 @@
               </div>
             </div>
           </div>
-          <div class="bottom" v-if="overallList.playList.more">
+          <div class="bottom" v-if="overallList.playList.more" @click="goMarryView(5)">
             {{ overallList.playList.moreText }}
-            <i class="fa-angle-right"></i>
-          </div>
-        </div>
-        <div class="video" v-if="overallList.video">
-          <div class="head">
-            <h3 class="title">视频</h3>
-          </div>
-          <div class="body">
-            <div class="list-items" v-for="item of overallList.video.videos" :key="item.vid">
-              <div class="items-img">
-                <img :src="item.coverUrl" @load="imgLoad" />
-              </div>
-              <div class="info">
-                <p>{{ item.title }}</p>
-                <p class="desc">{{ item.durationms | newTime }} by {{ item.creator[0].userName }}</p>
-              </div>
-            </div>
-          </div>
-          <div class="bottom" v-if="overallList.video.more">
-            {{ overallList.video.moreText }}
-            <i class="fa-angle-right"></i>
-          </div>
-        </div>
-        <div class="artist" v-if="overallList.artist">
-          <div class="head">
-            <h3 class="title">歌手</h3>
-          </div>
-          <div class="body">
-            <div class="list-items" v-for="item of overallList.artist.artists" :key="item.id">
-              <div class="items-img">
-                <img :src="item.picUrl" @load="imgLoad" />
-              </div>
-              <div class="name">{{ item.name }}</div>
-              <div class="settled-in">
-                <span class="fa-user-circle"></span>已入驻
-              </div>
-            </div>
-          </div>
-          <div class="bottom" v-if="overallList.artist.more">
-            {{ overallList.artist.moreText }}
-            <i class="fa-angle-right"></i>
-          </div>
-        </div>
-        <div class="album" v-if="overallList.album">
-          <div class="head">
-            <h3 class="title">专辑</h3>
-          </div>
-          <div class="body">
-            <div class="list-items" v-for="item of overallList.album.albums" :key="item.id">
-              <div class="items-img">
-                <img :src="item.picUrl" @load="imgLoad" />
-              </div>
-              <div class="info">
-                <p>{{ item.name }}</p>
-                <p class="desc">{{ item.artist.name }} {{ item.publishTime | ymd }}</p>
-              </div>
-            </div>
-          </div>
-          <div class="bottom" v-if="overallList.album.more">
-            {{ overallList.album.moreText }}
             <i class="fa-angle-right"></i>
           </div>
         </div>
@@ -127,7 +122,7 @@
               </div>
             </div>
           </div>
-          <div class="bottom" v-if="overallList.djRadio.more">
+          <div class="bottom" v-if="overallList.djRadio.more" @click="goMarryView(6)">
             {{ overallList.djRadio.moreText }}
             <i class="fa-angle-right"></i>
           </div>
@@ -148,7 +143,7 @@
               <div class="follow">+关注</div>
             </div>
           </div>
-          <div class="bottom" v-if="overallList.user.more">
+          <div class="bottom" v-if="overallList.user.more" @click="goMarryView(7)">
             {{ overallList.user.moreText }}
             <i class="fa-angle-right"></i>
           </div>
@@ -193,6 +188,10 @@ export default class OverAll extends Vue {
   imgLoad() {
     // 解决 refresh() of  undefined 的问题
     this.$refs.overallScroll && (this.$refs.overallScroll as any).refresh();
+  }
+
+  goMarryView(index: number) {
+    (<any>this).$bus.$emit("goMarryView", index);
   }
 }
 </script>

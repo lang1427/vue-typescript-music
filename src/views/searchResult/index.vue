@@ -203,7 +203,7 @@ export default class SearchResult extends Vue {
   }
 
   /** 翻页操作，需要子组件传入对应的index */
-  addPage(index: number) {
+  async addPage(index: number) {
     /* 用于获取当前搜索结果的对象（包含page和result） */
     let searchResultArr = Object.keys(this.currentSearchResult);
     let currentResultObj = searchResultArr[index];
@@ -213,17 +213,24 @@ export default class SearchResult extends Vue {
     // console.log(
     //   (this.currentSearchResult as any)[currentResultObj].result[currentResultArr]
     // );
-    search(
+    let res = await search(
       this.$store.state.searchKeyWrold,
       this.currentSearchType,
       this.count,
       page
-    ).then((res: ISearchResult) => {
+    );
+    if (res.code === 200) {
+      (<any>this).$bus.$emit("finishPullUp"); // 请求完数据 再finishPullUp
+      // 解决 对象解构赋值中没有值的问题：
+      //  Error in v-on handler (Promise/async): "TypeError: Invalid attempt to spread non-iterable instance"
+      if (!res.result.hasOwnProperty(currentResultArr)) {
+        return !0;
+      }
       (this.currentSearchResult as any)[currentResultObj].result[
         currentResultArr
       ].push(...(<any>res.result)[currentResultArr]);
       (this.currentSearchResult as any)[currentResultObj].page += 1;
-    });
+    }
   }
 }
 </script>
