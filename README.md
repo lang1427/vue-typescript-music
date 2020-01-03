@@ -2,12 +2,25 @@
 
 ## Vue+TypeScript 高仿网易云音乐 移动版
 
+> 项目不断完善进行中 持续更新...
+
+###### 欢迎 Start，Issues
+
+**您的 Start，是我不断更新维护的动力！！！**
+**在使用过程中，存在某些问题，欢迎 Issues**
+
 ### 后端 API 依赖
 
 `NeteaseCloudMusicApi`
 
 1. [接口下载地址](https://github.com/Binaryify/NeteaseCloudMusicApi)
 2. [接口 API 文档地址](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=neteasecloudmusicapi)
+
+### 示例效果
+
+![默认页](./src/doc/images/find.gif)
+![搜索页、搜索结果](./src/doc/images/search.gif)
+![热门歌手页](./src/doc/images/singer.gif)
 
 ### 功能模块
 
@@ -43,7 +56,7 @@
 
 - [x] 热搜榜
 - [x] 历史记录
-- [ ] 歌手分类
+- [x] 歌手分类
 - [x] 搜索输入框功能
 
 **搜索结果**
@@ -91,7 +104,3 @@ npm run test
 ```
 npm run lint
 ```
-
-### Customize configuration
-
-###### 持续更新...

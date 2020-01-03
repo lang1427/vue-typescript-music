@@ -8,6 +8,8 @@ const search = () =>
   import(/*webpackChunkName:'search'*/ 'views/search/index.vue')
 const searchResult = () =>
   import(/*webpackChunkName:'searchResult'*/ 'views/searchResult/index.vue')
+const singer = () =>
+  import(/*webpackChunkName:'singer'*/ 'views/singer/index.vue')
 
 const routes = [
   {
@@ -28,6 +30,11 @@ const routes = [
     path: '/searchresult',
     name: 'searchresult',
     component: searchResult
+  },
+  {
+    path: '/singer',
+    name: 'singer',
+    component: singer
   }
 ]
 

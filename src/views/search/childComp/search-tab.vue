@@ -4,10 +4,17 @@
       <span class="fa-arrow-left back"></span>
     </div>
     <div class="search-input-box" slot="center">
-      <input class="search-input" type="text" v-model="searchContent" @click="activeInput" />
+      <input
+        class="search-input"
+        type="text"
+        v-model="searchContent"
+        @click="activeInput"
+      />
       <div class="fa-close clear-input" v-show="Flag" @click="clearInput"></div>
       <ul class="search-list" v-show="Flag && isActive">
-        <li class="list-items" @click="goSearchResult(searchContent)">搜索“{{ searchContent }}”</li>
+        <li class="list-items" @click="goSearchResult(searchContent)">
+          搜索“{{ searchContent }}”
+        </li>
         <li
           class="list-items"
           @click="goSearchResult(item.keyword)"
@@ -19,16 +26,16 @@
         </li>
       </ul>
     </div>
-    <div slot="right">
+    <div slot="right" @click="goSinger">
       <span class="fa-user singer"></span>
     </div>
   </navbar>
 </template>
 
-<script lang='ts'>
-import navbar from "components/common/navbar/navbar.vue";
-import { searchSuggest } from "@/service/search";
-import { Component, Vue, Watch } from "vue-property-decorator";
+<script lang="ts">
+import navbar from 'components/common/navbar/navbar.vue'
+import { searchSuggest } from '@/service/search'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 
 @Component({
   components: {
@@ -36,63 +43,66 @@ import { Component, Vue, Watch } from "vue-property-decorator";
   }
 })
 export default class SearchTab extends Vue {
-  private searchContent: string = "";
-  private allMatch: object[] = []; // 输入框搜索内容全匹配
-  private isActive: boolean = true; // 用于动态显示搜索列表
-  private timer: any = null;
+  private searchContent: string = ''
+  private allMatch: object[] = [] // 输入框搜索内容全匹配
+  private isActive: boolean = true // 用于动态显示搜索列表
+  private timer: any = null
 
   get Flag() {
-    return !(this.searchContent === "");
+    return !(this.searchContent === '')
   }
   /**
    *  当滑动热搜榜时，如果当前的搜索列表（isActive）为true状态，则设置为失效状态
    */
   mounted() {
-    (<any>this).$bus.$on("isShow", (state: boolean) => {
-      this.isActive = state;
-    });
+    ;(<any>this).$bus.$on('isShow', (state: boolean) => {
+      this.isActive = state
+    })
   }
   destroyed() {
-    (<any>this).$bus.$off("isShow");
+    ;(<any>this).$bus.$off('isShow')
   }
 
   // 点击input输入框时，如果当前的搜索列表（isActive）为false状态，则激活搜索列表
   activeInput() {
     if (!this.isActive) {
-      this.isActive = true;
+      this.isActive = true
     }
   }
   clearInput() {
-    this.searchContent = "";
+    this.searchContent = ''
   }
   back() {
-    this.$router.back();
+    this.$router.back()
+  }
+  goSinger() {
+    this.$router.push('/singer')
   }
 
   goSearchResult(searchWord: string) {
-    this.$store.commit("changeSearchKey", searchWord);
-    this.$store.dispatch("addHistorySearchArr", searchWord);
-    this.$router.push(`/searchresult?keywords=${searchWord}`);
+    this.$store.commit('changeSearchKey', searchWord)
+    this.$store.dispatch('addHistorySearchArr', searchWord)
+    this.$router.push(`/searchresult?keywords=${searchWord}`)
   }
 
   async getSearchSuggest(keyworld: string) {
-    let res = await searchSuggest(keyworld);
+    let res = await searchSuggest(keyworld)
     if (res.code === 200) {
-      this.allMatch = res.result.allMatch;
+      this.allMatch = res.result.allMatch
     }
   }
 
   /** 防抖处理 */
   debounce(fn: any, delay: number = 500) {
-    if (this.timer) clearTimeout(this.timer);
+    if (this.timer) clearTimeout(this.timer)
     this.timer = window.setTimeout(() => {
-      fn.call(this, this.searchContent);
-    }, delay);
+      fn.call(this, this.searchContent)
+    }, delay)
   }
-  @Watch("searchContent")
+  @Watch('searchContent')
   changeSearchContent(newVal: string) {
     if (newVal.trim().length !== 0) {
-      this.debounce(this.getSearchSuggest);
+      this.debounce(this.getSearchSuggest)
     }
   }
 }
