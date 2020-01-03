@@ -4,10 +4,12 @@
 
 > 项目不断完善进行中 持续更新...
 
-###### 欢迎 Start，Issues
+##### 欢迎 Start，Issues
 
-**您的 Start，是我不断更新维护的动力！！！**
-**在使用过程中，存在某些问题，欢迎 Issues**
+1. **您的 Start，是我不断更新维护的动力！！！**
+2. **若在使用过程中，存在某些问题，欢迎 Issues**
+
+> 详细注释 完美解读 你值得拥有
 
 ### 后端 API 依赖
 
@@ -18,7 +20,6 @@
 
 ### 示例效果
 
-![默认页](./src/doc/images/find.gif)
 ![搜索页、搜索结果](./src/doc/images/search.gif)
 ![热门歌手页](./src/doc/images/singer.gif)
 
