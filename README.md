@@ -2,6 +2,8 @@
 
 ## Vue+TypeScript 高仿网易云音乐 移动版
 
+**线上访问地址**[www.kanglang.xyz](http://www.kanglang.xyz)
+
 > 项目不断完善进行中 持续更新...
 
 ##### 欢迎 Start，Issues
