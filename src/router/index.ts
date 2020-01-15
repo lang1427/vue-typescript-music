@@ -10,6 +10,10 @@ const searchResult = () =>
   import(/*webpackChunkName:'searchResult'*/ 'views/searchResult/index.vue')
 const singer = () =>
   import(/*webpackChunkName:'singer'*/ 'views/singer/index.vue')
+const singerDetail = () =>
+  import(/*webpackChunkName:'singerDetail'*/ 'views/singerDetail/index.vue')
+
+const test = () => import('views/test.vue')
 
 const routes = [
   {
@@ -34,7 +38,19 @@ const routes = [
   {
     path: '/singer',
     name: 'singer',
-    component: singer
+    component: singer,
+    children: [
+      {
+        path: 'detail/:id',
+        name: 'singerDetail',
+        component: singerDetail
+      }
+    ]
+  },
+
+  {
+    path: '/test',
+    component: test
   }
 ]
 

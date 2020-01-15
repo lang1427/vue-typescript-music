@@ -1,6 +1,8 @@
 const path = require('path')
 module.exports = {
 
+    publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+
     chainWebpack: confirm => {
         const types = ['vue-modules', 'vue', 'normal-module', 'normal']
         types.forEach(type => {

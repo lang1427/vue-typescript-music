@@ -15,6 +15,7 @@
                 class="group-items"
                 v-for="item of group.items"
                 :key="item.id"
+                @click="selector(item.id)"
               >
                 <img :src="item.imgUrl" class="items-img" alt />
                 <span class="items-name">{{ item.name }}</span>
@@ -89,6 +90,10 @@ export default class scrollListView extends Vue {
     })
   }
 
+  selector(id: number) {
+    this.$router.push('/singer/detail/' + id)
+  }
+
   /** 滑动右侧导航，实现主题内容联动效果 Start */
   touchStart(e: TouchEvent) {
     let anchorIndex = getData(e.target as HTMLElement, 'index') // 获取当前开始移动的元素的自定义属性值===index
@@ -133,7 +138,6 @@ export default class scrollListView extends Vue {
       height += item.clientHeight
       this.listHeight.push(height)
     }
-    console.log('listHeight:' + this.listHeight)
   }
   /** 监听Prop中的data是否传入了值，当传入了值时，设置好listHeight：每个类型的高度 */
   @Watch('data')
@@ -152,7 +156,6 @@ export default class scrollListView extends Vue {
       return
     }
     /** 上拉 取对应类型 激活currentIndex */
-    console.log(newVal)
 
     for (let i = 0; i < listHeight.length - 1; i++) {
       let height1 = listHeight[i]

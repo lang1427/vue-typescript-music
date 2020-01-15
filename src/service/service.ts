@@ -1,9 +1,13 @@
 import axios from 'axios'
 
+const baseURL =
+  process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000'
+
 export function service(options: object): any {
   return new Promise((resolve, reject) => {
     const instance = axios.create({
-      baseURL: 'http://127.0.0.1:3000',
+      baseURL,
+      withCredentials: true,
       timeout: 10000
     })
     instance.interceptors.response.use(res => {

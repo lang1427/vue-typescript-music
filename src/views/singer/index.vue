@@ -2,20 +2,21 @@
   <div class="singer">
     <top-bar />
     <list-view :data="artists" />
+    <router-view />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue } from "vue-property-decorator";
 
-import topBar from './childComp/topbar.vue'
-import ListView from 'components/content/scroll-list-view/scroll-list-view.vue'
+import topBar from "./childComp/topbar.vue";
+import ListView from "components/content/scroll-list-view/scroll-list-view.vue";
 
-import { getSinger, SingerData, ISinger } from '@/service/singer'
+import { getSinger, SingerData, ISinger } from "@/service/singer";
 
-const pinyin = require('pinyin')
-const HOT_NAME = '热门'
-const HOT_COUNT = 10
+const pinyin = require("pinyin");
+const HOT_NAME = "热门";
+const HOT_COUNT = 10;
 
 @Component({
   components: {
@@ -24,24 +25,29 @@ const HOT_COUNT = 10
   }
 })
 export default class Singer extends Vue {
-  private artists: object[] = []
+  private artists: object[] = [];
 
   created() {
-    this.getSingerData()
+    // 减少不必要的请求
+    if (window.location.href.match(/\/singer\/detail/)) {
+      return;
+    } else {
+      this.getSingerData();
+    }
   }
 
   async getSingerData() {
-    let res = await getSinger()
+    let res = await getSinger();
     if (res.code === 200) {
-      let s = res.artists
+      let s = res.artists;
       /** 添加一个字段（pin：首字母的拼音大写） */
       s.map((item: ISinger) => {
         let py = pinyin(item.name[0], {
           style: pinyin.STYLE_FIRST_LETTER
-        })
-        ;(<any>item).pin = py[0][0].toUpperCase()
-      })
-      this.artists = this.normalizeSinger(s)
+        });
+        (<any>item).pin = py[0][0].toUpperCase();
+      });
+      this.artists = this.normalizeSinger(s);
     }
   }
 
@@ -52,36 +58,36 @@ export default class Singer extends Vue {
         title: HOT_NAME,
         items: []
       }
-    }
+    };
     list.forEach((item: ISinger, index: number) => {
       /** 热门 */
       if (index < HOT_COUNT) {
-        map.hot.items.push(new SingerData(item))
+        map.hot.items.push(new SingerData(item));
       }
       /** 所有 */
-      const key = item.pin
+      const key = item.pin;
       if (!map[key]) {
         map[key] = {
           title: key,
           items: []
-        }
+        };
       }
-      map[key].items.push(new SingerData(item))
-    })
-    let hot = [] // 热门数据，包含title，items
-    let all = [] // 所有数据，包含title，items
+      map[key].items.push(new SingerData(item));
+    });
+    let hot = []; // 热门数据，包含title，items
+    let all = []; // 所有数据，包含title，items
     for (let key in map) {
       if (map[key].title === HOT_NAME) {
-        hot.push(map[key])
+        hot.push(map[key]);
       } else if (map[key].title.match(/[A-Z]/)) {
-        all.push(map[key])
+        all.push(map[key]);
       }
     }
     // 所有大写字母排序
     all.sort((a, b) => {
-      return a.title.charCodeAt(0) - b.title.charCodeAt(0)
-    })
-    return hot.concat(all)
+      return a.title.charCodeAt(0) - b.title.charCodeAt(0);
+    });
+    return hot.concat(all);
   }
 }
 </script>
