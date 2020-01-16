@@ -66,7 +66,6 @@ export default class TabBar extends Vue {
   border-bottom: 1px solid #ddd;
   .tabbar-items {
     flex: 1;
-    position: relative;
     height: 30px;
     line-height: 30px;
     text-align: center;
@@ -79,10 +78,9 @@ export default class TabBar extends Vue {
       }
     }
     .items-size {
-      position: absolute;
       font-size: 12px;
       color: #999;
-      left: 63px;
+      padding-left: 3px;
     }
   }
 }

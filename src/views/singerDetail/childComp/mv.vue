@@ -1,30 +1,30 @@
 <template>
-  <div class="album">
-    <album-list :albumList="albumList" />
+  <div class="mv">
+    <mv-list :mvList="mvList" />
   </div>
 </template>
 
 <script lang='ts'>
-import albumList from "components/content/album-list/album-list.vue";
+import mvList from "components/content/mv-list/mv-list.vue";
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
   components: {
-    albumList
+    mvList
   }
 })
-export default class Album extends Vue {
+export default class Mv extends Vue {
   @Prop({
     default() {
       return [];
     }
   })
-  albumList!: object[];
+  mvList!: object[];
 }
 </script>
 
 <style lang="less" scoped>
-.album {
+.mv {
   background-color: white;
 }
 </style>

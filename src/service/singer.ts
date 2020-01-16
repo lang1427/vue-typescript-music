@@ -40,10 +40,26 @@ export interface ISingerHeadInfo {
   img1v1Url?: string
 }
 
-/** 获取歌手描述 */
-export function getSingerDesc(id: number) {
+/** 获取歌手专辑 */
+export function getSingerAlbum(
+  id: number,
+  offset: number = 0,
+  limit: number = 50
+) {
   return service({
-    url: '/artist/desc',
+    url: '/artist/album',
+    params: {
+      id,
+      offset: limit * offset,
+      limit
+    }
+  })
+}
+
+/** 获取歌手MV */
+export function getSingerMv(id: number) {
+  return service({
+    url: '/artist/mv',
     params: {
       id
     }

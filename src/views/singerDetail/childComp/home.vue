@@ -5,19 +5,16 @@
         <span class="fa-play-circle-o"></span>播放热门50
       </h3>
     </single-list>
-    <base-info />
   </div>
 </template>
 
 <script lang='ts'>
 import singleList from "components/content/single-list/single-list.vue";
-import baseInfo from "./baseinfo.vue";
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
   components: {
-    singleList,
-    baseInfo
+    singleList
   }
 })
 export default class SingerDetailHome extends Vue {
@@ -32,6 +29,7 @@ export default class SingerDetailHome extends Vue {
 
 <style lang="less" scoped>
 .singer-detail-home {
+  background-color: white;
   h3.title {
     height: 45px;
     line-height: 45px;

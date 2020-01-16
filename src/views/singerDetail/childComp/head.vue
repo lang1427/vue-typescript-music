@@ -1,13 +1,5 @@
 <template>
   <div class="singer-detail-head" :style="bgImg">
-    <topbar class="singer-detail-topbar">
-      <div slot="left" @click="back">
-        <span class="fa-arrow-left back"></span>
-      </div>
-      <div slot="right">
-        <span class="fa-ellipsis-v report"></span>
-      </div>
-    </topbar>
     <div class="info">
       <h3 class="name">{{ singerHeadInfo.name }}</h3>
       <p class="desc">{{ singerHeadInfo.briefDesc }}</p>
@@ -16,15 +8,10 @@
 </template>
 
 <script lang="ts">
-import topbar from "components/common/navbar/navbar.vue";
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { ISingerHeadInfo } from "@/service/singer";
 
-@Component({
-  components: {
-    topbar
-  }
-})
+@Component
 export default class SingerDetailHead extends Vue {
   @Prop({
     default() {
@@ -33,14 +20,11 @@ export default class SingerDetailHead extends Vue {
   })
   singerHeadInfo!: ISingerHeadInfo;
 
-  back() {
-    this.$router.go(-1);
-  }
-
   get bgImg() {
     return {
       backgroundImage: `url(${this.singerHeadInfo &&
-        this.singerHeadInfo.img1v1Url})`
+        this.singerHeadInfo.img1v1Url})`,
+      height: "250px"
     };
   }
 }
@@ -52,17 +36,8 @@ export default class SingerDetailHead extends Vue {
   top: 0;
   left: 0;
   right: 0;
-  height: 250px;
   background-size: 100%;
-  .singer-detail-topbar {
-    position: relative;
-    z-index: 1001;
-    .back,
-    .report {
-      font-size: 20px;
-      color: white;
-    }
-  }
+
   span,
   p,
   h3 {

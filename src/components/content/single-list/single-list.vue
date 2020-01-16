@@ -30,9 +30,4 @@ export default class SingleList extends Vue {
 </script>
 
 <style lang="less" scoped>
-.single-list-view {
-  background-color: white;
-  .single-list {
-  }
-}
 </style>
