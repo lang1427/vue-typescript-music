@@ -72,7 +72,9 @@ export default class ScrollWrapper extends Vue {
     // 滚动到指定目标元素
     this.scroll && this.scroll.scrollToElement.apply(this.scroll, arguments);
   }
-
+  stop() {
+    this.scroll && this.scroll.stop();
+  }
   enable() {
     this.scroll && this.scroll.enable();
   }

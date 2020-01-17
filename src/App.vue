@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <h-menu />
-    <router-view></router-view>
+    <!-- 仅保存singer路由时的缓存 -->
+    <keep-alive include="singer">
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 
@@ -18,6 +21,4 @@ export default class App extends Vue {}
 </script>
 
 <style lang="less">
-#app {
-}
 </style>

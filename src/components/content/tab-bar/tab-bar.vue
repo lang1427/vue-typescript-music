@@ -12,9 +12,9 @@
         <span class="items-size">{{ item.size }}</span>
       </div>
     </div>
-    <div v-for="(item,index) of tabbarInfo" :key="index" v-show="index===currentIndex">
+    <!-- <div v-for="(item,index) of tabbarInfo" :key="index" v-show="index===currentIndex">
       <slot :name="item.title"></slot>
-    </div>
+    </div>-->
   </div>
 </template>
 

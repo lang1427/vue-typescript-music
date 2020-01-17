@@ -1,8 +1,10 @@
 <template>
   <div class="album-list">
-    <div v-for="item of albumList" :key="item.id">
+    <slot name="top"></slot>
+    <div v-for="item of albumList.hotAlbums" :key="item.id">
       <album-list-items :albumListItems="item" />
     </div>
+    <slot name="bottom"></slot>
   </div>
 </template>
 

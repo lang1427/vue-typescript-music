@@ -1,8 +1,10 @@
 <template>
   <div class="mv-list">
-    <div v-for="item of mvList" :key="item.id">
+    <slot name="top"></slot>
+    <div v-for="item of mvList.mvs" :key="item.id">
       <mv-list-items :mvListItems="item" />
     </div>
+    <slot name="bottom"></slot>
   </div>
 </template>
 

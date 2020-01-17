@@ -1,7 +1,7 @@
 <template>
   <div class="singer">
     <top-bar />
-    <list-view :data="artists" />
+    <list-view id="singer-list-view" :data="artists" />
     <router-view />
   </div>
 </template>
@@ -19,6 +19,7 @@ const HOT_NAME = "热门";
 const HOT_COUNT = 10;
 
 @Component({
+  name: "singer",
   components: {
     topBar,
     ListView
@@ -34,6 +35,22 @@ export default class Singer extends Vue {
     } else {
       this.getSingerData();
     }
+  }
+  // 由于在singerDetail子路由回跳到singer路由中，并不会激活activated生命周期钩子函数，可通过bus总线传递
+  // activated() {
+  //   (<HTMLElement>document.getElementById("singer-list-view")).classList.remove(
+  //     "none"
+  //   );
+  // }
+  mounted() {
+    (<any>this).$bus.$on("leaveSingerDetail", () => {
+      (<HTMLElement>(
+        document.getElementById("singer-list-view")
+      )).classList.remove("none");
+    });
+  }
+  destroyed() {
+    (<any>this).$bus.$off("leaveSingerDetail");
   }
 
   async getSingerData() {

@@ -3,33 +3,38 @@
     <div class="singer-detail">
       <detail-head ref="detailHead" :singerHeadInfo="singerHeadInfo" />
       <detail-tab-bar
+        v-show="isShowTabbar"
         ref="detailTabbar"
-        class="singer-detail-tabbar"
+        class="singer-detail-tabbar1"
         :tabbarInfo="tabbarList"
         :isTopRadian="true"
-      >
-        <section slot="主页">
-          <detail-home :singleList="hotSongs" />
-        </section>
-        <section slot="专辑">
-          <detail-album :albumList="hotAlbums" />
-        </section>
-        <section slot="MV">
-          <detail-mv :mvList="mvs" />
-        </section>
-      </detail-tab-bar>
+        @changeTabbar="changeTabbar"
+      ></detail-tab-bar>
+
+      <detail-home v-show="0===tabbarContentIndex" :singleList="hotSongs" />
+      <detail-album v-show="1===tabbarContentIndex" :albumList="hotAlbumsData" />
+      <detail-mv v-show="2===tabbarContentIndex" :mvList="mvsData" />
     </div>
+    <!-- 不让scroll将以下组件滚动 -->
     <topbar class="singer-detail-topbar" ref="detailTopbar">
-      <div slot="left" @click="back">
-        <span class="fa-arrow-left back"></span>
+      <div slot="left">
+        <span @click="back" class="fa-arrow-left back"></span>
       </div>
-      <div v-show="isShowName" slot="center">
+      <div v-show="!isShowName" slot="center">
         <h3 class="title">{{ singerHeadInfo.name }}</h3>
       </div>
       <div slot="right">
         <span class="fa-ellipsis-v report"></span>
       </div>
     </topbar>
+    <detail-tab-bar
+      v-show="!isShowTabbar"
+      ref="detailTabbar2"
+      class="singer-detail-tabbar2"
+      :tabbarInfo="tabbarList"
+      :isTopRadian="true"
+      @changeTabbar="changeTabbar"
+    ></detail-tab-bar>
   </scroll>
 </template>
 
@@ -67,12 +72,15 @@ import {
 })
 export default class SingerDetail extends Vue {
   private singerHeadInfo: ISingerHeadInfo = {};
+  private tabbarContentIndex: number = 0; // 用于控制显示tabbar 主页、专辑、Mv 的内容
   private hotSongs: object[] = [];
-  private hotAlbums: object[] = [];
-  private mvs: object[] = [];
+  private hotAlbumsData: object[] = [];
+  private mvsData: object[] = [];
   private scrollY: number = 0;
-  private isShowName: boolean = false;
+  private isShowName: boolean = true;
+  private isShowTabbar: boolean = true;
   private activeHeight: number = -1; // 计算到 用于显示顶部导航栏中的名字 的高度
+  private opacity: number = 1; // 用于设置detailHead组件中的文字的透明度
 
   get id() {
     return parseInt(this.$route.params.id);
@@ -94,8 +102,13 @@ export default class SingerDetail extends Vue {
     this.activeHeight =
       (<any>this.$refs.detailHead).$el.offsetHeight -
       (<any>this.$refs.detailTopbar).$el.offsetHeight;
-
-    console.log(this.$refs.detailTabbar);
+    // 子路由所带来的问题：在singerDetail组件中singer组件需要被隐藏
+    (<HTMLElement>document.getElementById("singer-list-view")).classList.add(
+      "none"
+    );
+  }
+  beforeDestroy() {
+    (<any>this).$bus.$emit("leaveSingerDetail");
   }
 
   async getSingerDateilData(id: number) {
@@ -108,13 +121,13 @@ export default class SingerDetail extends Vue {
   async getSingerAlbumData(id: number, page?: number) {
     let res = await getSingerAlbum(id, page);
     if (res.code === 200) {
-      this.hotAlbums = res.hotAlbums;
+      this.hotAlbumsData = res;
     }
   }
   async getSingerMvData(id: number) {
     let res = await getSingerMv(id);
     if (res.code === 200) {
-      this.mvs = res.mvs;
+      this.mvsData = res;
     }
   }
 
@@ -123,11 +136,30 @@ export default class SingerDetail extends Vue {
   }
   scroll(position: IPosition) {
     this.scrollY = -position.y;
-    if (this.scrollY >= this.activeHeight) {
-      this.isShowName = true;
-    } else {
-      this.isShowName = false;
+
+    // 禁止下拉
+    if (this.scrollY <= 0) {
+      (<any>this.$refs.singerDetailScroll).scrollTo(0, 0, 0);
     }
+    // 显示 TopBar 中的 名字,并同步 Tabbar
+    if (this.scrollY >= this.activeHeight) {
+      this.isShowName = false;
+      this.isShowTabbar = false;
+      (<any>this.$refs.detailTopbar).$el.style.background = `rgb(0,0,0)`;
+    } else {
+      this.isShowName = true;
+      this.isShowTabbar = true;
+      (<any>this.$refs.detailTopbar).$el.style.background = `rgba(0,0,0,0)`;
+      //设置detailHead组件中的文字缓慢透明
+      this.opacity = 1 - this.scrollY / this.activeHeight;
+      (<any>this.$refs.detailHead).$el.lastChild.style.opacity = this.opacity;
+    }
+  }
+  // 使 tabbar 同步
+  changeTabbar(index: number) {
+    (<any>this.$refs.detailTabbar).currentIndex = (<any>(
+      this.$refs.detailTabbar2
+    )).currentIndex = this.tabbarContentIndex = index;
   }
 }
 </script>
@@ -140,28 +172,36 @@ export default class SingerDetail extends Vue {
   top: 0;
   bottom: 0;
   z-index: 1000;
-}
-.singer-detail {
-  background-color: #f2f2f2;
-  .singer-detail-tabbar {
-    position: relative;
+  .singer-detail {
+    background-color: #f2f2f2;
+    .singer-detail-tabbar1 {
+      position: relative;
+      z-index: 1003;
+      margin-top: -15px;
+    }
+  }
+
+  .singer-detail-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     z-index: 1001;
-    margin-top: -15px;
+    .back,
+    .report {
+      font-size: 20px;
+      color: white;
+    }
+    h3.title {
+      color: white;
+    }
   }
-}
-.singer-detail-topbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1001;
-  .back,
-  .report {
-    font-size: 20px;
-    color: white;
-  }
-  h3.title {
-    color: white;
+  .singer-detail-tabbar2 {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 38px;
+    z-index: 1003;
   }
 }
 </style>
