@@ -1,7 +1,7 @@
 <template>
   <div class="album-list-items">
     <div class="avatar">
-      <img :src="albumListItems.picUrl" alt />
+      <img v-lazy="albumListItems.picUrl" alt />
     </div>
     <div class="info">
       <p class="name">{{ albumListItems.name }}</p>
@@ -10,26 +10,26 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 interface IAlbum {
-  publishTime: number;
-  size: number;
+  publishTime: number
+  size: number
 }
-import { formatDate } from "@/utils/formatDate";
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { formatDate } from '@/utils/formatDate'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component
 export default class AlbumListItems extends Vue {
   @Prop({
     default() {
-      return {};
+      return {}
     }
   })
-  albumListItems!: IAlbum;
+  albumListItems!: IAlbum
 
   get desc() {
-    let date = new Date(this.albumListItems.publishTime);
-    return `${formatDate(date, "yyyy-MM-dd")} 歌曲${this.albumListItems.size}`;
+    let date = new Date(this.albumListItems.publishTime)
+    return `${formatDate(date, 'yyyy-MM-dd')} 歌曲${this.albumListItems.size}`
   }
 }
 </script>

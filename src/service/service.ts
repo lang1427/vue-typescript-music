@@ -7,8 +7,7 @@ export function service(options: object): any {
   return new Promise((resolve, reject) => {
     const instance = axios.create({
       baseURL,
-      withCredentials: true,
-      timeout: 10000
+      withCredentials: true
     })
     instance.interceptors.response.use(res => {
       return res.data

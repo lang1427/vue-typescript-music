@@ -7,6 +7,15 @@ import 'font-awesome/css/font-awesome.css'
 
 Vue.config.productionTip = false
 
+import FastClick from 'fastclick'
+;(<any>FastClick).attach(document.body)
+
+import LazyLoad from 'vue-lazyload'
+Vue.use(LazyLoad, {
+  loading: require('./assets/images/music-load.jpg'),
+  error: require('./assets/images/music-error.svg')
+})
+
 Vue.prototype.$bus = new Vue()
 
 Vue.filter('finalPlayCount', (playCount: number): number | string => {

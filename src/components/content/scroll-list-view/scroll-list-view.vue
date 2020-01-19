@@ -1,47 +1,50 @@
 <template>
-  <div class="scroll-list-view">
-    <scroll
-      ref="scrollListview"
-      class="list-view"
-      :probeType="3"
-      @scroll="scroll"
-    >
-      <div class="content">
-        <ul>
-          <li v-for="group of data" :key="group.title" ref="listGroup">
-            <h2 class="group-title">{{ group.title }}</h2>
-            <ul>
-              <li
-                class="group-items"
-                v-for="item of group.items"
-                :key="item.id"
-                @click="selector(item.id)"
-              >
-                <img :src="item.imgUrl" class="items-img" alt />
-                <span class="items-name">{{ item.name }}</span>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-      <!-- 右侧导航部分,
+  <div>
+    <div v-if="data.length != 0" class="scroll-list-view">
+      <scroll
+        ref="scrollListview"
+        class="list-view"
+        :probeType="3"
+        @scroll="scroll"
+      >
+        <div class="content">
+          <ul>
+            <li v-for="group of data" :key="group.title" ref="listGroup">
+              <h2 class="group-title">{{ group.title }}</h2>
+              <ul>
+                <li
+                  class="group-items"
+                  v-for="item of group.items"
+                  :key="item.id"
+                  @click="selector(item.id)"
+                >
+                  <img v-lazy="item.imgUrl" class="items-img" alt />
+                  <span class="items-name">{{ item.name }}</span>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <!-- 右侧导航部分,
       放在scroll插槽中，设置position，不对content造成影响同时还可以固定在右侧且不能滑动 -->
-      <div class="list-shortcut">
-        <ul>
-          <li
-            class="shortcut-items"
-            @touchstart="touchStart"
-            @touchmove.stop.prevent="touchMove"
-            v-for="(item, index) of shortcurList"
-            :key="index"
-            :data-index="index"
-            :class="{ 'items-active': currentIndex === index }"
-          >
-            {{ item }}
-          </li>
-        </ul>
-      </div>
-    </scroll>
+        <div class="list-shortcut">
+          <ul>
+            <li
+              class="shortcut-items"
+              @touchstart="touchStart"
+              @touchmove.stop.prevent="touchMove"
+              v-for="(item, index) of shortcurList"
+              :key="index"
+              :data-index="index"
+              :class="{ 'items-active': currentIndex === index }"
+            >
+              {{ item }}
+            </li>
+          </ul>
+        </div>
+      </scroll>
+    </div>
+    <loading style="margin-top:100px;" v-else />
   </div>
 </template>
 
@@ -60,13 +63,15 @@ const ANCHOR_HEIGHT = 20
 
 import scroll from 'components/common/scroll/scroll.vue'
 import { getData } from '@/utils/dom'
+import { loadingMixin } from '@/utils/mixin'
 
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 
 @Component({
   components: {
     scroll
-  }
+  },
+  mixins: [loadingMixin]
 })
 export default class scrollListView extends Vue {
   @Prop({

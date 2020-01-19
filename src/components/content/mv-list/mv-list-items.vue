@@ -1,8 +1,10 @@
 <template>
   <div class="mv-list-items">
     <div class="mv-img">
-      <img :src="mvListItems.imgurl" />
-      <span class="play-count">▷{{ mvListItems.playCount | finalPlayCount }}</span>
+      <img v-lazy="mvListItems.imgurl" />
+      <span class="play-count"
+        >▷{{ mvListItems.playCount | finalPlayCount }}</span
+      >
     </div>
     <div class="info">
       <div class="name">{{ mvListItems.name }}</div>
@@ -11,17 +13,17 @@
   </div>
 </template>
 
-<script lang='ts'>
-import { Component, Vue, Prop } from "vue-property-decorator";
+<script lang="ts">
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component
 export default class MvListItems extends Vue {
   @Prop({
     default() {
-      return {};
+      return {}
     }
   })
-  mvListItems!: object;
+  mvListItems!: object
 }
 </script>
 

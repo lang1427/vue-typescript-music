@@ -1,16 +1,18 @@
 <template>
   <div class="hot-search-list" @touchstart="touchStart">
     <h3 class="title">热搜榜</h3>
-    <div class="hot-list">
+    <div v-if="hotsearch.length != 0" class="hot-list">
       <div
         class="list-item"
-        v-for="(item,index) of hotsearch"
+        v-for="(item, index) of hotsearch"
         :key="index"
         @click="goSearchResult(item.searchWord)"
       >
-        <span class="ordinal" :class="index<3?'top-three':''">{{ index+1 }}</span>
+        <span class="ordinal" :class="index < 3 ? 'top-three' : ''">{{
+          index + 1
+        }}</span>
         <div class="info">
-          <p class="search-word" :class="index<3?'top-three':''">
+          <p class="search-word" :class="index < 3 ? 'top-three' : ''">
             {{ item.searchWord }}
             <img class="icon" v-if="item.iconUrl" :src="item.iconUrl" />
           </p>
@@ -19,23 +21,25 @@
         <span class="score">{{ item.score }}</span>
       </div>
     </div>
+    <loading v-else />
   </div>
 </template>
 
-<script lang='ts'>
-import { Component, Vue, Prop } from "vue-property-decorator";
+<script lang="ts">
+import { loadingMixin } from '@/utils/mixin'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
-@Component
+@Component({ mixins: [loadingMixin] })
 export default class HotSearchList extends Vue {
   @Prop({
     default() {
-      return [];
+      return []
     }
   })
-  hotsearch!: object[];
+  hotsearch!: object[]
 
   touchStart() {
-    (<any>this).$bus.$emit("isShow", false);
+    ;(<any>this).$bus.$emit('isShow', false)
   }
 
   // private keywords: string = "";
@@ -53,9 +57,9 @@ export default class HotSearchList extends Vue {
     //   this.$bus.$emit("searchResult", searchWord);
     // });
     // this.keywords = searchWord;
-    this.$store.commit("changeSearchKey", searchWord);
-    this.$store.dispatch("addHistorySearchArr", searchWord);
-    this.$router.push(`/searchresult?keywords=${searchWord}`);
+    this.$store.commit('changeSearchKey', searchWord)
+    this.$store.dispatch('addHistorySearchArr', searchWord)
+    this.$router.push(`/searchresult?keywords=${searchWord}`)
   }
 }
 </script>

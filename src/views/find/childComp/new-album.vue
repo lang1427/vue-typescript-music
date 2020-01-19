@@ -7,7 +7,7 @@
     <grid-view :cols="3" :v-margin="8">
       <div v-for="item of newalbumlist" :key="item.id" class="new-album-item">
         <!-- <span class="play-count">{{ item }}</span> -->
-        <img :src="item.picUrl" alt />
+        <img v-lazy="item.picUrl" alt />
         <p class="name">{{ item.name }}</p>
       </div>
     </grid-view>

@@ -10,7 +10,7 @@
           <i class="fa-play"></i>
           {{ item.playCount | finalPlayCount }}
         </span>
-        <img :src="item.picUrl" alt />
+        <img v-lazy="item.picUrl" alt />
         <p class="name">{{ item.name }}</p>
       </div>
     </grid-view>

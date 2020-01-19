@@ -1,16 +1,16 @@
 <template>
   <div>
     <scroll
-      v-if="userList.length!=0"
+      v-if="userList.length != 0"
       class="user-scroll"
       ref="userScroll"
       :pullUpLoad="true"
       @pullingUp="pullingUp"
     >
       <div class="user">
-        <div class="list-items" v-for="(item,index) of userList" :key="index">
+        <div class="list-items" v-for="(item, index) of userList" :key="index">
           <div class="items-img">
-            <img :src="item.avatarUrl" @load="imgLoad" />
+            <img v-lazy="item.avatarUrl" @load="imgLoad" />
           </div>
           <div class="info">
             <div class="name">{{ item.nickname }}</div>
@@ -24,10 +24,10 @@
   </div>
 </template>
 
-<script lang='ts'>
-import scroll from "components/common/scroll/scroll.vue";
-import { loadingMixin } from "@/utils/mixin";
-import { Component, Vue, Prop } from "vue-property-decorator";
+<script lang="ts">
+import scroll from 'components/common/scroll/scroll.vue'
+import { loadingMixin } from '@/utils/mixin'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component({
   components: {
@@ -38,27 +38,27 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class User extends Vue {
   @Prop({
     default() {
-      return [];
+      return []
     }
   })
-  userList!: object[];
+  userList!: object[]
 
   mounted() {
-    (<any>this).$bus.$on("finishPullUp", () => {
-      this.$refs.userScroll && (<any>this.$refs.userScroll).finishPullUp();
-      this.$refs.userScroll && (<any>this.$refs.userScroll).refresh();
-    });
+    ;(<any>this).$bus.$on('finishPullUp', () => {
+      this.$refs.userScroll && (<any>this.$refs.userScroll).finishPullUp()
+      this.$refs.userScroll && (<any>this.$refs.userScroll).refresh()
+    })
   }
   destroyed() {
-    (<any>this).$bus.$off("finishPullUp");
+    ;(<any>this).$bus.$off('finishPullUp')
   }
 
   imgLoad() {
-    this.$refs.userScroll && (this.$refs.userScroll as any).refresh();
+    this.$refs.userScroll && (this.$refs.userScroll as any).refresh()
   }
 
   pullingUp() {
-    this.$emit("pullingUp", 7);
+    this.$emit('pullingUp', 7)
   }
 }
 </script>

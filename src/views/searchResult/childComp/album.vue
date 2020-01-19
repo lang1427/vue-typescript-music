@@ -1,20 +1,22 @@
 <template>
   <div>
     <scroll
-      v-if="albumList.length!=0"
+      v-if="albumList.length != 0"
       class="album-scroll"
       ref="albumScroll"
       :pullUpLoad="true"
       @pullingUp="pullingUp"
     >
       <div class="album">
-        <div class="list-items" v-for="(item,index) of albumList" :key="index">
+        <div class="list-items" v-for="(item, index) of albumList" :key="index">
           <div class="items-img">
-            <img :src="item.blurPicUrl" @load="imgLoad" />
+            <img v-lazy="item.blurPicUrl" @load="imgLoad" />
           </div>
           <div class="info">
             <div class="name">{{ item.name }}</div>
-            <div class="desc">{{ item.artist.name }} {{ item.publishTime | newTime }}</div>
+            <div class="desc">
+              {{ item.artist.name }} {{ item.publishTime | newTime }}
+            </div>
           </div>
         </div>
       </div>
@@ -23,12 +25,12 @@
   </div>
 </template>
 
-<script lang='ts'>
-import scroll from "components/common/scroll/scroll.vue";
+<script lang="ts">
+import scroll from 'components/common/scroll/scroll.vue'
 
-import { formatDate } from "@/utils/formatDate";
-import { loadingMixin } from "@/utils/mixin";
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { formatDate } from '@/utils/formatDate'
+import { loadingMixin } from '@/utils/mixin'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component({
   components: {
@@ -37,35 +39,35 @@ import { Component, Vue, Prop } from "vue-property-decorator";
   mixins: [loadingMixin],
   filters: {
     newTime(date: number): string {
-      let newDate = new Date(date);
-      return formatDate(newDate, "yyyy.M.d");
+      let newDate = new Date(date)
+      return formatDate(newDate, 'yyyy.M.d')
     }
   }
 })
 export default class Album extends Vue {
   @Prop({
     default() {
-      return [];
+      return []
     }
   })
-  albumList!: object[];
+  albumList!: object[]
 
   imgLoad() {
-    this.$refs.albumScroll && (this.$refs.albumScroll as any).refresh();
+    this.$refs.albumScroll && (this.$refs.albumScroll as any).refresh()
   }
 
   mounted() {
-    (<any>this).$bus.$on("finishPullUp", () => {
-      this.$refs.albumScroll && (<any>this.$refs.albumScroll).finishPullUp();
-      this.$refs.albumScroll && (<any>this.$refs.albumScroll).refresh();
-    });
+    ;(<any>this).$bus.$on('finishPullUp', () => {
+      this.$refs.albumScroll && (<any>this.$refs.albumScroll).finishPullUp()
+      this.$refs.albumScroll && (<any>this.$refs.albumScroll).refresh()
+    })
   }
   destroyed() {
-    (<any>this).$bus.$off("finishPullUp");
+    ;(<any>this).$bus.$off('finishPullUp')
   }
 
   pullingUp() {
-    this.$emit("pullingUp", 4);
+    this.$emit('pullingUp', 4)
   }
 }
 </script>

@@ -1,22 +1,28 @@
 <template>
   <div>
     <scroll
-      v-if="songSheetList.length!=0"
+      v-if="songSheetList.length != 0"
       class="song-sheet-scroll"
       ref="songsheetScroll"
       :pullUpLoad="true"
       @pullingUp="pullingUp"
     >
       <div class="song-sheet">
-        <div class="list-items" v-for="(item,index) of songSheetList" :key="index">
+        <div
+          class="list-items"
+          v-for="(item, index) of songSheetList"
+          :key="index"
+        >
           <div class="items-img">
-            <img :src="item.coverImgUrl" @load="imgLoad" />
+            <img v-lazy="item.coverImgUrl" @load="imgLoad" />
           </div>
           <div class="info">
             <div class="name">{{ item.name }}</div>
-            <div
-              class="desc"
-            >{{ item.trackCount }}首 by {{ item.creator.nickname }} 播放{{ item.playCount | finalPlayCount }}次</div>
+            <div class="desc">
+              {{ item.trackCount }}首 by {{ item.creator.nickname }} 播放{{
+                item.playCount | finalPlayCount
+              }}次
+            </div>
           </div>
         </div>
       </div>
@@ -25,10 +31,10 @@
   </div>
 </template>
 
-<script lang='ts'>
-import scroll from "components/common/scroll/scroll.vue";
-import { loadingMixin } from "@/utils/mixin";
-import { Component, Vue, Prop } from "vue-property-decorator";
+<script lang="ts">
+import scroll from 'components/common/scroll/scroll.vue'
+import { loadingMixin } from '@/utils/mixin'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component({
   components: {
@@ -39,28 +45,28 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class SongSheet extends Vue {
   @Prop({
     default() {
-      return [];
+      return []
     }
   })
-  songSheetList!: object[];
+  songSheetList!: object[]
 
   mounted() {
-    (<any>this).$bus.$on("finishPullUp", () => {
+    ;(<any>this).$bus.$on('finishPullUp', () => {
       this.$refs.songsheetScroll &&
-        (<any>this.$refs.songsheetScroll).finishPullUp();
-      this.$refs.songsheetScroll && (<any>this.$refs.songsheetScroll).refresh();
-    });
+        (<any>this.$refs.songsheetScroll).finishPullUp()
+      this.$refs.songsheetScroll && (<any>this.$refs.songsheetScroll).refresh()
+    })
   }
   destroyed() {
-    (<any>this).$bus.$off("finishPullUp");
+    ;(<any>this).$bus.$off('finishPullUp')
   }
 
   imgLoad() {
-    this.$refs.songsheetScroll && (this.$refs.songsheetScroll as any).refresh();
+    this.$refs.songsheetScroll && (this.$refs.songsheetScroll as any).refresh()
   }
 
   pullingUp() {
-    this.$emit("pullingUp", 5);
+    this.$emit('pullingUp', 5)
   }
 }
 </script>

@@ -1,16 +1,20 @@
 <template>
   <div>
     <scroll
-      v-if="singerList.length!=0"
+      v-if="singerList.length != 0"
       class="singer-scroll"
       ref="singerScroll"
       :pullUpLoad="true"
       @pullingUp="pullingUp"
     >
       <div class="singer">
-        <div class="list-items" v-for="(item,index) of singerList" :key="index">
+        <div
+          class="list-items"
+          v-for="(item, index) of singerList"
+          :key="index"
+        >
           <div class="items-img">
-            <img :src="item.img1v1Url" @load="imgLoad" />
+            <img v-lazy="item.img1v1Url" @load="imgLoad" />
           </div>
           <div class="name">{{ item.name }}</div>
           <div class="settled-in">
@@ -23,11 +27,11 @@
   </div>
 </template>
 
-<script lang='ts'>
-import scroll from "components/common/scroll/scroll.vue";
-import { loadingMixin } from "@/utils/mixin";
+<script lang="ts">
+import scroll from 'components/common/scroll/scroll.vue'
+import { loadingMixin } from '@/utils/mixin'
 
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component({
   components: {
@@ -38,27 +42,27 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class Singer extends Vue {
   @Prop({
     default() {
-      return [];
+      return []
     }
   })
-  singerList!: object[];
+  singerList!: object[]
 
   mounted() {
-    (<any>this).$bus.$on("finishPullUp", () => {
-      this.$refs.singerScroll && (<any>this.$refs.singerScroll).finishPullUp();
-      this.$refs.singerScroll && (<any>this.$refs.singerScroll).refresh();
-    });
+    ;(<any>this).$bus.$on('finishPullUp', () => {
+      this.$refs.singerScroll && (<any>this.$refs.singerScroll).finishPullUp()
+      this.$refs.singerScroll && (<any>this.$refs.singerScroll).refresh()
+    })
   }
   destroyed() {
-    (<any>this).$bus.$off("finishPullUp");
+    ;(<any>this).$bus.$off('finishPullUp')
   }
 
   imgLoad() {
-    this.$refs.singerScroll && (this.$refs.singerScroll as any).refresh();
+    this.$refs.singerScroll && (this.$refs.singerScroll as any).refresh()
   }
 
   pullingUp() {
-    this.$emit("pullingUp", 3);
+    this.$emit('pullingUp', 3)
   }
 }
 </script>

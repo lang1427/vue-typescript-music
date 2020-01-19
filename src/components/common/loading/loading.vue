@@ -1,15 +1,14 @@
 <template>
   <div class="loading">
-    <div class="loader">
-      <div class="outer"></div>
-      <div class="middle"></div>
-      <div class="inner"></div>
+    <div>
+      <img src="./loading.gif" />
+      <span class="text">正在努力加载中...</span>
     </div>
   </div>
 </template>
 
-<script lang='ts'>
-import { Component, Vue } from "vue-property-decorator";
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
 
 @Component
 export default class Loading extends Vue {}
@@ -17,52 +16,17 @@ export default class Loading extends Vue {}
 
 <style lang="less" scoped>
 .loading {
-  .loader {
-    position: absolute;
-    top: 50%;
-    left: 50%;
+  margin-top: 35px;
+  text-align: center;
+  img {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
   }
-
-  .outer,
-  .middle,
-  .inner {
-    border: 3px solid transparent;
-    border-top-color: @klColor;
-    border-right-color: @klColor;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-  }
-
-  .outer {
-    width: 3.5em;
-    height: 3.5em;
-    margin-left: -1.75em;
-    margin-top: -1.75em;
-    animation: spin 2s linear infinite;
-  }
-
-  .middle {
-    width: 2.1em;
-    height: 2.1em;
-    margin-left: -1.05em;
-    margin-top: -1.05em;
-    animation: spin 1.75s linear reverse infinite;
-  }
-
-  .inner {
-    width: 0.8em;
-    height: 0.8em;
-    margin-left: -0.4em;
-    margin-top: -0.4em;
-    animation: spin 1.5s linear infinite;
-  }
-
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
+  .text {
+    padding-left: 5px;
+    font-size: 12px;
+    color: #d33a31;
   }
 }
 </style>
