@@ -1,16 +1,16 @@
 <template>
   <div class="album-list">
     <slot name="top"></slot>
-    <div v-for="item of albumList.hotAlbums" :key="item.id">
+    <div v-for="item of albumList" :key="item.id">
       <album-list-items :albumListItems="item" />
     </div>
     <slot name="bottom"></slot>
   </div>
 </template>
 
-<script lang='ts'>
-import albumListItems from "./album-list-items.vue";
-import { Component, Vue, Prop } from "vue-property-decorator";
+<script lang="ts">
+import albumListItems from './album-list-items.vue'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component({
   components: {
@@ -20,10 +20,10 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class AlbumList extends Vue {
   @Prop({
     default() {
-      return [];
+      return []
     }
   })
-  albumList!: object[];
+  albumList!: object[]
 }
 </script>
 

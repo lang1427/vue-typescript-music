@@ -1,7 +1,7 @@
 <template>
   <div class="album-list-items">
     <div class="avatar">
-      <img v-lazy="albumListItems.picUrl" alt />
+      <img v-lazy="albumListItems.blurPicUrl" alt />
     </div>
     <div class="info">
       <p class="name">{{ albumListItems.name }}</p>
@@ -14,6 +14,9 @@
 interface IAlbum {
   publishTime: number
   size: number
+  artist: {
+    name: string
+  }
 }
 import { formatDate } from '@/utils/formatDate'
 import { Component, Vue, Prop } from 'vue-property-decorator'
@@ -29,7 +32,13 @@ export default class AlbumListItems extends Vue {
 
   get desc() {
     let date = new Date(this.albumListItems.publishTime)
-    return `${formatDate(date, 'yyyy-MM-dd')} 歌曲${this.albumListItems.size}`
+    if (window.location.href.match(/\/singer\/detail\//)) {
+      return `${formatDate(date, 'yyyy-MM-dd')}
+      歌曲 ${this.albumListItems.size}`
+    } else {
+      return `${this.albumListItems.artist.name}
+     ${formatDate(date, 'yyyy-MM-dd')}`
+    }
   }
 }
 </script>
@@ -45,6 +54,7 @@ export default class AlbumListItems extends Vue {
     position: relative;
     img {
       display: block;
+      border-radius: 50%;
       width: 100%;
       height: 100%;
     }

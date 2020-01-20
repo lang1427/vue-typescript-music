@@ -16,7 +16,7 @@ export default class Loading extends Vue {}
 
 <style lang="less" scoped>
 .loading {
-  margin-top: 35px;
+  padding-top: 35px;
   text-align: center;
   img {
     width: 20px;

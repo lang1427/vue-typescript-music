@@ -1,17 +1,16 @@
 <template>
   <div class="album">
     <album-list :albumList="albumList">
-      <div v-show="albumList.hasMore" class="hasMore" slot="bottom">{{ message }}</div>
+      <div v-show="isMore" class="hasMore" slot="bottom">
+        {{ message }}
+      </div>
     </album-list>
   </div>
 </template>
 
-<script lang='ts'>
-interface IAlbum {
-  hotAlbums: object[];
-}
-import albumList from "components/content/album-list/album-list.vue";
-import { Component, Vue, Prop } from "vue-property-decorator";
+<script lang="ts">
+import albumList from 'components/content/album-list/album-list.vue'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component({
   components: {
@@ -21,14 +20,20 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class Album extends Vue {
   @Prop({
     default() {
-      return [];
+      return []
     }
   })
-  albumList!: IAlbum;
+  albumList!: object[]
+  @Prop({
+    default() {
+      return false
+    }
+  })
+  isMore!: boolean
 
   get message() {
-    return `很遗憾，仅能浏览以上${this.albumList.hotAlbums &&
-      this.albumList.hotAlbums.length}条数据`;
+    return `很遗憾，仅能浏览以上${this.albumList &&
+      this.albumList.length}条数据`
   }
 }
 </script>

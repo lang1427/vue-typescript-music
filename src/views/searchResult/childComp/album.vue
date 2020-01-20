@@ -8,17 +8,7 @@
       @pullingUp="pullingUp"
     >
       <div class="album">
-        <div class="list-items" v-for="(item, index) of albumList" :key="index">
-          <div class="items-img">
-            <img v-lazy="item.blurPicUrl" @load="imgLoad" />
-          </div>
-          <div class="info">
-            <div class="name">{{ item.name }}</div>
-            <div class="desc">
-              {{ item.artist.name }} {{ item.publishTime | newTime }}
-            </div>
-          </div>
-        </div>
+        <album-list :albumList="albumList" />
       </div>
     </scroll>
     <loading v-else />
@@ -27,6 +17,7 @@
 
 <script lang="ts">
 import scroll from 'components/common/scroll/scroll.vue'
+import albumList from 'components/content/album-list/album-list.vue'
 
 import { formatDate } from '@/utils/formatDate'
 import { loadingMixin } from '@/utils/mixin'
@@ -34,15 +25,10 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component({
   components: {
-    scroll
+    scroll,
+    albumList
   },
-  mixins: [loadingMixin],
-  filters: {
-    newTime(date: number): string {
-      let newDate = new Date(date)
-      return formatDate(newDate, 'yyyy.M.d')
-    }
-  }
+  mixins: [loadingMixin]
 })
 export default class Album extends Vue {
   @Prop({
@@ -51,10 +37,6 @@ export default class Album extends Vue {
     }
   })
   albumList!: object[]
-
-  imgLoad() {
-    this.$refs.albumScroll && (this.$refs.albumScroll as any).refresh()
-  }
 
   mounted() {
     ;(<any>this).$bus.$on('finishPullUp', () => {
@@ -82,31 +64,6 @@ export default class Album extends Vue {
   overflow: hidden;
   .album {
     padding: 10px 10px 0;
-    .list-items {
-      padding: 5px 0;
-      display: flex;
-      align-items: center;
-      .items-img {
-        width: 60px;
-        img {
-          width: 100%;
-          height: 60px;
-          border-radius: 50%;
-          display: block;
-        }
-      }
-      .info {
-        flex: 1;
-        margin-left: 10px;
-        // .name {
-        // }
-        .desc {
-          padding-top: 3px;
-          font-size: 12px;
-          color: #999;
-        }
-      }
-    }
   }
 }
 </style>
