@@ -3,7 +3,11 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
+const my = ()=>import(/*webpackChunkName:'my'*/'views/my/index.vue')
 const find = () => import(/*webpackChunkName:'find'*/ 'views/find/index.vue')
+const cloudVillage = ()=>import(/*webpackChunkName:'cloudVillage'*/'views/cloudVillage/index.vue')
+const video = ()=>import(/*webpackChunkName:'video'*/'views/video/index.vue')
+
 const search = () =>
   import(/*webpackChunkName:'search'*/ 'views/search/index.vue')
 const searchResult = () =>
@@ -21,9 +25,24 @@ const routes = [
     redirect: '/find'
   },
   {
+    path:'/my',
+    name:'my',
+    component:my
+  },
+  {
     path: '/find',
     name: 'find',
     component: find
+  },
+  {
+    path:'/cloudVillage',
+    name:'cloudVillage',
+    component:cloudVillage
+  },
+  {
+    path:'/video',
+    name:'video',
+    component:video
   },
   {
     path: '/search',

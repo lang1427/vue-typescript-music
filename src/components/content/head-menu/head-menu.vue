@@ -35,6 +35,20 @@ export default class HeadMenu extends Vue {
 
   menuClick(index: number) {
     this.currentIndex = index;
+    switch(index){
+      case 0:
+        this.$router.push('/my')
+        break
+      case 1:
+        this.$router.push('/find')
+        break
+      case 2:
+        this.$router.push('/cloudVillage')
+        break
+      case 3:
+        this.$router.push('/video')
+        break
+    }
   }
 
   goSearch() {
