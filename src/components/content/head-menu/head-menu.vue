@@ -2,19 +2,18 @@
   <div class="head-menu">
     <navbar>
       <div slot="left">
-        <span class="fa-list-ul"></span>
+        <span :class="['fa-list-ul',isMyPageColor]"></span>
       </div>
       <div class="center" slot="center">
         <span
-          class="menu-item"
-          :class="{'item-active':index===currentIndex}"
+          :class="['menu-item',{'item-active':index===currentIndex},isMyPageColor]"
           v-for="(item,index) of headTitles"
           @click="menuClick(index)"
           :key="item"
         >{{ item }}</span>
       </div>
       <div slot="right" @click="goSearch">
-        <span class="fa-search"></span>
+        <span :class="['fa-search',isMyPageColor]"></span>
       </div>
     </navbar>
   </div>
@@ -22,7 +21,7 @@
 
 <script lang="ts">
 import navbar from "components/common/navbar/navbar.vue";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 @Component({
   components: {
@@ -54,21 +53,43 @@ export default class HeadMenu extends Vue {
   goSearch() {
     this.$router.push("/search");
   }
+
+  get isMyPageColor(){
+    return this.$route.path === '/my' ? 'isMyPageColor' : ''
+  }
+
+  @Watch('$route.path')
+  changeRouter(newVal:string) {
+    switch(newVal){
+      case '/my':
+        this.currentIndex = 0
+        break;
+      case '/find':
+        this.currentIndex = 1
+        break;
+      case '/cloudVillage':
+        this.currentIndex = 2
+        break;
+      case '/video':
+        this.currentIndex = 3
+        break;
+    }  
+  }
 }
 </script>
 
 <style lang="less" scoped>
 .head-menu {
-  // background-color: @klColor;
   .fa-list-ul,
   .fa-search {
     width: 100%;
-    height: 100%;
+    height: 50px;
     display: inline-block;
     font-size: 20px;
   }
   .center {
     display: flex;
+    height: 50px;
     .menu-item {
       flex: 1;
       text-align: center;
@@ -78,5 +99,9 @@ export default class HeadMenu extends Vue {
       }
     }
   }
+}
+.isMyPageColor{
+  color: rgb(222, 222, 222);
+  background-color: rgb(1, 1, 1);
 }
 </style>

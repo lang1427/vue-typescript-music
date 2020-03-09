@@ -17,7 +17,12 @@ import { Component, Vue } from "vue-property-decorator";
     hMenu
   }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+
+  mounted(){
+    document.body.style.margin = '0px'
+  }
+}
 </script>
 
 <style lang="less">

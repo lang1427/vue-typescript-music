@@ -232,12 +232,13 @@ export default class SearchResult extends Vue {
       page
     )
     if (res.code === 200) {
-      ;(<any>this).$bus.$emit('finishPullUp') // 请求完数据 再finishPullUp
+
       // 解决 对象解构赋值中没有值的问题：
       //  Error in v-on handler (Promise/async): "TypeError: Invalid attempt to spread non-iterable instance"
       if (!res.result.hasOwnProperty(currentResultArr)) {
         return !0
       }
+      ;(<any>this).$bus.$emit('finishPullUp') // 请求完数据 再finishPullUp 
       ;(this.currentSearchResult as any)[currentResultObj].result[
         currentResultArr
       ].push(...(<any>res.result)[currentResultArr])
