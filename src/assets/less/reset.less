@@ -87,7 +87,8 @@ video {
     box-sizing: border-box;
     font-family: "Microsoft YaHei", "微软雅黑";
     color: #333;
-    font-size: 14px;
+    font-size: 14px; 
+    touch-action: none; /*解决新版本谷歌浏览器的Unable to preventDefault inside passive event listener due to target being treated as passive.*/
 }
 
 /* HTML5 display-role reset for older browsers */

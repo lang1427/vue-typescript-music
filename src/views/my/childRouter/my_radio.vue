@@ -1,17 +1,16 @@
 <template>
-  <div class='my_songsheet'>
-  </div>
+  <div class='my-radio'></div>
 </template>
 
 <script lang='ts'>
 import { Component, Vue } from 'vue-property-decorator';
 @Component
-export default class MySongsheet extends Vue{
+export default class MyRadio extends Vue{
   
 created(){}
  
 }
 </script>
 <style scoped lang='less'>
-.my_songsheet{}
+.my-radio{}
 </style>
