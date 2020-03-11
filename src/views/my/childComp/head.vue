@@ -6,7 +6,7 @@
       </div>
       <div class="message">{{ Message }}</div>
       <div class="login-btn">
-        <span>立即登录</span>
+        <span @click="goLogin">立即登录</span>
       </div>
     </div>
     <div class="relevant">
@@ -15,7 +15,7 @@
           class="item"
           v-for="item of relevantContent"
           :key="item.path"
-          @click="$router.push(item.path)"
+          @click="goRelevant(item.path)"
         >
           <div :class="[item.ico,'icon']"></div>
           <div class="title">{{ item.title }}</div>
@@ -37,7 +37,6 @@ export default class Myhead extends Vue {
     { title: "我的收藏", path: "/my/star",ico:'fa-star-o' },
     { title: "关注新歌", path: "/my/watchnewmusic",ico:'fa-eye' }
   ];
-
   get Avatar() {
     return this.isLogin ? "" : require("@/assets/images/login-avatar.jpg");
   }
@@ -45,6 +44,12 @@ export default class Myhead extends Vue {
     return this.isLogin ? "" : "登录立享手机电脑多端同步";
   }
   created() {}
+  goLogin(){
+    this.$router.push('/login')
+  }
+  goRelevant(path:string){
+    this.$router.push(path)
+  }
 }
 </script>
 <style scoped lang='less'>

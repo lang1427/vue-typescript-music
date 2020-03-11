@@ -3,6 +3,7 @@
     <my-head />
     <my-music/>
     <my-songslist />
+    <router-view />
   </div>
 </template>
 

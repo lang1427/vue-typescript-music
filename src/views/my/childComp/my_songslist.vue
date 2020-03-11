@@ -15,7 +15,7 @@
         收藏歌单
         <span class="count">0</span>
       </div>
-      <div class="fa-ellipsis-v more" @click="moreShow=true"></div>
+      <div class="fa-ellipsis-v songs more" @click="moreShow=true"></div>
     </div>
     <div class="tab-content">
       <div class="create-content" v-show="isCreateShow">
@@ -28,18 +28,12 @@
 
     <!-- 更多选项的  底部弹出层 -->
     <morePopup :popupShow="moreShow" @hide="moreShow = false">
-      <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>3</li>
-        <li>4</li>
-        <li>3</li>
-        <li>5</li>
-         <li>4</li>
-        <li>3</li>
-        <li>5</li>
+      <ul class="selector">
+        <li class="title">请选择</li>
+        <li class="item"> <span class="fa-plus-square-o ioc"></span> 创建新歌单</li>
+        <li class="item"> <span class="fa-file-text-o ioc"></span> 歌单管理</li>
+        <li class="item"> <span class="fa-cut ioc"></span> 截图导入歌单</li>
+        <li class="item"> <span class="fa-undo ioc"></span> 恢复歌单</li>
       </ul>
     </morePopup>
   </div>
@@ -64,10 +58,12 @@ export default class MySongslist extends Vue {
 .my_songslist {
   padding: 15px;
   .tab-head {
-    display: flex;
+    
     .songs {
+      display: inline-block;
       position: relative;
       font-weight: 600;
+       width: 80px;
       .count {
         position: absolute;
         left: 57px;
@@ -79,12 +75,13 @@ export default class MySongslist extends Vue {
       opacity: 0.8;
     }
     .create-songs {
-      width: 80px;
+
     }
     .star-songs {
-      flex: 1;
+      
     }
     .more {
+      float: right;
       width: 30px;
       text-align: center;
       color: #999;
@@ -108,6 +105,25 @@ export default class MySongslist extends Vue {
         text-align: center;
         color: #999;
         font-size: 12px;
+      }
+    }
+  }
+  .selector{
+
+    .title{
+      font-size: 12px;
+      color: #999;
+      padding:10px;
+    }
+    .item{
+      padding:0 10px;
+      height: 35px;
+      line-height: 35px;
+      font-size: 13px;
+      color: #666;
+      border-top:1px solid #dedede;
+      .ioc{
+        padding: 0 5px;
       }
     }
   }

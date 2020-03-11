@@ -1,16 +1,16 @@
 <template>
-  <div class='test'></div>
+  <div class='login-email'></div>
 </template>
 
 <script lang='ts'>
 import { Component, Vue } from 'vue-property-decorator';
 @Component
-export default class Test extends Vue{
+export default class LoginEmail extends Vue{
   
 created(){}
  
 }
 </script>
 <style scoped lang='less'>
-.test{}
+.login-email{}
 </style>
