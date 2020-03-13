@@ -9,7 +9,8 @@ const state: IState = {
     : '',
   searchHistory: JSON.parse(
     window.localStorage.getItem('musicHistorySearch') || '[]'
-  )
+  ),
+  loginAccount: window.sessionStorage.getItem('loginAccount') ? window.sessionStorage.getItem('loginAccount') : ''
 }
 import { IState } from './interface'
 import { mutations } from './mutatioins'

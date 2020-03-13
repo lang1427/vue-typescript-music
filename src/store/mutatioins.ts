@@ -15,5 +15,9 @@ export const mutations = {
   removeHistorySearch(state: IState) {
     state.searchHistory = []
     window.localStorage.setItem('musicHistorySearch', JSON.stringify([]))
+  },
+  changeloginAccount(state:IState,newVal:string){
+    state.loginAccount = newVal
+    window.sessionStorage.setItem('loginAccount',state.loginAccount)
   }
 }

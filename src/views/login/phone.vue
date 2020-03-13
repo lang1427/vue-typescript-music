@@ -6,28 +6,48 @@
       </div>
       <div slot="center">手机号登录</div>
     </navbar>
+
     <div class="explain">未注册手机号登录后将自动创建账号</div>
     <div class="phone-box">
-      <span class="ico">+86</span>
-      <input class="phone-input" type="text"   placeholder="请输入手机号" />
+      <span class="ico" :class="isActive ? 'active':''">+86</span>
+      <input class="phone-input" type="tel"  maxlength="11"  v-model.trim="phoneNumber"  placeholder="请输入手机号" 
+          @keyup="isNumber"/>
     </div>
-    <div class="next">下一步</div>
+    <div class="next" @click="next">下一步</div>
   </div>
 </template>
 
 <script lang='ts'>
 import navbar from "components/common/navbar/navbar.vue";
-import { Component, Vue } from "vue-property-decorator";
+import phoneCode from "./login-code.vue" 
+import { Component, Vue, Watch } from "vue-property-decorator";
 @Component({
   components: {
-    navbar
+    navbar,
+    phoneCode
   }
 })
 export default class LoginPhone extends Vue {
-
+  private phoneNumber:string = ''
+  get isActive(){
+    if(this.phoneNumber.length>=1 && this.phoneNumber.match(/^\d/)){
+      return true
+    }
+  }
   created() {}
   back() {
     this.$router.back();
+  }
+  isNumber(){
+   this.phoneNumber =  this.phoneNumber.replace(/[^\d]/g,'')
+  }
+  next(){
+    if(/^1[3|4|5|7|8|9][0-9]\d{4,11}$/.test(this.phoneNumber)){ 
+      this.$store.commit('changeloginAccount',this.phoneNumber)
+      this.$router.push('/login/input-verify-code')
+    }else{
+      window.alert('请输入正确的手机号')
+    }
   }
 }
 </script>
@@ -55,7 +75,6 @@ export default class LoginPhone extends Vue {
     .ico {
       position: absolute;
       left: 10px;
-      color: #555;
       bottom: 10px;
       color: #999;
       &.active{
