@@ -1,5 +1,5 @@
 <template>
-  <div class="login-phone">
+  <div class="phone">
     <navbar>
       <div slot="left" @click="back">
         <span class="fa-arrow-left back"></span>
@@ -19,15 +19,13 @@
 
 <script lang='ts'>
 import navbar from "components/common/navbar/navbar.vue";
-import phoneCode from "./login-code.vue" 
 import { Component, Vue, Watch } from "vue-property-decorator";
 @Component({
   components: {
-    navbar,
-    phoneCode
+    navbar
   }
 })
-export default class LoginPhone extends Vue {
+export default class Phone extends Vue {
   private phoneNumber:string = ''
   get isActive(){
     if(this.phoneNumber.length>=1 && this.phoneNumber.match(/^\d/)){
@@ -44,7 +42,7 @@ export default class LoginPhone extends Vue {
   next(){
     if(/^1[3|4|5|7|8|9][0-9]\d{4,11}$/.test(this.phoneNumber)){ 
       this.$store.commit('changeloginAccount',this.phoneNumber)
-      this.$router.push('/login/input-verify-code')
+      this.$router.push('/login/login-phone')
     }else{
       window.alert('请输入正确的手机号')
     }
@@ -52,7 +50,7 @@ export default class LoginPhone extends Vue {
 }
 </script>
 <style scoped lang='less'>
-.login-phone {
+.phone {
   position: absolute;
   top: 0;
   right: 0;

@@ -10,13 +10,16 @@ const state: IState = {
   searchHistory: JSON.parse(
     window.localStorage.getItem('musicHistorySearch') || '[]'
   ),
-  loginAccount: window.sessionStorage.getItem('loginAccount') ? window.sessionStorage.getItem('loginAccount') : ''
+  loginAccount: window.sessionStorage.getItem('loginAccount') ? window.sessionStorage.getItem('loginAccount') : '',
+  account: (<any>window.localStorage).getItem('account') || {}
 }
 import { IState } from './interface'
 import { mutations } from './mutatioins'
 import { actions } from './actions'
+import { getters } from './getters'
 export default new Vuex.Store({
   state,
   mutations,
-  actions
+  actions,
+  getters
 })

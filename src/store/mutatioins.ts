@@ -19,5 +19,13 @@ export const mutations = {
   changeloginAccount(state:IState,newVal:string){
     state.loginAccount = newVal
     window.sessionStorage.setItem('loginAccount',state.loginAccount)
+  },
+  emailLogin(state:IState,newVal:object){
+    state.account = newVal
+    window.localStorage.setItem('account',JSON.stringify(state.account))
+  },
+  phoneLogin(state:IState,newVal:object){
+    state.account = newVal
+    window.localStorage.setItem('account',JSON.stringify((<any>newVal)))
   }
 }

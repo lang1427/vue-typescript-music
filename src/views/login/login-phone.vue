@@ -1,5 +1,5 @@
 <template>
-  <div class="login-code">
+  <div class="login-phone">
     <navbar>
       <div slot="left" @click="back">
         <span class="fa-arrow-left back"></span>
@@ -9,20 +9,21 @@
     <div class="send-out">
       <div class="info">
         <p>验证码已发送至</p>
-        <p class="num"> <span class="ico">+86</span> 18770971427</p>
+        <p class="num"> <span class="ico">+86</span> {{ $store.getters.encodeLoginAccount }}</p>
       </div>
       <div class="timer">
-        <p class="time" v-if="timer!=60">{{ timer }}</p>
+        <p class="time" v-if="timer!=60">{{ timer }} s</p>
         <p class="regain" v-else @click="Regain">重新获取</p>
       </div>
     </div>
-    <v-code :count='4'/>
+    <v-code :count='4' @inputComplete="getTestVerifyCode"/>
   </div>
 </template>
 
 <script lang='ts'>
 import navbar from "components/common/navbar/navbar.vue";
 import vCode from 'components/content/verify-code/verify-code.vue'
+import {sendVerifyCode,testVerifyCode,testIsRegister} from '@/service/login'
 import { Component, Vue, Watch } from "vue-property-decorator";
 @Component({
   components: {
@@ -30,14 +31,30 @@ import { Component, Vue, Watch } from "vue-property-decorator";
     vCode
   }
 })
-export default class LoginCode extends Vue {
-  private timer:number = 60
+export default class LoginPhone extends Vue {
+  private timer:number = 59
   created() {
     this.startTimer()
+    this.getSendVerifyCode()
   }
   beforeDestory(){
     window.clearInterval((<any>this).flagTimer)
   }
+
+  async getSendVerifyCode(){
+    let res = await sendVerifyCode(this.$store.state.loginAccount)
+    if(res.code===200) console.log('已发送验证码')
+  }
+  async getTestVerifyCode(inputVal:string){
+    let res = await testVerifyCode(this.$store.state.loginAccount,inputVal)
+    if(res.code===200) this.getTestIsRegister()
+    else window.alert(res.message)
+  }
+  async getTestIsRegister(){
+    let res = await testIsRegister(this.$store.state.loginAccount)
+    if(res.code===200) console.log(res)
+  }
+
   back(){
     this.$router.back()
   }
@@ -50,11 +67,14 @@ export default class LoginCode extends Vue {
       }
     },1000)
   }
-  Regain(){}
+  Regain(){
+    this.startTimer()
+    this.getSendVerifyCode()
+  }
 }
 </script>
 <style scoped lang='less'>
-.login-code {
+.login-phone {
   position: absolute;
   top: 0;
   right: 0;
