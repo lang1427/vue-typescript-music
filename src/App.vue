@@ -5,6 +5,9 @@
     <keep-alive include="singer">
       <router-view></router-view>
     </keep-alive>
+    <!-- <div class="">
+      <a href="http://www.beian.miit.gov.cn" target="_blank"> 赣ICP备19003694号-1</a>
+    </div> -->
   </div>
 </template>
 

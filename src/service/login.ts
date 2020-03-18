@@ -1,14 +1,5 @@
 import {service} from './service'
 
-// 登陆状态
-export function loginStatus(){
-    return service({
-        url:'/login/status'
-    })
-}
-
-/** 登录操作相关 */
-
 // 发送验证码
 export function sendVerifyCode(phone:string){
     return service({
@@ -38,7 +29,30 @@ export function testIsRegister(phone:string){
     })
 }
 
-// 邮箱登陆
+// 注册/修改密码
+export function registerAccount(captcha:string,phone:string,password:string,nikename:string){
+    return service({
+        url:'/register/cellphone',
+        params:{
+            captcha,
+            phone,
+            password,
+            nikename
+        }
+    })
+}
+
+// 手机登录
+export function phoneLogin(phone:string,password:string){
+    return service({
+        url:'/login/cellphone',
+        params:{
+            phone,
+            password
+        }
+    })
+}
+// 邮箱登录
 export function emailLogin(email:string,password:string){
     return service({
         url:'/login',
@@ -46,16 +60,5 @@ export function emailLogin(email:string,password:string){
             email,
             password
         }
-    })
-}
-
-
-
-/** 用户相关信心 */
-
-// 获取用户信息 , 歌单，收藏，mv, dj 数量
-export function userInfo(){
-    return service({
-        url:'/user/subcount'
     })
 }

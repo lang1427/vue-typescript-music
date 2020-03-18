@@ -5,6 +5,8 @@ const loginPhone = ()=>import(/*webpackChunkName:'loginPhone'*/'@/views/login/lo
 
 const email = () => import(/*webpackChunkName:'email'*/'@/views/login/email.vue')
 
+const register = ()=>import(/*webpackChunkName:'register'*/'@/views/login/register.vue')
+
 
 export default [
     {
@@ -28,6 +30,11 @@ export default [
                 component: email
             }
         ]
+    },
+    {
+        path:'/register',
+        name:'register',
+        component:register
     }
 
 ]

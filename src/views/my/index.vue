@@ -11,7 +11,8 @@
 import myHead from "./childComp/head.vue";
 import myMusic from "./childComp/my_music.vue";
 import mySongslist from "./childComp/my_songslist.vue";
-import { loginStatus,userInfo } from "@/service/login";
+import {loginStatus, userInfo } from '@/service/user';
+import {UserBaseInfo,IProfile} from '@/service/user'
 import { Component, Vue } from "vue-property-decorator";
 @Component({
   name: "My",
@@ -22,6 +23,11 @@ import { Component, Vue } from "vue-property-decorator";
   }
 })
 export default class My extends Vue {
+  private userBaseInfo:IProfile = {
+    userId:-1,
+    nikename:'',
+    avatar:''
+  }
   created() {
     this.getLoginStatus();
   }
