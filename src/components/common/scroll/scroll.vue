@@ -13,7 +13,7 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 export default class ScrollWrapper extends Vue {
   @Prop({ default: 0 }) probeType!: number; // 0 :不监听滚动的位置 ，1：超过一段时间监听 ， 2：滚动时监听 ， 3：实时监听（滚动结束后的惯性滚动依然监听）
   @Prop({ default: false }) freeScroll!: boolean; //  是否同时支持 X轴和Y轴 的滚动
-  @Prop({ default: false }) pullUpLoad!: boolean | object; // 用于做上拉加载功能
+  @Prop({ default: false }) pullUpLoad!: boolean; // 用于做上拉加载功能
   @Prop({
     default: "vertical",
     validator(value) {
