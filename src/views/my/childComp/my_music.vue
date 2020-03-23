@@ -4,7 +4,7 @@
       <h3 class="title">我的音乐</h3>
       <scroll-bar class="scroll-bar" direction="horizontal">
         <div class="list-items">
-          <div class="item" v-for="item of InfoList" :key="item.title">
+          <div class="item" v-for="item of InfoList" :key="item.title" @click="goMyMusic">
             <div :class="[item.ico,'icon']"></div>
             <div class="title">{{ item.title }}</div>
             <div class="mes">{{ item.mes }}</div>
@@ -33,6 +33,10 @@ export default class MyMusic extends Vue {
   ];
 
   created() {}
+  goMyMusic(){
+    this.$toast('很遗憾，暂未开放此功能')
+    return false
+  }
 }
 </script>
 <style scoped lang='less'>

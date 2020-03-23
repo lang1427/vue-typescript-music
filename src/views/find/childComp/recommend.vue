@@ -1,6 +1,6 @@
 <template>
   <div class="recommend">
-    <div class="recommend-item" v-for="item of recommendList" :key="item.name">
+    <div class="recommend-item" @click="toast" v-for="item of recommendList" :key="item.name">
       <p :class="[item.ico, 'ico']"></p>
       <p class="title">{{ item.name }}</p>
     </div>
@@ -19,6 +19,10 @@ export default class Recommend extends Vue {
     { ico: "fa-volume-up", name: "推荐节目" },
     { ico: "fa-vimeo", name: "推荐MV" }
   ];
+  toast(){
+    this.$toast('很遗憾，暂未开放此功能')
+    return false
+  }
 }
 </script>
 

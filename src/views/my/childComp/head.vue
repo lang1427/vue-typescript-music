@@ -5,7 +5,7 @@
         <img :src="isLogin.Avatar" alt />
       </div>
       <div class="nikename">{{ isLogin.Nikename }}</div>
-      <div class="login-btn">
+      <div class="login-btn" v-if="userBaseinfo.userId===-1">
         <span @click="goLogin">立即登录</span>
       </div>
     </div>
@@ -57,6 +57,8 @@ export default class Myhead extends Vue {
     this.$router.push("/login");
   }
   goRelevant(path: string) {
+    this.$toast('很遗憾，暂未开放此功能')
+    return false
     this.$router.push(path);
   }
 }

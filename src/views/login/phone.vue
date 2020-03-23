@@ -44,7 +44,7 @@ export default class Phone extends Vue {
       this.$store.commit('changeloginAccount',this.phoneNumber)
       this.$router.push('/login/login-phone')
     }else{
-      window.alert('请输入正确的手机号')
+      this.$toast('请输入正确的手机号')
     }
   }
 }

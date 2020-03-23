@@ -29,7 +29,7 @@
         </div>
         <div slot="center">手机号登录</div>
       </navbar>
-      <input class="pawd-input" type="password" v-model.trim="pawd" placeholder="设置登录密码，不少于6位" />
+      <input class="pawd-input" type="password" v-model.trim="pawd" placeholder="输入登录密码，不少于6位" />
       <div class="next" @click="login">登录</div>
     </div>
   </div>
@@ -67,13 +67,13 @@ export default class LoginPhone extends Vue {
 
   async getSendVerifyCode() {
     let res = await sendVerifyCode(this.$store.state.loginAccount);
-    if (res.code === 200) console.log("已发送验证码");
+    if (res.code === 200) this.$toast("已发送验证码");
   }
   async getTestVerifyCode(inputVal: string) {
     this.verifycodeVal = inputVal;
     let res = await testVerifyCode(this.$store.state.loginAccount, inputVal);
     if (res.code === 200) this.getTestIsRegister();
-    else window.alert(res.message);
+    else this.$toast(res.message);
   }
   async getTestIsRegister() {
     let res = await testIsRegister(this.$store.state.loginAccount);
@@ -88,16 +88,15 @@ export default class LoginPhone extends Vue {
   }
   async login() {
     if (this.pawd == "") {
-      window.alert("请输入密码，在进行登录");
+      this.$toast("请输入密码，在进行登录");
       return !1;
     }
     let res = await phoneLogin(this.$store.state.loginAccount, this.pawd);
     if (res.code === 200) {
-      console.log(res);
       this.$store.dispatch('loginMode',res)
       this.$router.push('/my')
     } else {
-      window.alert(res.message || res.msg);
+      this.$toast(res.message || res.msg);
       this.pawd =''
     }
   }

@@ -48,14 +48,14 @@ export default class Register extends Vue {
   }
   next() {
     if(this.pawd == ''){
-      window.alert('请输入密码，在进行下一步操作')
+     this.$toast('请输入密码，在进行下一步操作')
       return false
     }
     this.isShow = true;
   }
   async register(){
     if(this.nickname == ''){
-      window.alert('请输入昵称，在进行注册')
+     this.$toast('请输入昵称，在进行注册')
       return false
     } 
     let res = await registerAccount(this.verifyCode,this.$store.state.loginAccount,this.pawd,this.nickname)

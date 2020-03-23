@@ -19,7 +19,7 @@
     </div>
     <div class="tab-content">
       <div class="create-content" v-show="isCreateShow">
-        <div class="export-songs">+&nbsp;&nbsp; 导入外部歌单</div>
+        <div class="export-songs" @click="toast">+&nbsp;&nbsp; 导入外部歌单</div>
       </div>
       <div class="star-content" v-show="!isCreateShow">
         <div class="no-star">暂无收藏的歌单</div>
@@ -30,10 +30,10 @@
     <morePopup :popupShow="moreShow" @hide="moreShow = false">
       <ul class="selector">
         <li class="title">请选择</li>
-        <li class="item"> <span class="fa-plus-square-o ioc"></span> 创建新歌单</li>
-        <li class="item"> <span class="fa-file-text-o ioc"></span> 歌单管理</li>
-        <li class="item"> <span class="fa-cut ioc"></span> 截图导入歌单</li>
-        <li class="item"> <span class="fa-undo ioc"></span> 恢复歌单</li>
+        <li class="item" @click="toast"> <span class="fa-plus-square-o ioc"></span> 创建新歌单</li>
+        <li class="item" @click="toast"> <span class="fa-file-text-o ioc"></span> 歌单管理</li>
+        <li class="item" @click="toast"> <span class="fa-cut ioc"></span> 截图导入歌单</li>
+        <li class="item" @click="toast"> <span class="fa-undo ioc"></span> 恢复歌单</li>
       </ul>
     </morePopup>
   </div>
@@ -52,6 +52,10 @@ export default class MySongslist extends Vue {
   private moreShow:boolean = false;
 
   created() {}
+  toast(){
+    this.$toast('很遗憾，暂未开放此功能')
+    return false
+  }
 }
 </script>
 <style scoped lang='less'>

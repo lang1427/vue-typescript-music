@@ -3,7 +3,8 @@
     <div class="logo"></div>
     <div class="login-mode">
       <div class="btn" @click="goPhoneLogin">手机号登陆</div>
-      <div class="btn" @click="goEmailLogin">网易邮箱登陆</div>
+      <!-- 网易邮箱登陆，接口有问题，暂定使用！ -->
+      <!-- <div class="btn" @click="goEmailLogin">网易邮箱登陆</div> -->
     </div>
     <div class="agreement">
       <input type="checkbox" v-model="isAgree" />
@@ -23,7 +24,7 @@ export default class Login extends Vue {
   created() {}
   goPhoneLogin() {
     if (this.isAgree == false) {
-      window.alert("勾选协议");
+      this.$toast("勾选协议");
       return !1;
     }
     this.$router.push("/login/phone");

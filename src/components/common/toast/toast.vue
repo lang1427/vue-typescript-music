@@ -14,7 +14,7 @@ export default class Toast extends Vue {
   private visible: boolean = false; // 是否可见
   private closed: boolean = false; // 关闭状态 （默认已关闭）
   private onClose: any = null; // 关闭方法 ----> 实例对象中
-  private offsetTop: number = 20; // 距离顶部的偏移量
+  private offsetTop: number = 60; // 距离顶部的偏移量
   private duration: number = 3000; // 持续时间
   private timer: any = null; // 定时器
 
