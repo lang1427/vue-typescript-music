@@ -2,9 +2,9 @@
   <div class="my-head">
     <div class="login">
       <div class="avatar">
-        <img :src="Avatar" alt />
+        <img :src="isLogin.Avatar" alt />
       </div>
-      <div class="message">{{ Message }}</div>
+      <div class="nikename">{{ isLogin.Nikename }}</div>
       <div class="login-btn">
         <span @click="goLogin">立即登录</span>
       </div>
@@ -26,29 +26,38 @@
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
+import { IProfile } from "@/service/user";
 @Component({})
 export default class Myhead extends Vue {
-  private isLogin: boolean = false;
+  @Prop() userBaseinfo!: IProfile;
   private relevantContent: object[] = [
-    { title: "本地音乐", path: "/my/localmusic",ico:'fa-music' },
-    { title: "下载管理", path: "/my/downloadmanager",ico:'fa-download' },
-    { title: "我的电台", path: "/my/radio",ico:'fa-video-camera' },
-    { title: "我的收藏", path: "/my/star",ico:'fa-star-o' },
-    { title: "关注新歌", path: "/my/watchnewmusic",ico:'fa-eye' }
+    { title: "本地音乐", path: "/my/localmusic", ico: "fa-music" },
+    { title: "下载管理", path: "/my/downloadmanager", ico: "fa-download" },
+    { title: "我的电台", path: "/my/radio", ico: "fa-video-camera" },
+    { title: "我的收藏", path: "/my/star", ico: "fa-star-o" },
+    { title: "关注新歌", path: "/my/watchnewmusic", ico: "fa-eye" }
   ];
-  get Avatar() {
-    return this.isLogin ? "" : require("@/assets/images/login-avatar.jpg");
-  }
-  get Message(): string {
-    return this.isLogin ? "" : "登录立享手机电脑多端同步";
+
+  get isLogin() {
+    if (this.userBaseinfo.userId !== -1) {
+      return {
+        Avatar: this.userBaseinfo.avatarUrl,
+        Nikename: this.userBaseinfo.nickname
+      };
+    } else {
+      return {
+        Avatar: require("@/assets/images/login-avatar.jpg"),
+        Nikename: "登录立享手机电脑多端同步"
+      };
+    }
   }
   created() {}
-  goLogin(){
-    this.$router.push('/login')
+  goLogin() {
+    this.$router.push("/login");
   }
-  goRelevant(path:string){
-    this.$router.push(path)
+  goRelevant(path: string) {
+    this.$router.push(path);
   }
 }
 </script>
@@ -69,7 +78,7 @@ export default class Myhead extends Vue {
         border-radius: 50%;
       }
     }
-    .message {
+    .nikename {
       flex: 1;
       padding-left: 15px;
       font-size: 12px;
@@ -93,14 +102,15 @@ export default class Myhead extends Vue {
       .item {
         flex: 1;
         text-align: center;
-        .icon,.title {
-            color:#dedede;
+        .icon,
+        .title {
+          color: #dedede;
         }
-        .icon{
-            font-size: 25px;
+        .icon {
+          font-size: 25px;
         }
-        .title{
-            font-size: 12px;
+        .title {
+          font-size: 12px;
         }
       }
     }

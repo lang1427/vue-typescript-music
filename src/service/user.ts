@@ -8,18 +8,18 @@ export function loginStatus(){
 }
 export class UserBaseInfo{
     userId!:number
-    nikename!:string
-    avatar!:string
+    nickname!:string
+    avatarUrl!:string
     constructor(profile:IProfile){
         this.userId = profile.userId
-        this.nikename = profile.nikename 
-        this.avatar = profile.avatar
+        this.nickname = profile.nickname 
+        this.avatarUrl = profile.avatarUrl
     }
 }
 export interface IProfile{
     userId:number,
-    nikename:string,
-    avatar:string
+    nickname:string,
+    avatarUrl:string
 }
 
 // 获取用户信息 , 歌单，收藏，mv, dj 数量

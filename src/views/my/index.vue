@@ -1,6 +1,6 @@
 <template>
   <div class="My">
-    <my-head />
+    <my-head :userBaseinfo="userBaseInfo"/>
     <my-music />
     <my-songslist />
     <router-view />
@@ -25,8 +25,8 @@ import { Component, Vue } from "vue-property-decorator";
 export default class My extends Vue {
   private userBaseInfo:IProfile = {
     userId:-1,
-    nikename:'',
-    avatar:''
+    nickname:'',
+    avatarUrl:''
   }
   created() {
     this.getLoginStatus();
@@ -34,8 +34,8 @@ export default class My extends Vue {
   async getLoginStatus() {
     let res = await loginStatus();
     if (res.code === 200) {
-      console.log(res);
-      this.getUserInfo()
+      this.userBaseInfo = new UserBaseInfo(res.profile)
+      console.log(this.userBaseInfo)
     } else console.log(res.msg);
   }
   async getUserInfo(){

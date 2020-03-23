@@ -5,6 +5,10 @@
     <recommend />
     <recmend-songlist :songlist="songList" />
     <new-album :newalbumlist="albums" />
+    <div style="margin-top:30px;padding:20px;text-align:center;background:rgb(55, 61, 65)">
+      <div style="color:#999;font-size:12px">© 2019-2021 kanglang.xyz 版权所有</div>
+      <a  style="padding-top:3px;color:#999;font-size:12px;text-decoration:none;" href="http://www.beian.miit.gov.cn" target="_blank"> 赣ICP备19003694号-1</a>
+    </div>
   </div>
 </template>
 

@@ -16,6 +16,9 @@ Vue.use(LazyLoad, {
   error: require('./assets/images/music-error.svg')
 })
 
+import Toast from './components/common/toast/index.js'
+Vue.use(Toast)
+
 Vue.prototype.$bus = new Vue()
 
 Vue.filter('finalPlayCount', (playCount: number): number | string => {

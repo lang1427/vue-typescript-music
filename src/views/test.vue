@@ -1,25 +1,23 @@
 <template>
-  <div class='test'>
-<ver-code :count=6 mode="letter-number" @inputComplete="go"></ver-code>
+  <div class="test">
+    <button @click="didi">滴滴</button>
   </div>
 </template>
 
 <script lang='ts'>
-import verCode from '@/components/content/verify-code/verify-code.vue'
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from "vue-property-decorator";
 @Component({
-  components:{
-    verCode
+  components: {
+    // toast
   }
 })
-export default class Test extends Vue{
-  
-created(){}
- go(val:string){
-   console.log(val)
- }
+export default class Test extends Vue {
+  didi() {
+    this.$toast("1231231");
+  }
 }
 </script>
 <style scoped lang='less'>
-.test{}
+.test {
+}
 </style>
