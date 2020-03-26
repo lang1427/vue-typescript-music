@@ -1,38 +1,34 @@
 <template>
   <div class="test">
-    <!-- <player/> -->
-  <progress-bar :progress="currentProgress">
+    <player/>
+  <!-- <progress-bar :progress="currentProgress" @changePercent="changePercent" @endPercent="endPercent">
     <div slot="time-current">00:00</div>
     <div slot="time-total">04:30</div>
-  </progress-bar>
+  </progress-bar> -->
   </div>
 </template>
 
 <script lang='ts'>
-// import player from '@/views/player/index.vue'
+import player from '@/views/player/index.vue'
 import progressBar from '@/components/content/progress-bar/progress-bar.vue'
 
 import { Component, Vue } from "vue-property-decorator";
 @Component({
   components: {
-    // player
-    progressBar
+    player
+    // progressBar
   }
 })
 export default class Test extends Vue {
-  index = 0
+  currentProgress = 0
   didi() {
     this.$toast("1231231");
   }
-  get currentProgress(){
-    setTimeout(()=>{
-      this.index += 0.01 
-      if(this.index == 1){
-        clearTimeout()
-      }
-      
-    },1000)
-    return this.index
+  changePercent(newVal:number){
+    this.currentProgress = newVal
+  }
+  endPercent(newVal:number){
+    this.currentProgress = newVal
   }
 }
 </script>
