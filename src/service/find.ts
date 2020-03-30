@@ -45,3 +45,4 @@ export function getNewAlbum() {
     url: '/album/newest'
   })
 }
+

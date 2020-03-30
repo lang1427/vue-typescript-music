@@ -1,7 +1,8 @@
 <template>
-  <div class="full-player">
+  <transition name="fade-full-player">
+    <div class="full-player">
     <top-bar class="topbar">
-      <div slot="left">
+      <div slot="left" @click="back">
         <span class="fa-arrow-left back"></span>
       </div>
       <div slot="center">
@@ -10,13 +11,14 @@
       </div>
     </top-bar>
     <div class="CD-lyrics">
-      <div class="cd"></div>
+      <div class="cd">
+        <img src="~@/assets/images/singer-bg.png" alt="">
+      </div>
       <div class="lyrics"></div>
     </div>
     <div class="other-operation">
       <div class="fa-heart-o like list-items"></div>
       <div class="fa-arrow-circle-o-down download list-items"></div>
-      <div class="alarm list-items"></div>
       <div class="fa-commenting-o comment list-items"></div>
       <div class="fa-ellipsis-v info list-items"></div>
     </div>
@@ -36,6 +38,7 @@
       <div class="fa-outdent songs-list list-items"></div>
     </div>
   </div>
+  </transition>
 </template>
 
 <script lang='ts'>
@@ -51,6 +54,9 @@ import { Component, Vue } from "vue-property-decorator";
 export default class FullPlayer extends Vue {
   private currentProgress: number = 0;
   created() {}
+  back(){
+    this.$emit('toggle',true)
+  }
   changePercent(newVal: number) {
     this.currentProgress = newVal;
   }
@@ -60,6 +66,14 @@ export default class FullPlayer extends Vue {
 }
 </script>
 <style scoped lang='less'>
+.fade-full-player-enter-active,
+.fade-full-player-leave-active{
+  transition: all .3s;
+}
+.fade-full-player-enter,
+.fade-full-player-leave-to{
+  transform: translateY(100%);
+}
 .full-player {
   position: fixed;
   left: 0;
@@ -86,7 +100,22 @@ export default class FullPlayer extends Vue {
       }
     }
   }
-  .CD-lyrics{}
+  .CD-lyrics{
+    position: absolute;
+    top: 60px;
+    bottom: 180px;
+    left: 0;
+    right: 0;
+    .cd{
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+      img{
+        width: 100%;
+        border-radius: 50%;
+      }
+    }
+  }
   .other-operation{
     display: flex;
     align-items: center;
@@ -94,18 +123,12 @@ export default class FullPlayer extends Vue {
     left: 0;
     right: 0;
     width: 100%;
-    height: 32px;
-    bottom: 100px;
+    bottom: 110px;
     .list-items{
       flex: 1;
       color: rgb(233, 233, 233);
       text-align: center;
-      font-size: 25px;
-      &.alarm{
-        width: 100%;
-        height: 100%;
-        background: url('~@/assets/images/alarm.png') center center no-repeat;
-      }
+      font-size: 20px;
     }
   }
   .time{

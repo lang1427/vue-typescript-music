@@ -20,23 +20,26 @@
 </template>
 
 <script lang='ts'>
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 @Component
 export default class ProgressBar extends Vue {
   @Prop({ default: 0 }) progress!: number;
-  private totalProgress: number = -1;
+  private totalProgress: number = 0; // 初始值不能<0，小于0 则需要移动进度条至左外侧才能生效 (bug)
   private percent: number = 0;
   private moveStatus: boolean = false;
 
   created() {}
   mounted() {
+    // 当采用v-show条件渲染时，这里的clientWidth = 0 ，所以需要在update时设置进度条的宽度
+    // this.totalProgress = (<any>this.$refs).progress.clientWidth;
+  }
+  beforeUpdate() {
     this.totalProgress = (<any>this.$refs).progress.clientWidth;
   }
-
   get width() {
     return {
       width:
-        this.totalProgress === -1
+        this.totalProgress === 0
           ? "0px"
           : this.totalProgress * this.progress >= this.totalProgress
           ? this.totalProgress + "px"
@@ -44,7 +47,7 @@ export default class ProgressBar extends Vue {
     };
   }
 
-  progressClick(e: MouseEvent ) {
+  progressClick(e: MouseEvent) {
     let moveLineWidth = e.pageX - (<any>this.$refs).currentTime.offsetWidth;
     this.percent = Math.max(0, moveLineWidth / this.totalProgress);
     this.$emit("endPercent", this.percent);
@@ -60,7 +63,6 @@ export default class ProgressBar extends Vue {
       e.touches[0].pageX - (<any>this.$refs).currentTime.offsetWidth;
     // 进度百分比 = 移动过程中进度条的宽度 / 进度栏
     this.percent = Math.max(0, moveLineWidth / this.totalProgress);
-
     // 向外告知 当前移动过程中的百分比
     this.$emit("changePercent", this.percent);
   }

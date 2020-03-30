@@ -14,6 +14,7 @@ import loginRouters from './login'
 const find = () => import(/*webpackChunkName:'find'*/ 'views/find/index.vue')
 const cloudVillage = () => import(/*webpackChunkName:'cloudVillage'*/'views/cloudVillage/index.vue')
 const video = () => import(/*webpackChunkName:'video'*/'views/video/index.vue')
+const album = ()=>import(/*webpackChunkName:album*/'views/album/index.vue')
 
 const search = () =>
   import(/*webpackChunkName:'search'*/ 'views/search/index.vue')
@@ -79,6 +80,10 @@ const routes = [
         component: singerDetail
       }
     ]
+  },{
+    path:'/album/:id',
+    name:'album',
+    component:album
   },
 
   {

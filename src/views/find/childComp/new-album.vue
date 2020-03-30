@@ -5,7 +5,7 @@
       <span class="fr more">更多新碟</span>
     </div>
     <grid-view :cols="3" :v-margin="8">
-      <div v-for="item of newalbumlist" :key="item.id" class="new-album-item">
+      <div v-for="item of newalbumlist" :key="item.id" class="new-album-item" @click="goAlbumContent(item.id)">
         <!-- <span class="play-count">{{ item }}</span> -->
         <img v-lazy="item.picUrl" alt />
         <p class="name">{{ item.name }}</p>
@@ -30,6 +30,9 @@ export default class NewAlbum extends Vue {
     }
   })
   private newalbumlist!: object[];
+  goAlbumContent(id:number){
+    this.$router.push('/album/'+id)
+  }
 }
 </script>
 

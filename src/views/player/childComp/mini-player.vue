@@ -3,7 +3,7 @@
     <div class="player-img">
       <img src="~@/assets/images/singer-bg.png" alt />
     </div>
-    <div class="singer-info">
+    <div class="singer-info" @click="toggle">
       <p class="name">最美的期待</p>
       <p class="tip">滑动可以切换上下首哦</p>
     </div>
@@ -36,6 +36,9 @@ export default class MiniPlayer extends Vue {
   }
 
   created() {}
+  toggle(){
+    this.$emit('toggle',false)
+  }
 }
 </script>
 <style scoped lang='less'>

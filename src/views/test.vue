@@ -34,6 +34,6 @@ export default class Test extends Vue {
 </script>
 <style scoped lang='less'>
 .test {
-  margin-top: 100px;
+  // margin-top: 100px;
 }
 </style>
