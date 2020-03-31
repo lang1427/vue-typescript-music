@@ -13,12 +13,20 @@ export const actions = {
     }
   },
   // 登录方式
-  loginMode(context:any,newVal:object){
+  loginMode(context: any, newVal: object) {
     let router = window.location.href
-    if(router.match(/\/login\/email/)){
-      context.commit('emailLogin',newVal)
-    }else{
-      context.commit('phoneLogin',newVal)
+    if (router.match(/\/login\/email/)) {
+      context.commit('emailLogin', newVal)
+    } else {
+      context.commit('phoneLogin', newVal)
+    }
+  },
+  // 加入音乐播放列表队列中
+  changePlayList(context: any, newVal: object[]) {
+    if (context.state.playList.length === 0) {
+      context.commit('addPlaylist', newVal)
+    } else {
+      context.commit('changePlaylist', newVal)
     }
   }
 }

@@ -5,7 +5,7 @@ export const mutations = {
     window.sessionStorage.setItem('searchKeyWrold', newVal)
   },
   addHistorySearch(state: IState, newVal: string) {
-    ;(<string[]>state.searchHistory).unshift(newVal)
+    ; (<string[]>state.searchHistory).unshift(newVal)
     // localStorage 存储数组 ： JSON.stringify([])
     window.localStorage.setItem(
       'musicHistorySearch',
@@ -16,16 +16,24 @@ export const mutations = {
     state.searchHistory = []
     window.localStorage.setItem('musicHistorySearch', JSON.stringify([]))
   },
-  changeloginAccount(state:IState,newVal:string){
+  changeloginAccount(state: IState, newVal: string) {
     state.loginAccount = newVal
-    window.sessionStorage.setItem('loginAccount',state.loginAccount)
+    window.sessionStorage.setItem('loginAccount', state.loginAccount)
   },
-  emailLogin(state:IState,newVal:object){
+  emailLogin(state: IState, newVal: object) {
     state.account = newVal
-    window.localStorage.setItem('account',JSON.stringify(state.account))
+    window.localStorage.setItem('account', JSON.stringify(state.account))
   },
-  phoneLogin(state:IState,newVal:object){
+  phoneLogin(state: IState, newVal: object) {
     state.account = newVal
-    window.localStorage.setItem('account',JSON.stringify((<any>newVal)))
+    window.localStorage.setItem('account', JSON.stringify((<any>newVal)))
+  },
+  addPlaylist(state: IState, newVal: object[]) {
+    state.playList = newVal
+    window.localStorage.setItem('playlist', JSON.stringify(newVal))
+  },
+  changePlaylist(state: IState, newVal: object[]) {
+    state.playList = newVal
+    window.localStorage.setItem('playlist', JSON.stringify(newVal))
   }
 }

@@ -1,6 +1,9 @@
-import {IState} from './interface'
-export const getters={
-     encodeLoginAccount(state:IState){
-        return (<string>state.loginAccount).replace((<string>state.loginAccount).substr(3,4),'****')
+import { IState } from './interface'
+export default {
+    encodeLoginAccount(state: IState) {
+        return (<string>state.loginAccount).replace((<string>state.loginAccount).substr(3, 4), '****')
+    },
+    playListLength(state: IState) {
+        return (<object[]>state.playList).length
     }
 }

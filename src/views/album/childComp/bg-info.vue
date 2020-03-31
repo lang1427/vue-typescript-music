@@ -47,8 +47,8 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 })
 export default class BgInfo extends Vue {
   @Prop({
-    default(){
-      return {}
+    default() {
+      return {};
     }
   })
   info!: object;
@@ -63,6 +63,7 @@ export default class BgInfo extends Vue {
 .bg-info {
   padding: 10px;
   background-color: #8a5e5d;
+  padding-bottom: 60px;
   .info {
     display: flex;
     .img {
@@ -108,10 +109,10 @@ export default class BgInfo extends Vue {
     .items {
       flex: 1;
       text-align: center;
-      p{
+      p {
         color: #cebebf;
         font-size: 12px;
-        &.ico{
+        &.ico {
           color: white;
           font-size: 18px;
           padding-bottom: 3px;

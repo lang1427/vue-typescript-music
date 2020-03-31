@@ -11,12 +11,14 @@ const state: IState = {
     window.localStorage.getItem('musicHistorySearch') || '[]'
   ),
   loginAccount: window.sessionStorage.getItem('loginAccount') ? window.sessionStorage.getItem('loginAccount') : '',
-  account: (<any>window.localStorage).getItem('account') || {}
+  account: (<any>window.localStorage).getItem('account') || {},
+  playList: (<any>window.localStorage).getItem('playlist') ? (<any>window.localStorage).getItem('playlist') : [],  // 播放列表中的容器
+  currentPlayIndex: -1 // 当前播放容器的索引值
 }
 import { IState } from './interface'
 import { mutations } from './mutatioins'
 import { actions } from './actions'
-import { getters } from './getters'
+import getters from './getters'
 export default new Vuex.Store({
   state,
   mutations,

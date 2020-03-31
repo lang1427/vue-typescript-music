@@ -8,7 +8,7 @@
       <p class="tip">滑动可以切换上下首哦</p>
     </div>
     <div class="play-or-stop">
-      <progress-circle :size="40" :currentProgress="currentProgress">
+      <progress-circle :size="40" :currentProgress="percent">
         <!-- 中间需要展示的暂停或播放的图标 -->
         <span :class="[isPlay?'fa-stop':'fa-play','ico']"></span>
       </progress-circle>
@@ -21,7 +21,7 @@
 
 <script lang='ts'>
 import progressCircle from "@/components/content/progress-circle/progress-circle.vue";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-property-decorator";
 @Component({
   components: {
     progressCircle
@@ -31,13 +31,11 @@ export default class MiniPlayer extends Vue {
   private isPlay: boolean = false; // 是否播放着
   private isLike: boolean = false; // 是否是喜欢的音乐
 
-  get currentProgress() {
-    return 0.3;
-  }
+  @Prop({ default: 0 }) percent!: number;
 
   created() {}
-  toggle(){
-    this.$emit('toggle',false)
+  toggle() {
+    this.$emit("toggle", false);
   }
 }
 </script>
