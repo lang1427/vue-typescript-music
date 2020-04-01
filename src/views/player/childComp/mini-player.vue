@@ -1,16 +1,16 @@
 <template>
   <div class="mini-player">
     <div class="player-img">
-      <img src="~@/assets/images/singer-bg.png" alt />
+      <img :src="$store.getters.playMusicImg" alt />
     </div>
     <div class="singer-info" @click="toggle">
-      <p class="name">最美的期待</p>
+      <p class="name">{{ $store.getters.playMusicName }}</p>
       <p class="tip">滑动可以切换上下首哦</p>
     </div>
-    <div class="play-or-stop">
+    <div class="play-or-stop" @click="playStatus">
       <progress-circle :size="40" :currentProgress="percent">
         <!-- 中间需要展示的暂停或播放的图标 -->
-        <span :class="[isPlay?'fa-stop':'fa-play','ico']"></span>
+        <span :class="[playStatu?'fa-stop':'fa-play','ico']"></span>
       </progress-circle>
     </div>
     <div class="like">
@@ -28,14 +28,17 @@ import { Component, Vue, Prop } from "vue-property-decorator";
   }
 })
 export default class MiniPlayer extends Vue {
-  private isPlay: boolean = false; // 是否播放着
   private isLike: boolean = false; // 是否是喜欢的音乐
 
   @Prop({ default: 0 }) percent!: number;
+  @Prop({ default: false }) playStatu!: boolean;
 
   created() {}
   toggle() {
     this.$emit("toggle", false);
+  }
+  playStatus() {
+    this.$emit("playStatus", !this.playStatu);
   }
 }
 </script>

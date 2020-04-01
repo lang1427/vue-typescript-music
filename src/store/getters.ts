@@ -5,5 +5,14 @@ export default {
     },
     playListLength(state: IState) {
         return (<object[]>state.playList).length
+    },
+    playMusicID(state: IState) {
+        return (<object[]>state.playList).length != 0 && (<any>state).playList[state.currentPlayIndex].id || -1
+    },
+    playMusicName(state: IState) {
+        return (<object[]>state.playList).length != 0 && (<any>state).playList[state.currentPlayIndex].name || ''
+    },
+    playMusicImg(state: IState) {
+        return (<object[]>state.playList).length != 0 && (<any>state).playList[state.currentPlayIndex].imgURL || ''
     }
 }

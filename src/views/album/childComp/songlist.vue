@@ -45,12 +45,12 @@ export default class SongList extends Vue {
 
   created() {}
   play(id: number, index: number) {
-    (<any>this).$bus.$emit("musicID", id, index);
     let playArr: object[] = [];
     this.songlist.forEach((item: any) => {
       playArr.push(new PlayList(item));
     });
     this.$store.dispatch("changePlayList", playArr);
+    this.$store.commit("changeCurrentPlayIndex", index);
   }
 }
 </script>

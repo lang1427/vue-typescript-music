@@ -35,5 +35,9 @@ export const mutations = {
   changePlaylist(state: IState, newVal: object[]) {
     state.playList = newVal
     window.localStorage.setItem('playlist', JSON.stringify(newVal))
+  },
+  changeCurrentPlayIndex(state: IState, newVal: number) {
+    state.currentPlayIndex = newVal
+    window.localStorage.setItem('playIndex', JSON.stringify(newVal))
   }
 }
