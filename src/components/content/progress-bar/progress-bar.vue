@@ -33,7 +33,7 @@ export default class ProgressBar extends Vue {
     // 当采用v-show条件渲染时，这里的clientWidth = 0 ，所以需要在update时设置进度条的宽度
     // this.totalProgress = (<any>this.$refs).progress.clientWidth;
   }
-  beforeUpdate() {
+  updated() {
     this.totalProgress = (<any>this.$refs).progress.clientWidth;
   }
   get width() {
@@ -49,7 +49,7 @@ export default class ProgressBar extends Vue {
 
   progressClick(e: MouseEvent) {
     let moveLineWidth = e.pageX - (<any>this.$refs).currentTime.offsetWidth;
-    this.percent = Math.max(0, moveLineWidth / this.totalProgress);
+    this.percent = Math.max(0, moveLineWidth / (e as any).toElement.offsetWidth); // e.toElement.offsetWidth 解决 totalProgress获取值不正确的问题
     this.$emit("endPercent", this.percent);
   }
   progressStart(e: TouchEvent) {

@@ -28,5 +28,12 @@ export const actions = {
     } else {
       context.commit('changePlaylist', newVal)
     }
+  },
+  changeCurrentPlayIndex(context:any,newVal:number){
+    if(context.state.currentPlayIndex === -1){
+      context.commit('firstChangePlayIndex',newVal)
+    }else{
+      context.commit('changePlayIndex',newVal)
+    }
   }
 }

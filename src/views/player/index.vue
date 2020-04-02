@@ -1,10 +1,20 @@
 <template>
   <div class="player" v-if="$store.getters.playListLength!=0">
-    <full-player v-show="!isMiniShow" @toggle="toggle" :percent="Peraent" :playStatu="isPlay"></full-player>
-    <mini-player
+    <full-player
+      v-show="!isMiniShow"
       :percent="Peraent"
       :playStatu="isPlay"
+      :currentTime="currentTime"
+      :totalTime="duration"
+      @toggle="toggle"
+      @playStatus="playStatus"
+      @changePercent="changePercent"
+      @endPercent="endPercent"
+    ></full-player>
+    <mini-player
       v-show="isMiniShow"
+      :percent="Peraent"
+      :playStatu="isPlay"
       @toggle="toggle"
       @playStatus="playStatus"
     ></mini-player>
@@ -34,11 +44,12 @@ export default class Player extends Vue {
   private duration: number = 0; // 总时长
   private currentTime: number = 0; // 当前播放的时间
   private isPlay: boolean = false;
+  private isMove: boolean = false;
 
-  // 进度
   get Peraent() {
     return this.duration === 0 ? 0 : this.currentTime / this.duration;
   }
+
   created() {}
   mounted() {
     this.getIsCanMusic(() => {
@@ -91,7 +102,23 @@ export default class Player extends Vue {
     this.isMiniShow = newVal;
   }
   timeupdate(e: any) {
-    this.currentTime = e.target.currentTime;
+    if (!this.isMove) {
+      this.currentTime = e.target.currentTime;
+    }
+  }
+  changePercent(newVal: number) {
+    this.isMove = true;
+    this.currentTime = newVal * this.duration;
+  }
+  endPercent(newVal: number) {
+    this.currentTime = newVal * this.duration; // 因为点击事件 是没有滑动过程的，所以这行代码仅仅是为了直接在进度条中点击的操作
+    (<any>this.$refs.audio).currentTime = this.currentTime;
+    if ((<any>this.$refs.audio).paused) {
+      this.stop();
+    } else {
+      this.play();
+    }
+    this.isMove = false;
   }
   playStatus(val: boolean) {
     this.isPlay = val;
@@ -107,9 +134,9 @@ export default class Player extends Vue {
       case 0:
         let index = this.$store.state.currentPlayIndex;
         if (index >= this.$store.getters.playListLength - 1) {
-          this.$store.commit("changeCurrentPlayIndex", 0);
+          this.$store.dispatch("changeCurrentPlayIndex", 0);
         } else {
-          this.$store.commit("changeCurrentPlayIndex", index + 1);
+          this.$store.dispatch("changeCurrentPlayIndex", index + 1);
         }
         break;
       case 1:
@@ -119,7 +146,7 @@ export default class Player extends Vue {
         let random = Math.floor(
           Math.random() * this.$store.getters.playListLength
         );
-        this.$store.commit("changeCurrentPlayIndex", random);
+        this.$store.dispatch("changeCurrentPlayIndex", random);
         break;
     }
   }

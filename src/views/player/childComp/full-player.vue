@@ -27,13 +27,16 @@
         @changePercent="changePercent"
         @endPercent="endPercent"
       >
-        <div class="time" slot="time-current">00:00</div>
-        <div class="time" slot="time-total">04:30</div>
+        <div class="time" slot="time-current">{{ formatTime(currentTime) }}</div>
+        <div class="time" slot="time-total">{{ formatTime(totalTime) }}</div>
       </progress-bar>
       <div class="play-operation">
         <div class="fa-random play-mode list-items"></div>
         <div class="fa-step-backward prev list-items"></div>
-        <div :class="[playStatu?'fa-stop-circle-o':'fa-play-circle-o','status list-items']"></div>
+        <div
+          @click="playStatus"
+          :class="[playStatu?'fa-stop-circle-o':'fa-play-circle-o','status list-items']"
+        ></div>
         <div class="fa-step-forward next list-items"></div>
         <div class="fa-outdent songs-list list-items"></div>
       </div>
@@ -54,15 +57,35 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class FullPlayer extends Vue {
   @Prop({ default: 0 }) percent!: number;
   @Prop({ default: false }) playStatu!: boolean;
+  @Prop({default:0}) totalTime!:number
+  @Prop({default:0}) currentTime!:number
   created() {}
   back() {
     this.$emit("toggle", true);
   }
+  // 向外告知 进度被拖动，用于进度颜色的改变
   changePercent(newVal: number) {
-    this.percent = newVal;
+    this.$emit('changePercent',newVal)
   }
+  // 向外告知 进度拖动结束 需要设置好当前的播放时间
   endPercent(newVal: number) {
-    this.percent = newVal;
+    this.$emit('endPercent',newVal)
+  }
+  playStatus() {
+    this.$emit("playStatus", !this.playStatu);
+  }
+  formatTime(time: number) {
+    let h = Math.max(0, Math.floor(time / 3600));
+    let m = Math.floor((time % 3600) / 60);
+    let s = Math.max(0, Math.floor(time % 60));
+    if (h === 0) {
+      return `${m.toString().padStart(2, "0")}:${s
+        .toString()
+        .padStart(2, "0")}`;
+    }
+    return `${h.toString().padStart(2, "0")}:${m
+      .toString()
+      .padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   }
 }
 </script>
