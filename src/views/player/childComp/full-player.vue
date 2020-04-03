@@ -31,13 +31,13 @@
         <div class="time" slot="time-total">{{ formatTime(totalTime) }}</div>
       </progress-bar>
       <div class="play-operation">
-        <div class="fa-random play-mode list-items"></div>
-        <div class="fa-step-backward prev list-items"></div>
+        <div @click="changeMode" :class="modeICON" class="play-mode list-items"></div>
+        <div @click="prev" class="fa-step-backward prev list-items"></div>
         <div
           @click="playStatus"
           :class="[playStatu?'fa-stop-circle-o':'fa-play-circle-o','status list-items']"
         ></div>
-        <div class="fa-step-forward next list-items"></div>
+        <div @click="next" class="fa-step-forward next list-items"></div>
         <div class="fa-outdent songs-list list-items"></div>
       </div>
     </div>
@@ -47,6 +47,7 @@
 <script lang='ts'>
 import topBar from "@/components/common/navbar/navbar.vue";
 import progressBar from "@/components/content/progress-bar/progress-bar.vue";
+import { EPlayMode } from "@/store/interface";
 import { Component, Vue, Prop } from "vue-property-decorator";
 @Component({
   components: {
@@ -57,19 +58,55 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class FullPlayer extends Vue {
   @Prop({ default: 0 }) percent!: number;
   @Prop({ default: false }) playStatu!: boolean;
-  @Prop({default:0}) totalTime!:number
-  @Prop({default:0}) currentTime!:number
+  @Prop({ default: 0 }) totalTime!: number;
+  @Prop({ default: 0 }) currentTime!: number;
+
+  get modeICON() {
+    let mode = "listloop";
+    switch (this.$store.state.playMode) {
+      case 0:
+        mode = "listloop";
+        break;
+      case 1:
+        mode = "singleloop";
+        break;
+      case 2:
+        mode = "random";
+        break;
+    }
+    return mode;
+  }
+
   created() {}
   back() {
     this.$emit("toggle", true);
   }
+  next() {
+    this.$emit("next");
+  }
+  prev() {
+    this.$emit("prev");
+  }
+  changeMode() {
+    switch (this.$store.state.playMode) {
+      case 0:
+        this.$store.commit("changePlayMode", EPlayMode.singleLoop);
+        break;
+      case 1:
+        this.$store.commit("changePlayMode", EPlayMode.random);
+        break;
+      case 2:
+        this.$store.commit("changePlayMode", EPlayMode.listLoop);
+        break;
+    }
+  }
   // 向外告知 进度被拖动，用于进度颜色的改变
   changePercent(newVal: number) {
-    this.$emit('changePercent',newVal)
+    this.$emit("changePercent", newVal);
   }
   // 向外告知 进度拖动结束 需要设置好当前的播放时间
   endPercent(newVal: number) {
-    this.$emit('endPercent',newVal)
+    this.$emit("endPercent", newVal);
   }
   playStatus() {
     this.$emit("playStatus", !this.playStatu);
@@ -161,6 +198,20 @@ export default class FullPlayer extends Vue {
       color: rgb(233, 233, 233);
       text-align: center;
       font-size: 25px;
+      &.play-mode {
+        background-repeat: no-repeat;
+        background-size: 50%;
+        background-position: center center;
+      }
+      &.listloop {
+        background-image: url(../image/listloop.png);
+      }
+      &.singleloop {
+        background-image: url(../image/singleloop.png);
+      }
+      &.random {
+        background-image: url(../image/random.png);
+      }
     }
   }
 }

@@ -1,4 +1,4 @@
-import { IState } from './interface'
+import { IState, EPlayMode } from './interface'
 export const mutations = {
   changeSearchKey(state: IState, newVal: string) {
     state.searchKeyWrold = newVal
@@ -43,5 +43,9 @@ export const mutations = {
   changePlayIndex(state: IState, newVal: number) {
     state.currentPlayIndex = newVal
     window.localStorage.setItem('playIndex', JSON.stringify(newVal))
+  },
+  changePlayMode(state: IState, newVal: EPlayMode) {
+    state.playMode = newVal
+    window.localStorage.setItem('mode', JSON.stringify(newVal))
   }
 }
