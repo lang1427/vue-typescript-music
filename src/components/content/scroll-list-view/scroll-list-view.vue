@@ -219,7 +219,7 @@ export default class scrollListView extends Vue {
   .list-shortcut {
     position: absolute;
     right: 0;
-    top: 50px;
+    top: 30px;
     .shortcut-items {
       font-size: 12px;
       color: #666;

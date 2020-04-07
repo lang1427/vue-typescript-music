@@ -6,13 +6,14 @@ export default {
     playListLength(state: IState) {
         return (<object[]>state.playList).length
     },
+    // state.currentPlayIndex = -1 bug?  state获取localstorage时需要使用三目运算符而是逻辑或 
     playMusicID(state: IState) {
-        return (<object[]>state.playList).length != 0 && (<any>state).playList[state.currentPlayIndex].id || -1
+        return (<object[]>state.playList).length != 0 ? (<any>state).playList[state.currentPlayIndex].id : -1
     },
     playMusicName(state: IState) {
-        return (<object[]>state.playList).length != 0 && (<any>state).playList[state.currentPlayIndex].name || ''
+        return (<object[]>state.playList).length != 0 ? (<any>state).playList[state.currentPlayIndex].name : ''
     },
     playMusicImg(state: IState) {
-        return (<object[]>state.playList).length != 0 && (<any>state).playList[state.currentPlayIndex].imgURL || ''
+        return (<object[]>state.playList).length != 0 ? (<any>state).playList[state.currentPlayIndex].imgURL : ''
     }
 }

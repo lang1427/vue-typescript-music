@@ -160,9 +160,11 @@ export default class FullPlayer extends Vue {
     .cd {
       width: 100%;
       height: 100%;
-      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       img {
-        width: 100%;
+        height: 270px;
         border-radius: 50%;
       }
     }

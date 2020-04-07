@@ -23,6 +23,7 @@
 import progressCircle from "@/components/content/progress-circle/progress-circle.vue";
 import { Component, Vue, Prop } from "vue-property-decorator";
 @Component({
+  name:'miniPlayer',
   components: {
     progressCircle
   }
@@ -47,15 +48,16 @@ export default class MiniPlayer extends Vue {
   position: fixed;
   left: 0;
   bottom: 0;
+  z-index: 1010;
   width: 100%;
-  height: 60px;
+  height: 50px;
   display: flex;
   align-items: center;
   border-top: 1px solid #dedede;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(255, 255, 255, 0.95);
   .player-img {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     padding: 8px;
     img {
       width: 100%;

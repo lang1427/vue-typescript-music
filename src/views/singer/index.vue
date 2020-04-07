@@ -51,6 +51,11 @@ export default class Singer extends Vue {
       ;(<any>this.$refs.singerListView).$refs.scrollListview.refresh()
     })
   }
+  updated(){
+    if(this.$store.getters.playListLength!=0){
+      (<any>this.$refs.singerListView).$el.children[0].style.bottom = '50px'
+    }
+  }
   destroyed() {
     ;(<any>this).$bus.$off('leaveSingerDetail')
   }

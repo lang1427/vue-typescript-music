@@ -92,9 +92,13 @@ export default class Player extends Vue {
       });
     }
   }
-
-  @Watch("$store.state.currentPlayIndex")
-  changeCurrentPlayIndex() {
+  // 这里要是监听当前播放的index的话，要是从别的播放列表中点击当前对应的index，则不会watch到变化 就不会去请求新的歌曲的url
+  // @Watch("$store.state.currentPlayIndex")
+  // changeCurrentPlayIndex() {
+  //   this.getIsCanMusic();
+  // }
+  @Watch("$store.getters.playMusicID")
+  changePlauMusicID() {
     this.getIsCanMusic();
   }
   @Watch("url")

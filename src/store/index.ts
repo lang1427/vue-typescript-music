@@ -13,7 +13,8 @@ const state: IState = {
   loginAccount: window.sessionStorage.getItem('loginAccount') ? window.sessionStorage.getItem('loginAccount') : '',
   account: (<any>window.localStorage).getItem('account') || {},
   playList: JSON.parse((<any>window.localStorage).getItem('playlist') || '[]'),  // 播放列表中的容器
-  currentPlayIndex: parseInt((<any>window.localStorage).getItem('playIndex')) || -1, // 当前播放容器的索引值
+  currentPlayIndex: (<any>window.localStorage).getItem('playIndex') ? parseInt((<any>window.localStorage).getItem('playIndex')) : -1,
+  // currentPlayIndex: parseInt((<any>window.localStorage).getItem('playIndex')) || -1, // 当前播放容器的索引值
   playMode: parseInt((<any>window.localStorage).getItem('mode')) || EPlayMode.listLoop
 }
 import { IState, EPlayMode } from './interface'
