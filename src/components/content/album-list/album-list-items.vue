@@ -1,5 +1,5 @@
 <template>
-  <div class="album-list-items">
+  <div class="album-list-items" @click="goAlbum(albumListItems.id)">
     <div class="avatar">
       <img v-lazy="albumListItems.blurPicUrl" alt />
     </div>
@@ -39,6 +39,10 @@ export default class AlbumListItems extends Vue {
       return `${this.albumListItems.artist.name}
      ${formatDate(date, 'yyyy-MM-dd')}`
     }
+  }
+
+  goAlbum(id:number){
+    this.$router.push('/album/'+id)
   }
 }
 </script>

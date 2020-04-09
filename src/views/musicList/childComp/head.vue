@@ -4,7 +4,7 @@
       <span class="fa-arrow-left back"></span>
     </div>
     <div slot="center">
-      <h2 class="title">专辑</h2>
+      <h2 class="title">{{ topTitle }}</h2>
     </div>
   </topbar>
 </template>
@@ -21,6 +21,13 @@ export default class AlbumHead extends Vue {
   created() {}
   back() {
     this.$router.back();
+  }
+  get topTitle() {
+    if (this.$route.path.match(/\/album\//)) {
+      return "专辑";
+    } else if (this.$route.path.match(/\/songsheet\//)) {
+      return "歌单";
+    }
   }
 }
 </script>

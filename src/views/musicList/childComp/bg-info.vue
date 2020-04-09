@@ -8,7 +8,10 @@
         <h3 class="title">{{ info.title }}</h3>
         <div class="singer">{{ singerInfo }}</div>
         <div class="detail-info">
-          <div class="publish-time">发行时间 : {{ info.publishTime | newTime }}</div>
+          <div
+            class="publish-time"
+            :style="info.publishTime?'':'visibility: hidden;'"
+          >发行时间 : {{ info.publishTime | newTime }}</div>
           <div class="desc">{{ info.description }}</div>
         </div>
       </div>
@@ -54,7 +57,11 @@ export default class BgInfo extends Vue {
   info!: object;
 
   get singerInfo() {
-    return `歌手 : ${(<any>this.info).singerName} >`;
+    if (this.$route.path.match(/\/album\//)) {
+      return `歌手 : ${(<any>this.info).singerName} >`;
+    } else if (this.$route.path.match(/\/songsheet\//)) {
+      return `${ (<any>this.info).tags && (<any>this.info).tags.join('-')}`;
+    }
   }
   created() {}
 }
@@ -66,6 +73,7 @@ export default class BgInfo extends Vue {
   padding-bottom: 60px;
   .info {
     display: flex;
+    align-items: center;
     .img {
       width: 100px;
       height: 100px;
@@ -84,11 +92,9 @@ export default class BgInfo extends Vue {
       }
       .singer {
         color: #eae1e2;
-        padding-top: 10px;
         font-size: 12px;
       }
       .detail-info {
-        padding-top: 20px;
         .publish-time,
         .desc {
           color: #cebebf;

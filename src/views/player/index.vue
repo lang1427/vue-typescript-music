@@ -28,6 +28,7 @@
       @canplaythrough="loadComplete"
       @timeupdate="timeupdate"
       @ended="playEnd"
+      @error="error"
     ></audio>
     <kl-message message="加载中，请稍后..." :isShow="isLoading" />
   </div>
@@ -53,7 +54,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 })
 export default class Player extends Vue {
   private isMiniShow: boolean = true; // 默认播放时 显示 迷你播放器
-  private url: string = "";
+  private url: string | null = null;
   private duration: number = 0; // 总时长
   private currentTime: number = 0; // 当前播放的时间
   private isPlay: boolean = false;
@@ -68,23 +69,37 @@ export default class Player extends Vue {
   mounted() {
     this.getIsCanMusic(() => {
       this.stop();
-      this.isPlay = false;
     });
   }
 
   async getIsCanMusic(callback?: Function) {
     if (this.$store.getters.playMusicID === -1) return false;
-    let res = await isCanMusic(this.$store.getters.playMusicID);
-    if (res.success) {
-      this.getMusicURL(callback);
-    } else {
-      this.$toast(res.message);
+    try {
+      let res = await isCanMusic(this.$store.getters.playMusicID);
+      if (res.success) {
+        this.getMusicURL(callback);
+      } else {
+        this.$toast(res.message);
+        this.isLoading = false;
+        this.stop();
+        this.url = null;
+      }
+    } catch (e) {
+      this.$toast("很遗憾，没有找到此歌曲");
+      this.isLoading = false;
+      this.url = null;
+      this.stop();
     }
   }
   async getMusicURL(callback?: Function) {
     let res = await musicUrl(this.$store.getters.playMusicID);
     if (res.code === 200) {
       this.isPlay = true;
+      if (res.data[0].url == null) {
+        this.$toast("很遗憾，没有找到此歌曲");
+        this.stop();
+        this.isLoading = false;
+      }
       this.url = res.data[0].url;
       this.$nextTick(() => {
         // 确保刷新后不会自动播放
@@ -107,10 +122,20 @@ export default class Player extends Vue {
   }
 
   play() {
+    if (
+      (this.$refs.audio as HTMLAudioElement).src == "" ||
+      window.location.origin + "/null" ==
+        (this.$refs.audio as HTMLAudioElement).src
+    ) {
+      this.isPlay = false
+      this.$toast('"很遗憾，没有找到此歌曲"')
+      return false;
+    }
     (<HTMLAudioElement>this.$refs.audio).play();
   }
   stop() {
     (<HTMLAudioElement>this.$refs.audio).pause();
+    this.isPlay = false;
   }
   singleloop() {
     (<HTMLAudioElement>this.$refs.audio).currentTime = 0;
@@ -203,6 +228,12 @@ export default class Player extends Vue {
       this.singleloop();
     } else {
       this.next();
+    }
+  }
+  error() {
+    if (this.url != null) {
+      this.$toast("加载失败");
+      this.isLoading = false;
     }
   }
   /*  当时想法错误操作

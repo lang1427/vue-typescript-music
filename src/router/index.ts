@@ -5,16 +5,16 @@ Vue.use(VueRouter)
 
 // 解决 vue-router 新版本 重复点击路由 浏览器 Console 输出的异常 
 const originalPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push(location:string) {
-  return (<any>originalPush).call(this, location).catch((err:string) => err)
+VueRouter.prototype.push = function push(location: string) {
+  return (<any>originalPush).call(this, location).catch((err: string) => err)
 }
 
 import myRoutes from './my'
 import loginRouters from './login'
+import musicListRouters from './musiclist'
 const find = () => import(/*webpackChunkName:'find'*/ 'views/find/index.vue')
 const cloudVillage = () => import(/*webpackChunkName:'cloudVillage'*/'views/cloudVillage/index.vue')
 const video = () => import(/*webpackChunkName:'video'*/'views/video/index.vue')
-const album = ()=>import(/*webpackChunkName:album*/'views/album/index.vue')
 
 const search = () =>
   import(/*webpackChunkName:'search'*/ 'views/search/index.vue')
@@ -30,6 +30,7 @@ const test = () => import('views/test.vue')
 const routes = [
   ...myRoutes,
   ...loginRouters,
+  ...musicListRouters,
   {
     path: '/',
     redirect: '/find'
@@ -80,10 +81,6 @@ const routes = [
         component: singerDetail
       }
     ]
-  },{
-    path:'/album/:id',
-    name:'album',
-    component:album
   },
 
   {

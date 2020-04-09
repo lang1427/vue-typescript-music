@@ -10,7 +10,7 @@
         v-for="(item,index) of songlist"
         :key="item.id"
         class="list-item"
-        @click="play(item.id,index)"
+        @click="play(index)"
       >
         <div class="index">{{ index+1 }}</div>
         <div class="name">
@@ -28,9 +28,11 @@
 </template>
 
 <script lang='ts'>
-import { PlayList } from "@/conf/playlist";
+import { playMixin } from '@/utils/mixin'
 import { Component, Vue, Prop } from "vue-property-decorator";
-@Component
+@Component({
+  mixins:[playMixin]
+})
 export default class SongList extends Vue {
   @Prop({
     default() {
@@ -44,14 +46,6 @@ export default class SongList extends Vue {
   }
 
   created() {}
-  play(id: number, index: number) {
-    this.$store.dispatch("changeCurrentPlayIndex", index);
-    let playArr: object[] = [];
-    this.songlist.forEach((item: any) => {
-      playArr.push(new PlayList(item));
-    });
-    this.$store.dispatch("changePlayList", playArr);
-  }
 }
 </script>
 <style scoped lang='less'>

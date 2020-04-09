@@ -26,7 +26,7 @@ export const actions = {
     if (context.state.playList.length === 0) {
       context.commit('addPlaylist', newVal)
     } else {
-      if(context.state.playList.toString() == newVal.toString()) return false  // 与当前列表一致的话则不做commit
+      // if(context.state.playList.toString() == newVal.toString()) return false  // 与当前列表一致的话则不做commit
       context.commit('changePlaylist', newVal)
     }
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="singer-detail-home">
-    <single-list v-if="singleList.length != 0" :singleList="singleList">
+    <single-list v-if="singleList.length != 0" :songlist="singleList">
       <h3 slot="top" class="title">
         <span class="fa-play-circle-o"></span>播放热门50
       </h3>

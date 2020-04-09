@@ -5,7 +5,12 @@
       <span class="fr more">歌单广场</span>
     </div>
     <grid-view :cols="3" :v-margin="8">
-      <div v-for="item of songlist" :key="item.id" class="song-list-item">
+      <div
+        v-for="item of songlist"
+        :key="item.id"
+        class="song-list-item"
+        @click="goSongSheet(item.id)"
+      >
         <span class="play-count">
           <i class="fa-play"></i>
           {{ item.playCount | finalPlayCount }}
@@ -33,6 +38,9 @@ export default class RecmendSonglist extends Vue {
     }
   })
   private songlist!: object[];
+  goSongSheet(id: number) {
+    this.$router.push("/songsheet/" + id);
+  }
 }
 </script>
 
