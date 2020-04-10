@@ -17,7 +17,12 @@
           </div>
         </div>
         <div class="body">
-          <div class="list-items" v-for="(item,index) of singleList" :key="index">
+          <div
+            class="list-items"
+            v-for="(item,index) of singleList"
+            :key="index"
+            @click="playSingle(item)"
+          >
             <p class="name">{{ item.name }}</p>
             <p class="desc">{{ item.artists[0].name }} - {{ item.album.name }}</p>
           </div>
@@ -30,14 +35,14 @@
 
 <script lang='ts'>
 import scroll from "components/common/scroll/scroll.vue";
-import { loadingMixin } from "@/utils/mixin";
+import { loadingMixin, singlePlayMixin } from "@/utils/mixin";
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
   components: {
     scroll
   },
-  mixins: [loadingMixin]
+  mixins: [loadingMixin, singlePlayMixin]
 })
 export default class Single extends Vue {
   @Prop({

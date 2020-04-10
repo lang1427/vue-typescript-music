@@ -1,7 +1,11 @@
 const path = require('path')
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const LodashWebpackPlugin = require('lodash-webpack-plugin')
 module.exports = {
 
     publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+
+    productionSourceMap: false,
 
     chainWebpack: confirm => {
         const types = ['vue-modules', 'vue', 'normal-module', 'normal']
@@ -18,6 +22,10 @@ module.exports = {
     },
 
     configureWebpack: {
+        plugins: [
+            // new BundleAnalyzerPlugin()
+            new LodashWebpackPlugin() // 通过 webpack-bundle-analyzer和babel-plugin-lodash 对 lodash 进行按需引入
+        ],
         resolve: {
             alias: {
                 'components': '@/components',

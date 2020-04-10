@@ -3,11 +3,16 @@ interface IPlaylist {
     name: string
     imgURL: string
 }
-interface ISongs {
+export interface ISongs {
     id: number
     name: string
     al: {
         picUrl: string
+    }
+    album:{
+        artist:{
+            img1v1Url:string
+        }
     }
 }
 // 播放列表容器的类
@@ -18,6 +23,6 @@ export class PlayList implements IPlaylist {
     constructor(songs: ISongs) {
         this.id = songs.id
         this.name = songs.name
-        this.imgURL = songs.al.picUrl
+        this.imgURL = songs.al && songs.al.picUrl || songs.album.artist.img1v1Url
     }
 }

@@ -12,6 +12,7 @@
           class="list-items"
           v-for="(item, index) of songSheetList"
           :key="index"
+          @click="goSongsheet(item.id)"
         >
           <div class="items-img">
             <img v-lazy="item.coverImgUrl" @load="imgLoad" />
@@ -20,7 +21,7 @@
             <div class="name">{{ item.name }}</div>
             <div class="desc">
               {{ item.trackCount }}首 by {{ item.creator.nickname }} 播放{{
-                item.playCount | finalPlayCount
+              item.playCount | finalPlayCount
               }}次
             </div>
           </div>
@@ -32,9 +33,9 @@
 </template>
 
 <script lang="ts">
-import scroll from 'components/common/scroll/scroll.vue'
-import { loadingMixin } from '@/utils/mixin'
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import scroll from "components/common/scroll/scroll.vue";
+import { loadingMixin } from "@/utils/mixin";
+import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
   components: {
@@ -45,28 +46,31 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 export default class SongSheet extends Vue {
   @Prop({
     default() {
-      return []
+      return [];
     }
   })
-  songSheetList!: object[]
+  songSheetList!: object[];
 
   mounted() {
-    ;(<any>this).$bus.$on('finishPullUp', () => {
+    (<any>this).$bus.$on("finishPullUp", () => {
       this.$refs.songsheetScroll &&
-        (<any>this.$refs.songsheetScroll).finishPullUp()
-      this.$refs.songsheetScroll && (<any>this.$refs.songsheetScroll).refresh()
-    })
+        (<any>this.$refs.songsheetScroll).finishPullUp();
+      this.$refs.songsheetScroll && (<any>this.$refs.songsheetScroll).refresh();
+    });
   }
   destroyed() {
-    ;(<any>this).$bus.$off('finishPullUp')
+    (<any>this).$bus.$off("finishPullUp");
   }
 
+  goSongsheet(id: number) {
+    this.$router.push("/songsheet/" + id);
+  }
   imgLoad() {
-    this.$refs.songsheetScroll && (this.$refs.songsheetScroll as any).refresh()
+    this.$refs.songsheetScroll && (this.$refs.songsheetScroll as any).refresh();
   }
 
   pullingUp() {
-    this.$emit('pullingUp', 5)
+    this.$emit("pullingUp", 5);
   }
 }
 </script>

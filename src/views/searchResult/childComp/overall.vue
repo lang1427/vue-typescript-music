@@ -17,20 +17,15 @@
               class="list-items"
               v-for="item of overallList.song.songs"
               :key="item.id"
+              @click="playSingle(item)"
             >
               <div class="info">
                 <p class="single-name">{{ item.name }}</p>
-                <p class="info-name">
-                  {{ item.ar[0].name }}-{{ item.al.name }}
-                </p>
+                <p class="info-name">{{ item.ar[0].name }}-{{ item.al.name }}</p>
               </div>
             </div>
           </div>
-          <div
-            class="bottom"
-            v-if="overallList.song.more"
-            @click="goMarryView(1)"
-          >
+          <div class="bottom" v-if="overallList.song.more" @click="goMarryView(1)">
             {{ overallList.song.moreText }}
             <i class="fa-angle-right"></i>
           </div>
@@ -40,11 +35,7 @@
             <h3 class="title">视频</h3>
           </div>
           <div class="body">
-            <div
-              class="list-items"
-              v-for="item of overallList.video.videos"
-              :key="item.vid"
-            >
+            <div class="list-items" v-for="item of overallList.video.videos" :key="item.vid">
               <div class="items-img">
                 <img v-lazy="item.coverUrl" @load="imgLoad" />
               </div>
@@ -57,11 +48,7 @@
               </div>
             </div>
           </div>
-          <div
-            class="bottom"
-            v-if="overallList.video.more"
-            @click="goMarryView(2)"
-          >
+          <div class="bottom" v-if="overallList.video.more" @click="goMarryView(2)">
             {{ overallList.video.moreText }}
             <i class="fa-angle-right"></i>
           </div>
@@ -75,6 +62,7 @@
               class="list-items"
               v-for="item of overallList.artist.artists"
               :key="item.id"
+              @click="goSingerDetail(item.id)"
             >
               <div class="items-img">
                 <img v-lazy="item.picUrl" @load="imgLoad" />
@@ -85,11 +73,7 @@
               </div>
             </div>
           </div>
-          <div
-            class="bottom"
-            v-if="overallList.artist.more"
-            @click="goMarryView(3)"
-          >
+          <div class="bottom" v-if="overallList.artist.more" @click="goMarryView(3)">
             {{ overallList.artist.moreText }}
             <i class="fa-angle-right"></i>
           </div>
@@ -103,23 +87,18 @@
               class="list-items"
               v-for="item of overallList.album.albums"
               :key="item.id"
+              @click="goAlbum(item.id)"
             >
               <div class="items-img">
                 <img v-lazy="item.picUrl" @load="imgLoad" />
               </div>
               <div class="info">
                 <p>{{ item.name }}</p>
-                <p class="desc">
-                  {{ item.artist.name }} {{ item.publishTime | ymd }}
-                </p>
+                <p class="desc">{{ item.artist.name }} {{ item.publishTime | ymd }}</p>
               </div>
             </div>
           </div>
-          <div
-            class="bottom"
-            v-if="overallList.album.more"
-            @click="goMarryView(4)"
-          >
+          <div class="bottom" v-if="overallList.album.more" @click="goMarryView(4)">
             {{ overallList.album.moreText }}
             <i class="fa-angle-right"></i>
           </div>
@@ -133,6 +112,7 @@
               class="list-items"
               v-for="item of overallList.playList.playLists"
               :key="item.id"
+              @click="goSongsheet(item.id)"
             >
               <div class="items-img">
                 <img v-lazy="item.coverImgUrl" @load="imgLoad" />
@@ -141,17 +121,13 @@
                 <p>{{ item.name }}</p>
                 <p class="desc">
                   {{ item.trackCount }}首 by {{ item.creator.nickname }} 播放{{
-                    item.playCount | finalPlayCount
+                  item.playCount | finalPlayCount
                   }}次
                 </p>
               </div>
             </div>
           </div>
-          <div
-            class="bottom"
-            v-if="overallList.playList.more"
-            @click="goMarryView(5)"
-          >
+          <div class="bottom" v-if="overallList.playList.more" @click="goMarryView(5)">
             {{ overallList.playList.moreText }}
             <i class="fa-angle-right"></i>
           </div>
@@ -161,11 +137,7 @@
             <h3 class="title">电台</h3>
           </div>
           <div class="body">
-            <div
-              class="list-items"
-              v-for="item of overallList.djRadio.djRadios"
-              :key="item.id"
-            >
+            <div class="list-items" v-for="item of overallList.djRadio.djRadios" :key="item.id">
               <div class="items-img">
                 <img v-lazy="item.picUrl" @load="imgLoad" />
               </div>
@@ -175,11 +147,7 @@
               </div>
             </div>
           </div>
-          <div
-            class="bottom"
-            v-if="overallList.djRadio.more"
-            @click="goMarryView(6)"
-          >
+          <div class="bottom" v-if="overallList.djRadio.more" @click="goMarryView(6)">
             {{ overallList.djRadio.moreText }}
             <i class="fa-angle-right"></i>
           </div>
@@ -189,11 +157,7 @@
             <h3 class="title">用户</h3>
           </div>
           <div class="body">
-            <div
-              class="list-items"
-              v-for="item of overallList.user.users"
-              :key="item.id"
-            >
+            <div class="list-items" v-for="item of overallList.user.users" :key="item.id">
               <div class="items-img">
                 <img v-lazy="item.avatarUrl" @load="imgLoad" />
               </div>
@@ -204,11 +168,7 @@
               <div class="follow">+关注</div>
             </div>
           </div>
-          <div
-            class="bottom"
-            v-if="overallList.user.more"
-            @click="goMarryView(7)"
-          >
+          <div class="bottom" v-if="overallList.user.more" @click="goMarryView(7)">
             {{ overallList.user.moreText }}
             <i class="fa-angle-right"></i>
           </div>
@@ -220,43 +180,52 @@
 </template>
 
 <script lang="ts">
-import scroll from 'components/common/scroll/scroll.vue'
-import { formatDate } from '@/utils/formatDate'
-import { debounce } from '@/utils/debounce.js'
-import { loadingMixin } from '@/utils/mixin'
-
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import scroll from "components/common/scroll/scroll.vue";
+import { formatDate } from "@/utils/formatDate";
+import { debounce } from "@/utils/debounce.js";
+import { loadingMixin, singlePlayMixin } from "@/utils/mixin";
+import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
   components: {
     scroll
   },
-  mixins: [loadingMixin],
+  mixins: [loadingMixin, singlePlayMixin],
   filters: {
     newTime(durationms: number) {
-      let data = new Date(durationms)
-      return formatDate(data, 'mm:ss')
+      let data = new Date(durationms);
+      return formatDate(data, "mm:ss");
     },
     ymd(date: Date) {
-      let newDate = new Date(date)
-      return formatDate(newDate, 'yyyy.M.d')
+      let newDate = new Date(date);
+      return formatDate(newDate, "yyyy.M.d");
     }
   }
 })
 export default class OverAll extends Vue {
   @Prop({
     default() {
-      return {}
+      return {};
     }
   })
-  overallList!: object
+  overallList!: object;
   imgLoad() {
     // 解决 refresh() of  undefined 的问题
-    this.$refs.overallScroll && (this.$refs.overallScroll as any).refresh()
+    this.$refs.overallScroll && (this.$refs.overallScroll as any).refresh();
+  }
+
+  goSingerDetail(id: number) {
+    this.$router.push("/singer/detail/" + id);
+  }
+  goAlbum(id: number) {
+    this.$router.push("/album/" + id);
+  }
+  goSongsheet(id: number) {
+    this.$router.push("/songsheet/" + id);
   }
 
   goMarryView(index: number) {
-    ;(<any>this).$bus.$emit('goMarryView', index)
+    (<any>this).$bus.$emit("goMarryView", index);
   }
 }
 </script>

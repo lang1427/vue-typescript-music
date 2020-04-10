@@ -36,6 +36,12 @@ export const mutations = {
     state.playList = newVal
     window.localStorage.setItem('playlist', JSON.stringify(newVal))
   },
+  // 单曲添加
+  addSingle(state: IState, newVal: object) {
+    (state.playList as object[]).unshift(newVal);
+    window.localStorage.setItem('playlist', JSON.stringify(state.playList));
+    (this as any).dispatch('changeCurrentPlayIndex', 0)
+  },
   firstChangePlayIndex(state: IState, newVal: number) {
     state.currentPlayIndex = newVal
     window.localStorage.setItem('playIndex', JSON.stringify(newVal))

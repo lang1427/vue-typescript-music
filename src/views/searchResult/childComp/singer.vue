@@ -12,6 +12,7 @@
           class="list-items"
           v-for="(item, index) of singerList"
           :key="index"
+          @click="goSingerDetail(item.id)"
         >
           <div class="items-img">
             <img v-lazy="item.img1v1Url" @load="imgLoad" />
@@ -28,10 +29,10 @@
 </template>
 
 <script lang="ts">
-import scroll from 'components/common/scroll/scroll.vue'
-import { loadingMixin } from '@/utils/mixin'
+import scroll from "components/common/scroll/scroll.vue";
+import { loadingMixin } from "@/utils/mixin";
 
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
   components: {
@@ -42,27 +43,31 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 export default class Singer extends Vue {
   @Prop({
     default() {
-      return []
+      return [];
     }
   })
-  singerList!: object[]
+  singerList!: object[];
 
   mounted() {
-    ;(<any>this).$bus.$on('finishPullUp', () => {
-      this.$refs.singerScroll && (<any>this.$refs.singerScroll).finishPullUp()
-      this.$refs.singerScroll && (<any>this.$refs.singerScroll).refresh()
-    })
+    (<any>this).$bus.$on("finishPullUp", () => {
+      this.$refs.singerScroll && (<any>this.$refs.singerScroll).finishPullUp();
+      this.$refs.singerScroll && (<any>this.$refs.singerScroll).refresh();
+    });
   }
   destroyed() {
-    ;(<any>this).$bus.$off('finishPullUp')
+    (<any>this).$bus.$off("finishPullUp");
+  }
+
+  goSingerDetail(id: number) {
+    this.$router.push("/singer/detail/" + id);
   }
 
   imgLoad() {
-    this.$refs.singerScroll && (this.$refs.singerScroll as any).refresh()
+    this.$refs.singerScroll && (this.$refs.singerScroll as any).refresh();
   }
 
   pullingUp() {
-    this.$emit('pullingUp', 3)
+    this.$emit("pullingUp", 3);
   }
 }
 </script>

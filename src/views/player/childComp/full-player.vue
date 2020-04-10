@@ -40,7 +40,7 @@
         <div @click="next" class="fa-step-forward next list-items"></div>
         <div class="fa-outdent songs-list list-items"></div>
       </div>
-      <kl-message :message="modeName[this.$store.state.playMode]" :isShow="isShow"/>
+      <kl-message :message="modeName[this.$store.state.playMode]" :isShow="isShow" />
     </div>
   </transition>
 </template>
@@ -48,7 +48,7 @@
 <script lang='ts'>
 import topBar from "@/components/common/navbar/navbar.vue";
 import progressBar from "@/components/content/progress-bar/progress-bar.vue";
-import klMessage from '@/components/common/message/message.vue'
+import klMessage from "@/components/common/message/message.vue";
 import { EPlayMode } from "@/store/interface";
 import { Component, Vue, Prop } from "vue-property-decorator";
 @Component({
@@ -64,8 +64,8 @@ export default class FullPlayer extends Vue {
   @Prop({ default: 0 }) totalTime!: number;
   @Prop({ default: 0 }) currentTime!: number;
 
-  private modeName:string[] = ["列表循环","单曲循环","随机模式"]
-  private isShow:boolean = false
+  private modeName: string[] = ["列表循环", "单曲循环", "随机模式"];
+  private isShow: boolean = false;
 
   get modeICON() {
     let mode = "listloop";
@@ -105,11 +105,11 @@ export default class FullPlayer extends Vue {
         this.$store.commit("changePlayMode", EPlayMode.listLoop);
         break;
     }
-    this.isShow = true
-    let timer = window.setTimeout(()=>{
-      this.isShow = false
-      window.clearTimeout(timer)
-    },1000)
+    this.isShow = true;
+    let timer = window.setTimeout(() => {
+      this.isShow = false;
+      window.clearTimeout(timer);
+    }, 1000);
   }
   // 向外告知 进度被拖动，用于进度颜色的改变
   changePercent(newVal: number) {
@@ -155,7 +155,7 @@ export default class FullPlayer extends Vue {
   width: 100%;
   height: 100%;
   background-color: rgb(6, 6, 6);
-  z-index: 6666;
+  z-index: 1111;
   .topbar {
     .back {
       font-size: 20px;

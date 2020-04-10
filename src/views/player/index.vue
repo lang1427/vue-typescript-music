@@ -85,7 +85,7 @@ export default class Player extends Vue {
         this.url = null;
       }
     } catch (e) {
-      this.$toast("很遗憾，没有找到此歌曲");
+      this.$toast("亲爱的,暂无版权");
       this.isLoading = false;
       this.url = null;
       this.stop();
@@ -96,7 +96,7 @@ export default class Player extends Vue {
     if (res.code === 200) {
       this.isPlay = true;
       if (res.data[0].url == null) {
-        this.$toast("很遗憾，没有找到此歌曲");
+        this.$toast("亲爱的,暂无版权");
         this.stop();
         this.isLoading = false;
       }
@@ -127,8 +127,8 @@ export default class Player extends Vue {
       window.location.origin + "/null" ==
         (this.$refs.audio as HTMLAudioElement).src
     ) {
-      this.isPlay = false
-      this.$toast('"很遗憾，没有找到此歌曲"')
+      this.isPlay = false;
+      this.$toast('"亲爱的,暂无版权"');
       return false;
     }
     (<HTMLAudioElement>this.$refs.audio).play();
@@ -262,7 +262,3 @@ export default class Player extends Vue {
   */
 }
 </script>
-<style scoped lang='less'>
-.player {
-}
-</style>

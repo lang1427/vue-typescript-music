@@ -1,3 +1,5 @@
+import lodash from 'lodash'
+
 export const actions = {
   // 添加历史搜索记录
   addHistorySearchArr(context: any, newVal: string) {
@@ -26,15 +28,15 @@ export const actions = {
     if (context.state.playList.length === 0) {
       context.commit('addPlaylist', newVal)
     } else {
-      // if(context.state.playList.toString() == newVal.toString()) return false  // 与当前列表一致的话则不做commit
+      if (lodash.isEqual(context.state.playList, newVal)) return false  // 与当前列表一致的话则不做commit
       context.commit('changePlaylist', newVal)
     }
   },
-  changeCurrentPlayIndex(context:any,newVal:number){
-    if(context.state.currentPlayIndex === -1){
-      context.commit('firstChangePlayIndex',newVal)
-    }else{
-      context.commit('changePlayIndex',newVal)
+  changeCurrentPlayIndex(context: any, newVal: number) {
+    if (context.state.currentPlayIndex === -1) {
+      context.commit('firstChangePlayIndex', newVal)
+    } else {
+      context.commit('changePlayIndex', newVal)
     }
   }
 }

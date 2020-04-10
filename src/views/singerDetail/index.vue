@@ -1,10 +1,5 @@
 <template>
-  <scroll
-    class="singer-detail-scroll"
-    ref="singerDetailScroll"
-    :probeType="3"
-    @scroll="scroll"
-  >
+  <scroll class="singer-detail-scroll" ref="singerDetailScroll" :probeType="3" @scroll="scroll">
     <div class="singer-detail">
       <detail-head ref="detailHead" :singerHeadInfo="singerHeadInfo" />
       <detail-tab-bar
@@ -49,26 +44,27 @@
 
 <script lang="ts">
 interface IPosition {
-  y: number
+  y: number;
 }
-import { Component, Vue } from 'vue-property-decorator'
-import scroll from 'components/common/scroll/scroll.vue'
+import { Component, Vue } from "vue-property-decorator";
+import scroll from "components/common/scroll/scroll.vue";
 
-import topbar from 'components/common/navbar/navbar.vue'
-import detailHead from './childComp/head.vue'
-import detailTabBar from 'components/content/tab-bar/tab-bar.vue'
-import detailHome from './childComp/home.vue'
-import detailAlbum from './childComp/album.vue'
-import detailMv from './childComp/mv.vue'
+import topbar from "components/common/navbar/navbar.vue";
+import detailHead from "./childComp/head.vue";
+import detailTabBar from "components/content/tab-bar/tab-bar.vue";
+import detailHome from "./childComp/home.vue";
+import detailAlbum from "./childComp/album.vue";
+import detailMv from "./childComp/mv.vue";
 
 import {
   getSingerDetail,
   ISingerHeadInfo,
   getSingerAlbum,
   getSingerMv
-} from '@/service/singer'
+} from "@/service/singer";
 
 @Component({
+  name: "singerDetail",
   components: {
     scroll,
     topbar,
@@ -80,97 +76,110 @@ import {
   }
 })
 export default class SingerDetail extends Vue {
-  private singerHeadInfo: ISingerHeadInfo = {}
-  private tabbarContentIndex: number = 0 // 用于控制显示tabbar 主页、专辑、Mv 的内容
-  private hotSongs: object[] = []
-  private hotAlbumsData: object[] = []
-  private hotAlbumsMore: boolean = false
-  private mvsData: object[] = []
-  private scrollY: number = 0
-  private isShowName: boolean = true
-  private isShowTabbar: boolean = true
-  private activeHeight: number = -1 // 计算到 用于显示顶部导航栏中的名字 的高度
-  private opacity: number = 1 // 用于设置detailHead组件中的文字的透明度
+  private singerHeadInfo: ISingerHeadInfo = {};
+  private tabbarContentIndex: number = 0; // 用于控制显示tabbar 主页、专辑、Mv 的内容
+  private hotSongs: object[] = [];
+  private hotAlbumsData: object[] = [];
+  private hotAlbumsMore: boolean = false;
+  private mvsData: object[] = [];
+  private scrollY: number = 0;
+  private isShowName: boolean = true;
+  private isShowTabbar: boolean = true;
+  private activeHeight: number = -1; // 计算到 用于显示顶部导航栏中的名字 的高度
+  private opacity: number = 1; // 用于设置detailHead组件中的文字的透明度
 
   get id() {
-    return parseInt(this.$route.params.id)
+    return parseInt(this.$route.params.id);
   }
   get tabbarList() {
     return [
-      { title: '主页' },
-      { title: '专辑', size: this.singerHeadInfo.albumSize },
-      { title: 'MV', size: this.singerHeadInfo.mvSize }
-    ]
+      { title: "主页" },
+      { title: "专辑", size: this.singerHeadInfo.albumSize },
+      { title: "MV", size: this.singerHeadInfo.mvSize }
+    ];
   }
 
   created() {
-    this.getSingerDateilData(this.id)
-    this.getSingerAlbumData(this.id)
-    this.getSingerMvData(this.id)
+    this.getSingerDateilData(this.id);
+    this.getSingerAlbumData(this.id);
+    this.getSingerMvData(this.id);
   }
   mounted() {
     this.activeHeight =
       (<any>this.$refs.detailHead).$el.offsetHeight -
-      (<any>this.$refs.detailTopbar).$el.offsetHeight
+      (<any>this.$refs.detailTopbar).$el.offsetHeight;
     // 子路由所带来的问题：在singerDetail组件中singer组件需要被隐藏
-    ;(<HTMLElement>document.getElementById('singer-list-view')).classList.add(
-      'none'
-    )
+    (<HTMLElement>document.getElementById("singer-list-view")).classList.add(
+      "none"
+    );
+  }
+  // 歌手组件被缓存下来了，当从搜索结果中的歌手点击过来时，需要在activated组件被激活时去请求对应的数据
+  activated() {
+    this.getSingerDateilData(this.id);
+    this.getSingerAlbumData(this.id);
+    this.getSingerMvData(this.id);
+  }
+  deactivated() {
+    this.singerHeadInfo = {};
+    this.hotSongs = [];
+    this.hotAlbumsData = [];
+    this.hotAlbumsMore = false;
+    this.mvsData = [];
   }
   beforeDestroy() {
-    ;(<any>this).$bus.$emit('leaveSingerDetail')
+    (<any>this).$bus.$emit("leaveSingerDetail");
   }
 
   async getSingerDateilData(id: number) {
-    let res = await getSingerDetail(id)
+    let res = await getSingerDetail(id);
     if (res.code === 200) {
-      this.singerHeadInfo = res.artist
-      this.hotSongs = res.hotSongs
+      this.singerHeadInfo = res.artist;
+      this.hotSongs = res.hotSongs;
     }
   }
   async getSingerAlbumData(id: number, page?: number) {
-    let res = await getSingerAlbum(id, page)
+    let res = await getSingerAlbum(id, page);
     if (res.code === 200) {
-      this.hotAlbumsData = res.hotAlbums
-      this.hotAlbumsMore = res.more
+      this.hotAlbumsData = res.hotAlbums;
+      this.hotAlbumsMore = res.more;
     }
   }
   async getSingerMvData(id: number) {
-    let res = await getSingerMv(id)
+    let res = await getSingerMv(id);
     if (res.code === 200) {
-      this.mvsData = res
+      this.mvsData = res;
     }
   }
 
   back() {
-    this.$router.go(-1)
+    this.$router.go(-1);
   }
   scroll(position: IPosition) {
-    this.scrollY = -position.y
+    this.scrollY = -position.y;
 
     // 禁止下拉
     if (this.scrollY <= 0) {
-      ;(<any>this.$refs.singerDetailScroll).scrollTo(0, 0, 0)
+      (<any>this.$refs.singerDetailScroll).scrollTo(0, 0, 0);
     }
     // 显示 TopBar 中的 名字,并同步 Tabbar
     if (this.scrollY >= this.activeHeight) {
-      this.isShowName = false
-      this.isShowTabbar = false
-      ;(<any>this.$refs.detailTopbar).$el.style.background = `rgb(0,0,0)`
+      this.isShowName = false;
+      this.isShowTabbar = false;
+      (<any>this.$refs.detailTopbar).$el.style.background = `rgb(0,0,0)`;
     } else {
-      this.isShowName = true
-      this.isShowTabbar = true
-      ;(<any>this.$refs.detailTopbar).$el.style.background = `rgba(0,0,0,0)`
+      this.isShowName = true;
+      this.isShowTabbar = true;
+      (<any>this.$refs.detailTopbar).$el.style.background = `rgba(0,0,0,0)`;
       //设置detailHead组件中的文字缓慢透明
-      this.opacity = 1 - this.scrollY / this.activeHeight
-      ;(<any>this.$refs.detailHead).$el.lastChild.style.opacity = this.opacity
+      this.opacity = 1 - this.scrollY / this.activeHeight;
+      (<any>this.$refs.detailHead).$el.lastChild.style.opacity = this.opacity;
     }
   }
   // 使 tabbar 同步
   changeTabbar(index: number) {
-    ;(<any>this.$refs.detailTabbar).currentIndex = (<any>(
+    (<any>this.$refs.detailTabbar).currentIndex = (<any>(
       this.$refs.detailTabbar2
-    )).currentIndex = this.tabbarContentIndex = index
+    )).currentIndex = this.tabbarContentIndex = index;
   }
 }
 </script>
