@@ -29,7 +29,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
   }
 })
 export default class HeadMenu extends Vue {
-  private headTitles: string[] = ["我的", "发现", "云村", "视频"];
+  private headTitles: string[] = ["我的", "嘤乐馆", "视频"];
   private currentIndex: number = 1;
 
   menuClick(index: number) {
@@ -42,9 +42,6 @@ export default class HeadMenu extends Vue {
         this.$router.push('/find')
         break
       case 2:
-        this.$router.push('/cloudVillage')
-        break
-      case 3:
         this.$router.push('/video')
         break
     }
@@ -67,11 +64,8 @@ export default class HeadMenu extends Vue {
       case '/find':
         this.currentIndex = 1
         break;
-      case '/cloudVillage':
-        this.currentIndex = 2
-        break;
       case '/video':
-        this.currentIndex = 3
+        this.currentIndex = 2
         break;
     }  
   }

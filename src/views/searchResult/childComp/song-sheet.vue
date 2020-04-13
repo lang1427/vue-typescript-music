@@ -1,34 +1,35 @@
 <template>
   <div>
     <scroll
-      v-if="songSheetList.length != 0"
       class="song-sheet-scroll"
       ref="songsheetScroll"
       :pullUpLoad="true"
       @pullingUp="pullingUp"
     >
-      <div class="song-sheet">
-        <div
-          class="list-items"
-          v-for="(item, index) of songSheetList"
-          :key="index"
-          @click="goSongsheet(item.id)"
-        >
-          <div class="items-img">
-            <img v-lazy="item.coverImgUrl" @load="imgLoad" />
-          </div>
-          <div class="info">
-            <div class="name">{{ item.name }}</div>
-            <div class="desc">
-              {{ item.trackCount }}首 by {{ item.creator.nickname }} 播放{{
-              item.playCount | finalPlayCount
-              }}次
+      <div>
+        <div class="song-sheet" v-if="songSheetList.length != 0">
+          <div
+            class="list-items"
+            v-for="(item, index) of songSheetList"
+            :key="index"
+            @click="goSongsheet(item.id)"
+          >
+            <div class="items-img">
+              <img v-lazy="item.coverImgUrl" @load="imgLoad" />
+            </div>
+            <div class="info">
+              <div class="name">{{ item.name }}</div>
+              <div class="desc">
+                {{ item.trackCount }}首 by {{ item.creator.nickname }} 播放{{
+                item.playCount | finalPlayCount
+                }}次
+              </div>
             </div>
           </div>
         </div>
+        <loading v-show="$store.state.loadingShow" />
       </div>
     </scroll>
-    <loading v-else />
   </div>
 </template>
 

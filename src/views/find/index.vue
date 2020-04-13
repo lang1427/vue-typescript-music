@@ -1,7 +1,6 @@
 <template>
   <div class="find">
-    <find-swiper v-if="bannerList.length!=0" :bannerlist="bannerList" />
-    <loading v-else/>
+    <find-swiper :bannerlist="bannerList" />
     <recommend />
     <recmend-songlist :songlist="songList" />
     <new-album :newalbumlist="albums" />
@@ -17,7 +16,6 @@ import findSwiper from "./childComp/find-swiper.vue";
 import recommend from "./childComp/recommend.vue";
 import recmendSonglist from "./childComp/recmend-songlist.vue";
 import newAlbum from "./childComp/new-album.vue";
-import {loadingMixin} from '@/utils/mixin'
 import {
   getBanner,
   bannerData,
@@ -32,8 +30,7 @@ import { Component, Vue } from "vue-property-decorator";
     recommend,
     recmendSonglist,
     newAlbum
-  },
-  mixins:[loadingMixin]
+  }
 })
 export default class Find extends Vue {
   /**data */

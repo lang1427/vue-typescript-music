@@ -1,35 +1,31 @@
 <template>
   <div>
-    <scroll
-      v-if="singleList.length!=0"
-      class="single-scroll"
-      ref="singleScroll"
-      :pullUpLoad="true"
-      @pullingUp="pullingUp"
-    >
-      <div class="single">
-        <div class="head">
-          <div class="play-all">
-            <span class="fa-play-circle-o"></span> 播放全部
+    <scroll class="single-scroll" ref="singleScroll" :pullUpLoad="true" @pullingUp="pullingUp">
+      <div>
+        <div class="single" v-if="singleList.length!=0">
+          <div class="head">
+            <div class="play-all">
+              <span class="fa-play-circle-o"></span> 播放全部
+            </div>
+            <div class="checkbox">
+              <span class="fa-list-ul"></span> 多选
+            </div>
           </div>
-          <div class="checkbox">
-            <span class="fa-list-ul"></span> 多选
-          </div>
-        </div>
-        <div class="body">
-          <div
-            class="list-items"
-            v-for="(item,index) of singleList"
-            :key="index"
-            @click="playSingle(item)"
-          >
-            <p class="name">{{ item.name }}</p>
-            <p class="desc">{{ item.artists[0].name }} - {{ item.album.name }}</p>
+          <div class="body">
+            <div
+              class="list-items"
+              v-for="(item,index) of singleList"
+              :key="index"
+              @click="playSingle(item)"
+            >
+              <p class="name">{{ item.name }}</p>
+              <p class="desc">{{ item.artists[0].name }} - {{ item.album.name }}</p>
+            </div>
           </div>
         </div>
+        <loading v-show="$store.state.loadingShow" />
       </div>
     </scroll>
-    <loading v-else />
   </div>
 </template>
 

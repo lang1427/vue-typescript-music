@@ -13,8 +13,8 @@
         <span :class="[playStatu?'fa-stop':'fa-play','ico']"></span>
       </progress-circle>
     </div>
-    <div class="like">
-      <span :class="[isLike?'fa-heart':'fa-heart-o','ico']"></span>
+    <div class="music-list">
+      <img src="../image/musiclist.svg" alt="">
     </div>
   </div>
 </template>
@@ -69,6 +69,12 @@ export default class MiniPlayer extends Vue {
   .singer-info {
     flex: 1;
     padding-left: 8px;
+    overflow: hidden;
+    .name{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    }
     .tip {
       font-size: 12px;
       color: #999;
@@ -89,14 +95,13 @@ export default class MiniPlayer extends Vue {
       }
     }
   }
-  .like {
+  .music-list {
     width: 50px;
     text-align: center;
-    .ico {
-      font-size: 38px;
-      &.fa-heart {
-        color: red;
-      }
+    padding: 5px 10px;
+    img{
+      width: 100%;
+      height: 100%;
     }
   }
 }

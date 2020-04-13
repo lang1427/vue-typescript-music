@@ -93,6 +93,7 @@ export default class BgInfo extends Vue {
       .singer {
         color: #eae1e2;
         font-size: 12px;
+        padding: 10px 0;
       }
       .detail-info {
         .publish-time,

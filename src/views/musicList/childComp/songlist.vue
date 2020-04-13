@@ -1,37 +1,35 @@
 <template>
-  <div class="song-list" v-if="songlist.length!=0">
-    <div class="play">
-      <span class="fa-play-circle-o ico"></span>
-      <span class="text">播放全部</span>
-      <span class="count">{{ totalCount }}</span>
-    </div>
-    <div class="list">
-      <div
-        v-for="(item,index) of songlist"
-        :key="item.id"
-        class="list-item"
-        @click="play(index)"
-      >
-        <div class="index">{{ index+1 }}</div>
-        <div class="name">
-          <p>{{ item.name }}</p>
-          <p class="singers">
-            <span v-for="arlist of item.ar" :key="arlist.id">{{ arlist.name }}</span>
-          </p>
-        </div>
-        <div class="operation">
-          <span class="fa-ellipsis-v"></span>
+  <div>
+    <div class="song-list" v-if="songlist.length!=0">
+      <div class="play">
+        <span class="fa-play-circle-o ico"></span>
+        <span class="text">播放全部</span>
+        <span class="count">{{ totalCount }}</span>
+      </div>
+      <div class="list">
+        <div v-for="(item,index) of songlist" :key="item.id" class="list-item" @click="play(index)">
+          <div class="index">{{ index+1 }}</div>
+          <div class="name">
+            <p>{{ item.name }}</p>
+            <p class="singers">
+              <span v-for="arlist of item.ar" :key="arlist.id">{{ arlist.name }}</span>
+            </p>
+          </div>
+          <div class="operation">
+            <span class="fa-ellipsis-v"></span>
+          </div>
         </div>
       </div>
     </div>
+    <loading v-show="$store.state.loadingShow" />
   </div>
 </template>
 
 <script lang='ts'>
-import { playMixin } from '@/utils/mixin'
+import { loadingMixin, playMixin } from "@/utils/mixin";
 import { Component, Vue, Prop } from "vue-property-decorator";
 @Component({
-  mixins:[playMixin]
+  mixins: [loadingMixin, playMixin]
 })
 export default class SongList extends Vue {
   @Prop({

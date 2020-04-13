@@ -57,6 +57,4 @@ export default class MusicList extends Vue {
 }
 </script>
 <style scoped lang='less'>
-.musicList {
-}
 </style>

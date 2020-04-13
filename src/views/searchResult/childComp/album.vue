@@ -1,27 +1,23 @@
 <template>
   <div>
-    <scroll
-      v-if="albumList.length != 0"
-      class="album-scroll"
-      ref="albumScroll"
-      :pullUpLoad="true"
-      @pullingUp="pullingUp"
-    >
-      <div class="album">
-        <album-list :albumList="albumList" />
+    <scroll class="album-scroll" ref="albumScroll" :pullUpLoad="true" @pullingUp="pullingUp">
+      <div>
+        <div class="album" v-if="albumList.length != 0">
+          <album-list :albumList="albumList" />
+        </div>
+        <loading v-show="$store.state.loadingShow" />
       </div>
     </scroll>
-    <loading v-else />
   </div>
 </template>
 
 <script lang="ts">
-import scroll from 'components/common/scroll/scroll.vue'
-import albumList from 'components/content/album-list/album-list.vue'
+import scroll from "components/common/scroll/scroll.vue";
+import albumList from "components/content/album-list/album-list.vue";
 
-import { formatDate } from '@/utils/formatDate'
-import { loadingMixin } from '@/utils/mixin'
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { formatDate } from "@/utils/formatDate";
+import { loadingMixin } from "@/utils/mixin";
+import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
   components: {
@@ -33,23 +29,23 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 export default class Album extends Vue {
   @Prop({
     default() {
-      return []
+      return [];
     }
   })
-  albumList!: object[]
+  albumList!: object[];
 
   mounted() {
-    ;(<any>this).$bus.$on('finishPullUp', () => {
-      this.$refs.albumScroll && (<any>this.$refs.albumScroll).finishPullUp()
-      this.$refs.albumScroll && (<any>this.$refs.albumScroll).refresh()
-    })
+    (<any>this).$bus.$on("finishPullUp", () => {
+      this.$refs.albumScroll && (<any>this.$refs.albumScroll).finishPullUp();
+      this.$refs.albumScroll && (<any>this.$refs.albumScroll).refresh();
+    });
   }
   destroyed() {
-    ;(<any>this).$bus.$off('finishPullUp')
+    (<any>this).$bus.$off("finishPullUp");
   }
 
   pullingUp() {
-    this.$emit('pullingUp', 4)
+    this.$emit("pullingUp", 4);
   }
 }
 </script>

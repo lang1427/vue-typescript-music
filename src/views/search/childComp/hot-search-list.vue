@@ -21,7 +21,7 @@
         <span class="score">{{ item.score }}</span>
       </div>
     </div>
-    <loading v-else />
+    <loading v-show="$store.state.loadingShow" />
   </div>
 </template>
 

@@ -1,30 +1,26 @@
 <template>
   <div>
-    <scroll
-      v-if="singerList.length != 0"
-      class="singer-scroll"
-      ref="singerScroll"
-      :pullUpLoad="true"
-      @pullingUp="pullingUp"
-    >
-      <div class="singer">
-        <div
-          class="list-items"
-          v-for="(item, index) of singerList"
-          :key="index"
-          @click="goSingerDetail(item.id)"
-        >
-          <div class="items-img">
-            <img v-lazy="item.img1v1Url" @load="imgLoad" />
-          </div>
-          <div class="name">{{ item.name }}</div>
-          <div class="settled-in">
-            <span class="fa-user-circle"></span>已入驻
+    <scroll class="singer-scroll" ref="singerScroll" :pullUpLoad="true" @pullingUp="pullingUp">
+      <div>
+        <div class="singer" v-if="singerList.length != 0">
+          <div
+            class="list-items"
+            v-for="(item, index) of singerList"
+            :key="index"
+            @click="goSingerDetail(item.id)"
+          >
+            <div class="items-img">
+              <img v-lazy="item.img1v1Url" @load="imgLoad" />
+            </div>
+            <div class="name">{{ item.name }}</div>
+            <div class="settled-in">
+              <span class="fa-user-circle"></span>已入驻
+            </div>
           </div>
         </div>
+        <loading v-show="$store.state.loadingShow" />
       </div>
     </scroll>
-    <loading v-else />
   </div>
 </template>
 

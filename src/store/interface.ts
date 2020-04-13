@@ -1,4 +1,5 @@
 export interface IState {
+  loadingShow:boolean
   searchKeyWrold: string | null
   searchHistory: string | never[] | null
   loginAccount: string | null

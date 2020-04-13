@@ -26,7 +26,8 @@ export default class App extends Vue {
   }
   updated(){
     // 当有播放内容时，底部需要margin出距离 需要注意的是 这里的marginBottom设置的值并不会被替换vw单位 ，要在postcss.config.js中配置
-    if(this.$store.state.playList.length!=0){
+    // 登陆过程中不需要margin出距离
+    if(this.$store.state.playList.length!=0 &&  this.$route.path.indexOf('/login')==-1 ){
       (<any>document.querySelector('#app')).children[1].style.marginBottom = '50px'
     }
   }

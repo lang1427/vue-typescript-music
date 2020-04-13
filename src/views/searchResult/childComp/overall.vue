@@ -175,7 +175,7 @@
         </div>
       </div>
     </scroll>
-    <loading v-else />
+    <loading v-show="$store.state.loadingShow" />
   </div>
 </template>
 

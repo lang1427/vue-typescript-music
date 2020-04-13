@@ -1,6 +1,6 @@
 <template>
   <transition name="fade-full-player">
-    <div class="full-player">
+    <div class="full-player" ref="fullPlayer">
       <top-bar class="topbar">
         <div slot="left" @click="back">
           <span class="fa-arrow-left back"></span>
@@ -10,7 +10,7 @@
         </div>
       </top-bar>
       <div class="CD-lyrics">
-        <div class="cd">
+        <div :class="[playStatu?'rotate cd':'cd']" @touchstart="toggleStart" @touchend="toggleEnd">
           <img :src="$store.getters.playMusicImg" alt />
         </div>
         <div class="lyrics"></div>
@@ -66,6 +66,9 @@ export default class FullPlayer extends Vue {
 
   private modeName: string[] = ["列表循环", "单曲循环", "随机模式"];
   private isShow: boolean = false;
+  private touch = {
+    startX: 0
+  };
 
   get modeICON() {
     let mode = "listloop";
@@ -86,6 +89,21 @@ export default class FullPlayer extends Vue {
   created() {}
   back() {
     this.$emit("toggle", true);
+  }
+  toggleStart(e: TouchEvent) {
+    this.touch.startX = e.touches[0].pageX;
+  }
+  toggleEnd(e: TouchEvent) {
+    let displacement = e.changedTouches[0].pageX - this.touch.startX;
+    let clientWidth = (this.$refs.fullPlayer as HTMLElement).clientWidth;
+    // 滑动的位移超过1/3则进行上下首切换
+    if (Math.abs(displacement) > clientWidth / 3) {
+      if (displacement > 0) {
+        this.$emit("prev");
+      } else {
+        this.$emit("next");
+      }
+    }
   }
   next() {
     this.$emit("next");
@@ -154,7 +172,7 @@ export default class FullPlayer extends Vue {
   bottom: 0;
   width: 100%;
   height: 100%;
-  background-color: rgb(6, 6, 6);
+  background-image: linear-gradient(to right, #5d683d, #162717);
   z-index: 1111;
   .topbar {
     .back {
@@ -174,8 +192,12 @@ export default class FullPlayer extends Vue {
       display: flex;
       align-items: center;
       justify-content: center;
+      &.rotate {
+        animation: playRotate 26s linear infinite;
+      }
       img {
         height: 270px;
+        width: 270px;
         border-radius: 50%;
       }
     }
@@ -206,15 +228,20 @@ export default class FullPlayer extends Vue {
     right: 0;
     width: 100%;
     bottom: 20px;
+    align-items: center;
     .list-items {
       flex: 1;
       color: rgb(233, 233, 233);
       text-align: center;
-      font-size: 25px;
+      font-size: 20px;
+      &.status {
+        font-size: 38px;
+      }
       &.play-mode {
         background-repeat: no-repeat;
-        background-size: 50%;
+        background-size: 40%;
         background-position: center center;
+        height: 20px;
       }
       &.listloop {
         background-image: url(../image/listloop.png);
@@ -226,6 +253,18 @@ export default class FullPlayer extends Vue {
         background-image: url(../image/random.png);
       }
     }
+  }
+}
+
+@keyframes playRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>

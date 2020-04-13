@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state: IState = {
+  loadingShow:false,
   searchKeyWrold: window.sessionStorage.getItem('searchKeyWrold')
     ? window.sessionStorage.getItem('searchKeyWrold')
     : '',

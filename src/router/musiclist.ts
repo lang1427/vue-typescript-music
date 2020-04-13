@@ -1,6 +1,6 @@
 
-const album = () => import(/*webpackChunkName:album*/'views/musicList/index.vue')
-const songsheet = () => import(/*webpackChunkName:songsheet*/'views/musicList/index.vue')
+const album = () => import(/*webpackChunkName:'album'*/'views/musicList/index.vue')
+const songsheet = () => import(/*webpackChunkName:'songsheet'*/'views/musicList/index.vue')
 
 export default [
     {

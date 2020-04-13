@@ -1,6 +1,6 @@
 # vue-typescript-music
 
-## Vue+TypeScript 高仿网易云音乐 移动版
+## Vue+TypeScript 仿网易云音乐 + 独立设计  移动版
 
 **线上访问地址**[www.kanglang.xyz](http://www.kanglang.xyz)
 
@@ -79,10 +79,6 @@
 **音视频播放**
 
 `正在研发中...`
-
-**云村页面**
-
-`暂未开放`
 
 **视屏页面**
 

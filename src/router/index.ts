@@ -13,7 +13,6 @@ import myRoutes from './my'
 import loginRouters from './login'
 import musicListRouters from './musiclist'
 const find = () => import(/*webpackChunkName:'find'*/ 'views/find/index.vue')
-const cloudVillage = () => import(/*webpackChunkName:'cloudVillage'*/'views/cloudVillage/index.vue')
 const video = () => import(/*webpackChunkName:'video'*/'views/video/index.vue')
 
 const search = () =>
@@ -39,11 +38,6 @@ const routes = [
     path: '/find',
     name: 'find',
     component: find
-  },
-  {
-    path: '/cloudVillage',
-    name: 'cloudVillage',
-    component: cloudVillage
   },
   {
     path: '/video',

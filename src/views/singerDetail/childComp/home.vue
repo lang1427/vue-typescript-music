@@ -5,7 +5,7 @@
         <span class="fa-play-circle-o"></span>播放热门50
       </h3>
     </single-list>
-    <loading v-else />
+    <loading v-show="$store.state.loadingShow" />
   </div>
 </template>
 

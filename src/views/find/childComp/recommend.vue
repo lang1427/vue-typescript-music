@@ -1,7 +1,7 @@
 <template>
   <div class="recommend">
     <div class="recommend-item" @click="toast" v-for="item of recommendList" :key="item.name">
-      <p :class="[item.ico, 'ico']"></p>
+      <img :src="item.ico" class="ico">
       <p class="title">{{ item.name }}</p>
     </div>
   </div>
@@ -13,11 +13,11 @@ import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class Recommend extends Vue {
   private recommendList: object[] = [
-    { ico: "fa-music", name: "推荐新音乐" },
-    { ico: "fa-video-camera", name: "推荐电台" },
-    { ico: "fa-list-ol", name: "排行榜" },
-    { ico: "fa-volume-up", name: "推荐节目" },
-    { ico: "fa-vimeo", name: "推荐MV" }
+    { ico: require("../image/music.svg"), name: "推荐新音乐" },
+    { ico: require("../image/diantai.svg"), name: "推荐电台" },
+    { ico: require("../image/paihang.svg"), name: "排行榜" },
+    { ico: require("../image/jiemu.svg"), name: "推荐节目" },
+    { ico: require("../image/mv.svg"), name: "推荐MV" }
   ];
   toast(){
     this.$toast('很遗憾，暂未开放此功能')
@@ -35,12 +35,7 @@ export default class Recommend extends Vue {
     text-align: center;
     padding: 0 5px;
     .ico {
-      height: 35px;
-      line-height: 35px;
-      border-radius: 50%;
-      background-color: @klColor;
-      color: white;
-      font-size: 18px;
+      height: 25px;
     }
     .title {
       padding-top: 3px;
