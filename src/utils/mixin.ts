@@ -28,3 +28,52 @@ export const singlePlayMixin = {
     }
   }
 }
+
+import { EPlayMode } from '@/store/interface'
+// 播放模式
+export const playModeMixin = {
+  data(){
+    return {
+       modeName : ["列表循环", "单曲循环", "随机模式"]
+    }
+  },
+  computed:{
+     modeICON() {
+      let mode = "listloop";
+      switch ((this as any).$store.state.playMode) {
+        case 0:
+          mode = "listloop";
+          break;
+        case 1:
+          mode = "singleloop";
+          break;
+        case 2:
+          mode = "random";
+          break;
+      }
+      return mode;
+    }
+  }
+  ,methods:{
+    changeMode() {
+      switch ((this as any).$store.state.playMode) {
+        case 0:
+          (this as any).$store.commit("changePlayMode", EPlayMode.singleLoop);
+          break;
+        case 1:
+          (this as any).$store.commit("changePlayMode", EPlayMode.random);
+          break;
+        case 2:
+          (this as any).$store.commit("changePlayMode", EPlayMode.listLoop);
+          break;
+      }
+      if ((this as any).isShow != undefined) {
+        (this as any).isShow = true;
+        let timer = window.setTimeout(() => {
+          (this as any).isShow = false;
+          window.clearTimeout(timer);
+        }, 1000);
+      }
+    }
+  }
+}

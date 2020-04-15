@@ -13,7 +13,7 @@
         <span :class="[playStatu?'fa-stop':'fa-play','ico']"></span>
       </progress-circle>
     </div>
-    <div class="music-list">
+    <div class="music-list" @click="openPlayerList">
       <img src="../image/musiclist.svg" alt="">
     </div>
   </div>
@@ -40,6 +40,9 @@ export default class MiniPlayer extends Vue {
   }
   playStatus() {
     this.$emit("playStatus", !this.playStatu);
+  }
+  openPlayerList(){
+    this.$emit('openPlayerlist','open')
   }
 }
 </script>

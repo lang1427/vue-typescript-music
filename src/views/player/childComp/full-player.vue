@@ -49,6 +49,7 @@
 import topBar from "@/components/common/navbar/navbar.vue";
 import progressBar from "@/components/content/progress-bar/progress-bar.vue";
 import klMessage from "@/components/common/message/message.vue";
+import { playModeMixin } from '@/utils/mixin'
 import { EPlayMode } from "@/store/interface";
 import { Component, Vue, Prop } from "vue-property-decorator";
 @Component({
@@ -56,7 +57,8 @@ import { Component, Vue, Prop } from "vue-property-decorator";
     topBar,
     progressBar,
     klMessage
-  }
+  },
+  mixins:[playModeMixin]
 })
 export default class FullPlayer extends Vue {
   @Prop({ default: 0 }) percent!: number;
@@ -64,27 +66,10 @@ export default class FullPlayer extends Vue {
   @Prop({ default: 0 }) totalTime!: number;
   @Prop({ default: 0 }) currentTime!: number;
 
-  private modeName: string[] = ["列表循环", "单曲循环", "随机模式"];
   private isShow: boolean = false;
   private touch = {
     startX: 0
   };
-
-  get modeICON() {
-    let mode = "listloop";
-    switch (this.$store.state.playMode) {
-      case 0:
-        mode = "listloop";
-        break;
-      case 1:
-        mode = "singleloop";
-        break;
-      case 2:
-        mode = "random";
-        break;
-    }
-    return mode;
-  }
 
   created() {}
   back() {
@@ -96,8 +81,8 @@ export default class FullPlayer extends Vue {
   toggleEnd(e: TouchEvent) {
     let displacement = e.changedTouches[0].pageX - this.touch.startX;
     let clientWidth = (this.$refs.fullPlayer as HTMLElement).clientWidth;
-    // 滑动的位移超过1/3则进行上下首切换
-    if (Math.abs(displacement) > clientWidth / 3) {
+    // 滑动的位移超过1/4则进行上下首切换
+    if (Math.abs(displacement) > clientWidth / 4) {
       if (displacement > 0) {
         this.$emit("prev");
       } else {
@@ -111,24 +96,7 @@ export default class FullPlayer extends Vue {
   prev() {
     this.$emit("prev");
   }
-  changeMode() {
-    switch (this.$store.state.playMode) {
-      case 0:
-        this.$store.commit("changePlayMode", EPlayMode.singleLoop);
-        break;
-      case 1:
-        this.$store.commit("changePlayMode", EPlayMode.random);
-        break;
-      case 2:
-        this.$store.commit("changePlayMode", EPlayMode.listLoop);
-        break;
-    }
-    this.isShow = true;
-    let timer = window.setTimeout(() => {
-      this.isShow = false;
-      window.clearTimeout(timer);
-    }, 1000);
-  }
+
   // 向外告知 进度被拖动，用于进度颜色的改变
   changePercent(newVal: number) {
     this.$emit("changePercent", newVal);

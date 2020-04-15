@@ -19,6 +19,7 @@
       :playStatu="isPlay"
       @toggle="toggle"
       @playStatus="playStatus"
+      @openPlayerlist="openPlayerlist"
     ></mini-player>
     <audio
       ref="audio"
@@ -30,6 +31,7 @@
       @ended="playEnd"
       @error="error"
     ></audio>
+    <player-list ref="playerList"/>
     <kl-message message="加载中，请稍后..." :isShow="isLoading" />
   </div>
 </template>
@@ -38,6 +40,7 @@
 // import { mapGetters } from 'vuex'
 import fullPlayer from "./childComp/full-player.vue";
 import miniPlayer from "./childComp/mini-player.vue";
+import playerList from './childComp/player-list.vue'
 import klMessage from "@/components/common/message/message.vue";
 import { isCanMusic, musicUrl } from "@/service/player";
 import { Component, Vue, Watch } from "vue-property-decorator";
@@ -46,6 +49,7 @@ import { Component, Vue, Watch } from "vue-property-decorator";
   components: {
     fullPlayer,
     miniPlayer,
+    playerList,
     klMessage
   }
   // computed:{
@@ -201,6 +205,11 @@ export default class Player extends Vue {
   }
   toggle(newVal: boolean) {
     this.isMiniShow = newVal;
+  }
+  openPlayerlist(newVal:string){
+    if(newVal === 'open'){
+      (this.$refs.playerList as any).isShow = true
+    }
   }
 
   /* ============= audio 事件 ====================*/

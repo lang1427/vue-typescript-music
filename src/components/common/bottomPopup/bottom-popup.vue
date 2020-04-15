@@ -1,10 +1,10 @@
 <template>
   <div>
     <!-- 遮挡层 -->
-    <div v-show="popupShow" class="bottom-popup" @click.self="hide"></div>
+    <div v-show="popupShow" class="bottom-popup" @click.self.stop="hide" @touchmove.self.stop="hide"></div>
     <!-- 内容层 -->
     <transition name="bottom-popup">
-      <div class="popup-bottom" v-show="popupShow">
+      <div class="popup-bottom" v-show="popupShow" :style="'background:'+bgcolor" >
         <slot />
       </div>
     </transition>
@@ -12,18 +12,37 @@
 </template>
 
 <script lang='ts'>
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 @Component
 export default class BottomPopup extends Vue {
   @Prop() popupShow!: boolean;
+  @Prop({
+    default:'white'
+  }) bgcolor!:string;
+
   hide() {
     this.$emit("hide");
   }
+
+  @Watch('popupShow')
+  changePopupShow(newVal:boolean){
+    if(newVal === true){
+      document.body.classList.add('hidden')
+    }else{
+      document.body.classList.remove('hidden')
+    }
+  }
 }
 </script>
+<style lang='less'>
+// 不让cssModules 添加 哈希值的方式 ： 不要 scoped
+  .hidden{
+    overflow: hidden;
+  }
+</style>
 <style scoped lang='less'>
 .bottom-popup {
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
   top: 0;
@@ -32,9 +51,8 @@ export default class BottomPopup extends Vue {
   background-color: rgba(0, 0, 0, 0.75);
 }
 .popup-bottom {
-  position: absolute;
+  position: fixed;
   z-index: 111111;
-  background-color: white;
   border-radius: 15px 15px 0 0;
   left: 0;
   bottom: 0;
