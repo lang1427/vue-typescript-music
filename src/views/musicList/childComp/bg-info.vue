@@ -60,7 +60,7 @@ export default class BgInfo extends Vue {
     if (this.$route.path.match(/\/album\//)) {
       return `歌手 : ${(<any>this.info).singerName} >`;
     } else if (this.$route.path.match(/\/songsheet\//)) {
-      return `${ (<any>this.info).tags && (<any>this.info).tags.join('-')}`;
+      return `${(<any>this.info).tags && (<any>this.info).tags.join("-")}`;
     }
   }
   created() {}
@@ -89,6 +89,11 @@ export default class BgInfo extends Vue {
       overflow: hidden;
       .title {
         color: #fff;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
       }
       .singer {
         color: #eae1e2;

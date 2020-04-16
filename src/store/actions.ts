@@ -38,5 +38,18 @@ export const actions = {
     } else {
       context.commit('changePlayIndex', newVal)
     }
+  },
+  // 删除播放列表，如果是-1则清空列表，否则删除对应的歌曲
+  removePlayList(context: any, newVal: number) {
+    return new Promise((resolve, reject) => {
+      if (newVal === -1) {
+        context.commit('removeAll')
+        resolve('清空播放列表')
+      } else {
+        context.commit('removeCurrent', newVal)
+        resolve('删除当前选中歌曲')
+      }
+    })
+
   }
 }

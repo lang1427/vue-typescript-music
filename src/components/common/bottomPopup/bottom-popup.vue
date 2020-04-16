@@ -1,10 +1,15 @@
 <template>
   <div>
     <!-- 遮挡层 -->
-    <div v-show="popupShow" class="bottom-popup" @click.self.stop="hide" @touchmove.self.stop="hide"></div>
+    <div
+      v-show="popupShow"
+      class="bottom-popup"
+      @click.self.stop="hide"
+      @touchmove.self.stop="hide"
+    ></div>
     <!-- 内容层 -->
     <transition name="bottom-popup">
-      <div class="popup-bottom" v-show="popupShow" :style="'background:'+bgcolor" >
+      <div class="popup-bottom" v-show="popupShow" :style="'background:'+bgcolor">
         <slot />
       </div>
     </transition>
@@ -17,28 +22,34 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 export default class BottomPopup extends Vue {
   @Prop() popupShow!: boolean;
   @Prop({
-    default:'white'
-  }) bgcolor!:string;
+    default: "white"
+  })
+  bgcolor!: string;
+
+  destroyed() {
+    document.body.classList.remove("hidden");
+  }
 
   hide() {
     this.$emit("hide");
   }
 
-  @Watch('popupShow')
-  changePopupShow(newVal:boolean){
-    if(newVal === true){
-      document.body.classList.add('hidden')
-    }else{
-      document.body.classList.remove('hidden')
+  // 锁定背景滚动 操作
+  @Watch("popupShow")
+  changePopupShow(newVal: boolean) {
+    if (newVal === true) {
+      document.body.classList.add("hidden");
+    } else {
+      document.body.classList.remove("hidden");
     }
   }
 }
 </script>
 <style lang='less'>
 // 不让cssModules 添加 哈希值的方式 ： 不要 scoped
-  .hidden{
-    overflow: hidden;
-  }
+.hidden {
+  overflow: hidden;
+}
 </style>
 <style scoped lang='less'>
 .bottom-popup {
@@ -61,7 +72,7 @@ export default class BottomPopup extends Vue {
 
 .bottom-popup-enter-active,
 .bottom-popup-leave-active {
-  transition: all .3s;
+  transition: all 0.3s;
 }
 .bottom-popup-enter,
 .bottom-popup-leave-to {

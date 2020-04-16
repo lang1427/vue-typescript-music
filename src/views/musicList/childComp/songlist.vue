@@ -8,9 +8,12 @@
       </div>
       <div class="list">
         <div v-for="(item,index) of songlist" :key="item.id" class="list-item" @click="play(index)">
-          <div class="index">{{ index+1 }}</div>
+          <div class="index" v-if="item.id!=$store.getters.playMusicID">{{ index+1 }}</div>
+          <div class="index" v-else>
+            <img style="height:25px" src="~@/components/common/loading/loading.gif" alt />
+          </div>
           <div class="name">
-            <p>{{ item.name }}</p>
+            <p class="song-name">{{ item.name }}</p>
             <p class="singers">
               <span v-for="arlist of item.ar" :key="arlist.id">{{ arlist.name }}</span>
             </p>
@@ -83,7 +86,16 @@ export default class SongList extends Vue {
       .name {
         flex: 1;
         text-align: left;
+        overflow: hidden;
+        .song-name {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
         .singers {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
           span {
             color: #999;
             font-size: 12px;

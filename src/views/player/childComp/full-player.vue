@@ -1,14 +1,11 @@
 <template>
   <transition name="fade-full-player">
     <div class="full-player" ref="fullPlayer">
-      <top-bar class="topbar">
+      <notice-bar :text="$store.getters.playMusicName" color="#fff" ref="noticeBar">
         <div slot="left" @click="back">
-          <span class="fa-arrow-left back"></span>
+          <span class="fa-angle-down back"></span>
         </div>
-        <div slot="center">
-          <p style="color:white;">{{ $store.getters.playMusicName }}</p>
-        </div>
-      </top-bar>
+      </notice-bar>
       <div class="CD-lyrics">
         <div :class="[playStatu?'rotate cd':'cd']" @touchstart="toggleStart" @touchend="toggleEnd">
           <img :src="$store.getters.playMusicImg" alt />
@@ -38,7 +35,7 @@
           :class="[playStatu?'fa-stop-circle-o':'fa-play-circle-o','status list-items']"
         ></div>
         <div @click="next" class="fa-step-forward next list-items"></div>
-        <div class="fa-outdent songs-list list-items"></div>
+        <div @click="openPlayerList" class="fa-outdent songs-list list-items"></div>
       </div>
       <kl-message :message="modeName[this.$store.state.playMode]" :isShow="isShow" />
     </div>
@@ -46,19 +43,30 @@
 </template>
 
 <script lang='ts'>
-import topBar from "@/components/common/navbar/navbar.vue";
+import noticeBar from "@/components/common/noticeBar/notice-bar.vue";
 import progressBar from "@/components/content/progress-bar/progress-bar.vue";
 import klMessage from "@/components/common/message/message.vue";
-import { playModeMixin } from '@/utils/mixin'
+import { playModeMixin } from "@/utils/mixin";
 import { EPlayMode } from "@/store/interface";
 import { Component, Vue, Prop } from "vue-property-decorator";
 @Component({
   components: {
-    topBar,
+    noticeBar,
     progressBar,
     klMessage
   },
-  mixins:[playModeMixin]
+  mixins: [playModeMixin],
+  watch:{
+    // 这里的操作比较有意思，因为顶部的noticeBar在隐藏的情况下是没有宽度的，需要监听到隐藏状态，当是全屏播放容器时则需要开启滚动
+    '$parent.isMiniShow':{
+      handler(val){
+        if(val === false){
+          (this.$refs.noticeBar as any).startScroll()
+        }
+      },
+      immediate: true
+    }
+  }
 })
 export default class FullPlayer extends Vue {
   @Prop({ default: 0 }) percent!: number;
@@ -95,6 +103,9 @@ export default class FullPlayer extends Vue {
   }
   prev() {
     this.$emit("prev");
+  }
+  openPlayerList() {
+    this.$emit("openPlayerlist", "open");
   }
 
   // 向外告知 进度被拖动，用于进度颜色的改变
@@ -142,12 +153,12 @@ export default class FullPlayer extends Vue {
   height: 100%;
   background-image: linear-gradient(to right, #5d683d, #162717);
   z-index: 1111;
-  .topbar {
-    .back {
-      font-size: 20px;
-      color: rgb(233, 233, 233);
-    }
+
+  .back {
+    font-size: 20px;
+    color: rgb(233, 233, 233);
   }
+
   .CD-lyrics {
     position: absolute;
     top: 60px;
