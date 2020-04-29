@@ -6,6 +6,7 @@
       :playStatu="isPlay"
       :currentTime="currentTime"
       :totalTime="duration"
+      :downloadUrl="url"
       @toggle="toggle"
       @playStatus="playStatus"
       @changePercent="changePercent"

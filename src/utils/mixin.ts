@@ -27,7 +27,14 @@ import { ISongs } from '@/conf/playlist'
 export const singlePlayMixin = {
   methods: {
     playSingle(item: ISongs) {
-      (this as any).$store.commit('addSingle', new PlayList(item))
+     let currentIndex =  (this as any).$store.state.playList.findIndex((list:any)=>{
+         return list.id === item.id 
+      })
+      if(currentIndex === -1){
+        (this as any).$store.commit('addSingle', new PlayList(item))
+      }else{
+        (this as any).$store.dispatch('changeCurrentPlayIndex',currentIndex)
+      }      
     }
   }
 }

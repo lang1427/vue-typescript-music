@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="song-list" v-if="songlist.length!=0">
-      <div class="play">
+      <div class="play" @click="play(0)">
         <span class="fa-play-circle-o ico"></span>
         <span class="text">播放全部</span>
         <span class="count">{{ totalCount }}</span>

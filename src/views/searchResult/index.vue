@@ -9,7 +9,7 @@
       <section slot="单曲">
         <single
           @pullingUp="addPage"
-          :singleList="currentSearchResult.singleList.result.songs"
+          :songlist="currentSearchResult.singleList.result.songs"
         />
       </section>
       <section slot="视频">

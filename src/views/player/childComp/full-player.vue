@@ -14,7 +14,9 @@
       </div>
       <div class="other-operation">
         <div class="fa-heart-o like list-items"></div>
-        <div class="fa-arrow-circle-o-down download list-items"></div>
+        <div class="list-items">
+          <a class="fa-arrow-circle-o-down download" :href="downloadUrl" download @click="downloadMusic"></a>
+        </div>
         <div class="fa-commenting-o comment list-items"></div>
         <div class="fa-ellipsis-v info list-items"></div>
       </div>
@@ -56,12 +58,12 @@ import { Component, Vue, Prop } from "vue-property-decorator";
     klMessage
   },
   mixins: [playModeMixin],
-  watch:{
+  watch: {
     // 这里的操作比较有意思，因为顶部的noticeBar在隐藏的情况下是没有宽度的，需要监听到隐藏状态，当是全屏播放容器时则需要开启滚动
-    '$parent.isMiniShow':{
-      handler(val){
-        if(val === false){
-          (this.$refs.noticeBar as any).startScroll()
+    "$parent.isMiniShow": {
+      handler(val) {
+        if (val === false) {
+          (this.$refs.noticeBar as any).startScroll();
         }
       },
       immediate: true
@@ -73,6 +75,7 @@ export default class FullPlayer extends Vue {
   @Prop({ default: false }) playStatu!: boolean;
   @Prop({ default: 0 }) totalTime!: number;
   @Prop({ default: 0 }) currentTime!: number;
+  @Prop() downloadUrl!: string;
 
   private isShow: boolean = false;
   private touch = {
@@ -106,6 +109,12 @@ export default class FullPlayer extends Vue {
   }
   openPlayerList() {
     this.$emit("openPlayerlist", "open");
+  }
+  downloadMusic(){
+    if(this.downloadUrl == null){
+      this.$toast('此首歌曲没有权限')
+      return false
+    }
   }
 
   // 向外告知 进度被拖动，用于进度颜色的改变
@@ -194,6 +203,12 @@ export default class FullPlayer extends Vue {
       color: rgb(233, 233, 233);
       text-align: center;
       font-size: 20px;
+      .download {
+        color: rgb(233, 233, 233);
+        text-align: center;
+        font-size: 20px;
+        text-decoration: none;
+      }
     }
   }
   .time {

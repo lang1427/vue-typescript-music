@@ -25,10 +25,10 @@
         <p class="fa-link ico"></p>
         <p>{{ info.shareCount }}</p>
       </div>
-      <div class="items">
+      <!-- <div class="items">
         <p class="fa-cloud-download ico"></p>
         <p>下载</p>
-      </div>
+      </div> -->
       <div class="items">
         <p class="fa-check-circle-o ico"></p>
         <p>多选</p>

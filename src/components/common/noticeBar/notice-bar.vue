@@ -48,8 +48,7 @@ export default {
     text: {
       //   当text一有新值，值被改变就会立即执行handler 需要设置immediate：true
       handler() {
-        this.reset();
-        this.startScroll()
+        this.startScroll();
       },
       immediate: true
     }
@@ -102,6 +101,8 @@ export default {
           this.contentWidth = contentWidth;
           this.duration = contentWidth / this.speed;
           this.animationClass = "play";
+        } else {
+          this.reset();
         }
       });
     }

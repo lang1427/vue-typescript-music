@@ -10,7 +10,7 @@
         <div class="single" v-if="overallList.song">
           <div class="head">
             <h3 class="title">单曲</h3>
-            <span class="play-more">播放全部</span>
+            <!-- <span class="play-more">播放全部</span> -->
           </div>
           <div class="body">
             <div

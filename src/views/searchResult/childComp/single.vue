@@ -2,10 +2,12 @@
   <div>
     <scroll class="single-scroll" ref="singleScroll" :pullUpLoad="true" @pullingUp="pullingUp">
       <div>
-        <div class="single" v-if="singleList.length!=0">
+        <div class="single" v-if="songlist.length!=0">
           <div class="head">
             <div class="play-all">
-              <span class="fa-play-circle-o"></span> 播放全部
+              <span @click="play(0)">
+                <span class="fa-play-circle-o"></span> 播放全部
+              </span>
             </div>
             <div class="checkbox">
               <span class="fa-list-ul"></span> 多选
@@ -14,7 +16,7 @@
           <div class="body">
             <div
               class="list-items"
-              v-for="(item,index) of singleList"
+              v-for="(item,index) of songlist"
               :key="index"
               @click="playSingle(item)"
             >
@@ -31,14 +33,14 @@
 
 <script lang='ts'>
 import scroll from "components/common/scroll/scroll.vue";
-import { loadingMixin, singlePlayMixin } from "@/utils/mixin";
+import { loadingMixin,playMixin, singlePlayMixin } from "@/utils/mixin";
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 @Component({
   components: {
     scroll
   },
-  mixins: [loadingMixin, singlePlayMixin]
+  mixins: [loadingMixin,playMixin, singlePlayMixin]
 })
 export default class Single extends Vue {
   @Prop({
@@ -46,7 +48,7 @@ export default class Single extends Vue {
       return [];
     }
   })
-  singleList!: object[];
+  songlist!: object[];
   timer: any = null;
 
   mounted() {
