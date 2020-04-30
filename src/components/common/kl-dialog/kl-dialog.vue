@@ -52,7 +52,7 @@ export default class Dialog extends Vue {
     position: fixed;
     left: 50%;
     top: 50%;
-    transform: translate(-50%);
+    transform: translate(-50%,-50%);
     padding: 5px;
     border-radius: 3px;
   }

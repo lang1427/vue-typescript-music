@@ -11,7 +11,9 @@
           <div class="title">{{ modeName[this.$store.state.playMode] }}</div>
         </div>
         <div class="star">
-          <span class="fa-plus-square-o"></span> 收藏全部
+          <span @click="starAll">
+            <span class="fa-plus-square-o"></span> 收藏全部
+          </span>
         </div>
         <div class="fa-trash remove" @click="remove(-1)"></div>
       </div>
@@ -37,21 +39,50 @@
         </ul>
       </div>
     </div>
+    <star-dialog :dialogShow="starShow" @hide="starShow=false">
+      <div class="star-box">
+        <h3>收藏到歌单</h3>
+        <ul class="star-songsheet">
+          <li class="new-create">
+            <span class="ico">+</span>
+            <span class="name">新建歌单</span>
+          </li>
+          <li class="songsheet-list-items"></li>
+        </ul>
+      </div>
+    </star-dialog>
+    <kl-confirm
+      :isShow="confirmShow"
+      content="确定清空所有播放列表吗？"
+      @cancel="confirmShow=false"
+      @confirm="confirmRemove"
+    ></kl-confirm>
   </popup>
 </template>
 
 <script lang='ts'>
 import popup from "@/components/common/bottomPopup/bottom-popup.vue";
+import klConfirm from "@/components/common/kl-confirm/kl-confirm.vue";
+import starDialog from "@/components/common/kl-dialog/kl-dialog.vue";
 import { playMixin, playModeMixin } from "@/utils/mixin";
+import {userSongsheet} from '@/service/songsheet'
 import { Component, Vue } from "vue-property-decorator";
 @Component({
   components: {
-    popup
+    popup,
+    klConfirm,
+    starDialog
   },
   mixins: [playMixin, playModeMixin]
 })
 export default class PlayerList extends Vue {
   private playerListShow: boolean = false; // 原变量名isShow在playModeMixin中冲突，导致此组件中切换模式之后会自动关闭弹出层
+  private starShow: boolean = false;
+  private confirmShow: boolean = false;
+
+  get userID(){
+    return this.$store.state.account && this.$store.state.account.account.id
+  }
 
   get playerList() {
     return this.$store.state.playList;
@@ -63,9 +94,24 @@ export default class PlayerList extends Vue {
     return require("@/components/common/loading/loading.gif");
   }
 
-  created() {}
+  async getUserSongsheet(){
+    let res = await userSongsheet(this.userID)
+    console.log(res)
+  }
 
+  created() {
+  }
+  starAll(){
+    this.starShow = true
+  }
+  confirmRemove() {
+    this.$store.dispatch("removePlayList", -1);
+  }
   remove(val: number) {
+    if (val === -1) {
+      this.confirmShow = true;
+      return false;
+    }
     this.$store.dispatch("removePlayList", val);
   }
 }
@@ -114,8 +160,7 @@ export default class PlayerList extends Vue {
     .star {
       flex: 1;
       text-align: right;
-      color: white;
-      .fa-plus-square-o {
+      span {
         color: white;
       }
     }
@@ -157,6 +202,33 @@ export default class PlayerList extends Vue {
           color: white;
         }
       }
+    }
+  }
+}
+.star-box {
+  padding: 5px;
+  width: 260px;
+  .star-songsheet {
+    padding-top: 10px;
+    .new-create {
+      display: flex;
+      height: 40px;
+      align-items: center;
+      .ico{
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        color: @klColor;
+        font-size: 22px;
+        background-color: #dedede;
+      }
+      .name{
+        flex:1;
+        padding-left: 10px;
+      }
+    }
+    .songsheet-list-items {
     }
   }
 }
