@@ -43,20 +43,39 @@
       <div class="star-box">
         <h3>收藏到歌单</h3>
         <ul class="star-songsheet">
-          <li class="new-create">
+          <li class="new-create" @click="createSongShow=true">
             <span class="ico">+</span>
             <span class="name">新建歌单</span>
           </li>
-          <li class="songsheet-list-items"></li>
+          <li
+            class="songsheet-list-items"
+            v-for="item of userSongsheetList"
+            :key="item.id"
+            @click="SetSongsheetOperation('add',item.id)"
+          >
+            <span class="ico">
+              <img :src="item.imgUrl" alt />
+            </span>
+            <span class="info">
+              <span class="name">{{ item.name }}</span>
+              <span class="count">{{ item.count }}首</span>
+            </span>
+          </li>
         </ul>
       </div>
     </star-dialog>
+    <create-song-dialog
+      :createSongShow="createSongShow"
+      @close="createSongShow=false"
+      @complete="createSongComplete"
+    />
     <kl-confirm
       :isShow="confirmShow"
       content="确定清空所有播放列表吗？"
       @cancel="confirmShow=false"
       @confirm="confirmRemove"
     ></kl-confirm>
+    <star-message message="收藏成功" :isShow="messageShow" />
   </popup>
 </template>
 
@@ -64,25 +83,28 @@
 import popup from "@/components/common/bottomPopup/bottom-popup.vue";
 import klConfirm from "@/components/common/kl-confirm/kl-confirm.vue";
 import starDialog from "@/components/common/kl-dialog/kl-dialog.vue";
-import { playMixin, playModeMixin } from "@/utils/mixin";
-import {userSongsheet} from '@/service/songsheet'
+import createSongDialog from "@/components/content/create-song-dialog/index.vue";
+import starMessage from "@/components/common/message/message.vue";
+import { getCookie } from "@/utils/cookie";
+import { playMixin, playModeMixin, userSongsManageMixin } from "@/utils/mixin";
+import { createSongSheet, songsheetOperation } from "@/service/songsheet";
 import { Component, Vue } from "vue-property-decorator";
 @Component({
   components: {
     popup,
     klConfirm,
-    starDialog
+    starDialog,
+    createSongDialog,
+    starMessage
   },
-  mixins: [playMixin, playModeMixin]
+  mixins: [playMixin, playModeMixin, userSongsManageMixin]
 })
 export default class PlayerList extends Vue {
   private playerListShow: boolean = false; // 原变量名isShow在playModeMixin中冲突，导致此组件中切换模式之后会自动关闭弹出层
   private starShow: boolean = false;
+  private createSongShow: boolean = false;
   private confirmShow: boolean = false;
-
-  get userID(){
-    return this.$store.state.account && this.$store.state.account.account.id
-  }
+  private messageShow: boolean = false;
 
   get playerList() {
     return this.$store.state.playList;
@@ -94,15 +116,10 @@ export default class PlayerList extends Vue {
     return require("@/components/common/loading/loading.gif");
   }
 
-  async getUserSongsheet(){
-    let res = await userSongsheet(this.userID)
-    console.log(res)
-  }
-
-  created() {
-  }
-  starAll(){
-    this.starShow = true
+  created() {}
+  starAll() {
+    (this as any).getUserSongsheet();
+    this.starShow = true;
   }
   confirmRemove() {
     this.$store.dispatch("removePlayList", -1);
@@ -113,6 +130,13 @@ export default class PlayerList extends Vue {
       return false;
     }
     this.$store.dispatch("removePlayList", val);
+  }
+  createSongComplete() {
+    this.starShow = false;
+    this.messageShow = true;
+    window.setTimeout(() => {
+      this.messageShow = false;
+    }, 500);
   }
 }
 </script>
@@ -210,11 +234,20 @@ export default class PlayerList extends Vue {
   width: 260px;
   .star-songsheet {
     padding-top: 10px;
+    height: 400px;
+    overflow-y: auto;
+    // 隐藏滚动条
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    &::-webkit-scrollbar {
+      /** Chrome和Safari浏览器 */
+      display: none;
+    }
     .new-create {
       display: flex;
       height: 40px;
       align-items: center;
-      .ico{
+      .ico {
         width: 40px;
         height: 40px;
         text-align: center;
@@ -223,12 +256,63 @@ export default class PlayerList extends Vue {
         font-size: 22px;
         background-color: #dedede;
       }
-      .name{
-        flex:1;
+      .name {
+        flex: 1;
         padding-left: 10px;
       }
     }
     .songsheet-list-items {
+      display: flex;
+      align-items: center;
+      padding-top: 10px;
+      .ico {
+        width: 40px;
+        height: 40px;
+        img {
+          display: block;
+          width: 100%;
+        }
+      }
+      .info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding-left: 10px;
+        .count {
+          color: #999;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+.create-song-box {
+  padding: 10px;
+  .input-box {
+    display: flex;
+    width: 200px;
+    flex-direction: column;
+    margin: 10px 0;
+    .input {
+      width: 100%;
+      border: none;
+      outline: none;
+      text-indent: 0.5em;
+      border-bottom: 1px solid #ccc;
+    }
+    .limit {
+      text-align: right;
+      font-size: 12px;
+      color: #999;
+    }
+  }
+  .operation {
+    display: flex;
+    justify-content: flex-end;
+    .btn {
+      color: @klColor;
+      width: 40px;
+      text-align: center;
     }
   }
 }

@@ -4,6 +4,7 @@
     <div
       v-show="dialogShow"
       class="dialog-overlay"
+      :style="{zIndex:overlayZIndex}"
       @click.self.stop="hide"
       @touchmove.self.stop="hide"
     ></div>
@@ -22,6 +23,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 export default class Dialog extends Vue {
   @Prop({ default: false }) dialogShow!: boolean;
   @Prop({ default: "white" }) bgcolor!: string;
+  @Prop({ default: 99999 }) overlayZIndex!: number;
   @Prop({ default: 111111 }) zIndex!: number;
   created() {}
 
@@ -45,15 +47,13 @@ export default class Dialog extends Vue {
     right: 0;
     top: 0;
     bottom: 0;
-    z-index: 99999;
     background-color: rgba(0, 0, 0, 0.75);
   }
   .dialog-content {
     position: fixed;
     left: 50%;
     top: 50%;
-    transform: translate(-50%,-50%);
-    padding: 5px;
+    transform: translate(-50%, -50%);
     border-radius: 3px;
   }
 

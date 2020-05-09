@@ -22,25 +22,26 @@ export const playMixin = {
     }
   }
 }
-import { ISongs } from '@/conf/playlist'
+
 // 添加单曲播放
+import { ISongs } from '@/conf/playlist'
 export const singlePlayMixin = {
   methods: {
     playSingle(item: ISongs) {
-     let currentIndex =  (this as any).$store.state.playList.findIndex((list:any)=>{
-         return list.id === item.id 
+      let currentIndex = (this as any).$store.state.playList.findIndex((list: any) => {
+        return list.id === item.id
       })
-      if(currentIndex === -1){
+      if (currentIndex === -1) {
         (this as any).$store.commit('addSingle', new PlayList(item))
-      }else{
-        (this as any).$store.dispatch('changeCurrentPlayIndex',currentIndex)
-      }      
+      } else {
+        (this as any).$store.dispatch('changeCurrentPlayIndex', currentIndex)
+      }
     }
   }
 }
 
-import { EPlayMode } from '@/store/interface'
 // 播放模式
+import { EPlayMode } from '@/store/interface'
 export const playModeMixin = {
   data() {
     return {
@@ -84,6 +85,35 @@ export const playModeMixin = {
           window.clearTimeout(timer);
         }, 1000);
       }
+    }
+  }
+}
+
+// 用户歌单管理者
+import { userSongsheet, UserSongsheetInfo } from '@/service/songsheet'
+import { getCookie } from './cookie'
+export const userSongsManageMixin = {
+  data() {
+    return {
+      userSongsheetList: []
+    }
+  },
+  methods: {
+    async getUserSongsheet() {
+      if (getCookie("MUSIC_U") == undefined) return false;
+      let res = await userSongsheet((this as any).userID);
+      if (res.code === 200) {
+        let arr = [];
+        for (let item of res.playlist) {
+          arr.push(new UserSongsheetInfo(item));
+        }
+        (this as any).userSongsheetList = arr;
+      }
+    }
+  },
+  computed: {
+    userID(): number {
+      return (this as any).$store.state.account && (this as any).$store.state.account.account.id
     }
   }
 }

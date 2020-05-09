@@ -1,6 +1,6 @@
 # vue-typescript-music
 
-## Vue+TypeScript 仿网易云音乐 + 独立设计  移动版
+## Vue+TypeScript better-music-webapp (音乐项目)
 
 **线上访问地址**[www.kanglang.xyz](http://www.kanglang.xyz)
 
@@ -21,29 +21,34 @@
 1. [接口下载地址](https://github.com/Binaryify/NeteaseCloudMusicApi)
 2. [接口 API 文档地址](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=neteasecloudmusicapi)
 
-### 示例效果
-
+### 示例效果图
+<details>
+<summary> 推荐直接访问线上地址 (图片文件大,可能加载不出来)</summary>
 ![搜索页、搜索结果](./src/doc/images/search.gif)
 ![热门歌手页](./src/doc/images/singer.gif)
+![音乐播放](./src/doc/images/player.gif)
+![新建歌单](./src/doc/images/createSong.gif)
+</details>
 
-### 功能模块
+
+### 界面、功能模块介绍
+<details>
+<summary></summary>
 
 **我的页面**
 
 - [x] 登录
-`暂不支持以下功能 `
 - [ ] 我的收藏
 - [ ] 我的音乐
 - [ ] 最近播放
 - [ ] 关注新歌
 - [ ] 我喜欢的音乐
 
-**默认页（发现）**
+**默认页（音乐馆）**
 
 - [x] banner 轮播图
 - [x] 推荐歌单
 - [x] 新碟
-`暂不支持以下功能`
 - [ ] 推荐新音乐
 - [ ] 推荐电台
 - [ ] 排行榜
@@ -76,14 +81,23 @@
 - [x] 专辑
 - [x] MV
 
-**音视频播放**
+**音频播放**
 
-`正在研发中...`
+- [x] 播放
+- [x] 上下首播放
+- [x] 滑动切换播放
+- [x] 播放模式
+- [x] 播放列表
+- [x] 收藏歌单
+- [x] 删除播放列表
+- [x] 下载当前播放音乐
+- [ ] 歌词
 
 **视屏页面**
 
 `暂未开放`
 
+</details>
 
 
 ---

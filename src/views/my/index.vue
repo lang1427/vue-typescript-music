@@ -2,7 +2,7 @@
   <div class="My">
     <my-head :userBaseinfo="userBaseInfo" />
     <my-music />
-    <my-songslist />
+    <my-songslist :songsList="mySongsList" />
     <router-view />
   </div>
 </template>
@@ -11,8 +11,9 @@
 import myHead from "./childComp/head.vue";
 import myMusic from "./childComp/my_music.vue";
 import mySongslist from "./childComp/my_songslist.vue";
-import { loginStatus, userInfo,userPlayList } from "@/service/user";
+import { loginStatus } from "@/service/user";
 import { UserBaseInfo, IProfile } from "@/service/user";
+import { userSongsManageMixin } from "@/utils/mixin";
 import { Component, Vue } from "vue-property-decorator";
 @Component({
   name: "My",
@@ -20,7 +21,8 @@ import { Component, Vue } from "vue-property-decorator";
     myHead,
     myMusic,
     mySongslist
-  }
+  },
+  mixins: [userSongsManageMixin]
 })
 export default class My extends Vue {
   private userBaseInfo: IProfile = {
@@ -28,6 +30,16 @@ export default class My extends Vue {
     nickname: "",
     avatarUrl: ""
   };
+
+  // 创建的歌单（排除 我喜欢） 我喜欢的歌单为用户歌单中第一个索引值
+  get mySongsList() {
+    return (this as any).userSongsheetList.filter(
+      (item: object[], index: number) => {
+        return index != 0;
+      }
+    );
+  }
+
   created() {
     this.getLoginStatus();
   }
@@ -36,21 +48,10 @@ export default class My extends Vue {
       let res = await loginStatus();
       if (res.code === 200) {
         this.userBaseInfo = new UserBaseInfo(res.profile);
-        // this.getUserInfo()
-        // this.getUserPlayList()
-      } 
+        (this as any).getUserSongsheet();
+      }
     } catch (err) {
-      console.log('loginStatus'+err)
-    }
-  }
-  async getUserInfo() {
-    let res = await userInfo();
-    if (res.code === 200) console.log(res);
-  }
-  async getUserPlayList(){
-    let res = userPlayList(this.userBaseInfo.userId)
-    if(res.code===200){
-      console.log(res)
+      console.log("loginStatus" + err);
     }
   }
 }
