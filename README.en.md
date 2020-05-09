@@ -2,6 +2,8 @@
 
 ## Vue+TypeScript better-music-webapp (Music Project)
 
+[中文](./README.md)
+
 **Online access address**[www.kanglang.xyz](http://www.kanglang.xyz)
 
 > Continuous improvement of projects and ongoing updates...
@@ -24,10 +26,12 @@
 ### Example renderings
 <details>
 <summary>Direct access to online address is recommended (the picture file is large and may not be loaded)</summary>
+
 ![Search page, search results](./src/doc/images/search.gif)
 ![hot singers page](./src/doc/images/singer.gif)
 ![Music playing](./src/doc/images/player.gif)
 ![New song list](./src/doc/images/createSong.gif)
+
 </details>
 
 

@@ -2,6 +2,8 @@
 
 ## Vue+TypeScript better-music-webapp (音乐项目)
 
+[English](./README.en.md)
+
 **线上访问地址**[www.kanglang.xyz](http://www.kanglang.xyz)
 
 > 项目不断完善进行中 持续更新...
@@ -24,10 +26,12 @@
 ### 示例效果图
 <details>
 <summary> 推荐直接访问线上地址 (图片文件大,可能加载不出来)</summary>
+
 ![搜索页、搜索结果](./src/doc/images/search.gif)
 ![热门歌手页](./src/doc/images/singer.gif)
 ![音乐播放](./src/doc/images/player.gif)
 ![新建歌单](./src/doc/images/createSong.gif)
+
 </details>
 
 
