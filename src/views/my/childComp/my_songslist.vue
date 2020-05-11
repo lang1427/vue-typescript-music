@@ -19,7 +19,12 @@
     <div class="tab-content">
       <div class="create-content" v-show="isCreateShow">
         <div class="songs-list" v-if="songsList.length!=0">
-          <div class="list-items" v-for="(item) of songsList" :key="item.id">
+          <div
+            class="list-items"
+            v-for="(item) of songsList"
+            :key="item.id"
+            @click="goSongsheet(item.id)"
+          >
             <div class="items">
               <div class="img">
                 <img :src="item.imgUrl" alt />
@@ -44,8 +49,8 @@
         <div class="items" @click="createSongShow=true">
           <span class="fa-plus-square-o ico"></span>&nbsp;&nbsp;新建歌单
         </div>
-        <div class="items">
-          <samp class="fa-edit ico"></samp>&nbsp;&nbsp;编辑歌单
+        <div class="items" @click="deleteSong">
+          <span class="fa-trash-o ico"></span>&nbsp;&nbsp;删除歌单
         </div>
       </div>
     </manage-dialog>
@@ -53,7 +58,7 @@
       :isAddSong="false"
       :createSongShow="createSongShow"
       @close="createSongShow=false"
-      @complete="isManageDialog=false"
+      @complete="createSongComplete"
     />
   </div>
 </template>
@@ -75,6 +80,17 @@ export default class MySongslist extends Vue {
   private createSongShow: boolean = false;
 
   created() {}
+
+  createSongComplete() {
+    this.isManageDialog = false;
+    (this.$parent as any).getUserSongsheet();
+  }
+  goSongsheet(id: number) {
+    this.$router.push("/songsheet/" + id);
+  }
+  deleteSong() {
+    this.$router.push("/songmanage/delete");
+  }
 }
 </script>
 <style scoped lang='less'>

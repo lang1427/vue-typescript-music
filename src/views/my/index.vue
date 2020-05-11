@@ -31,15 +31,6 @@ export default class My extends Vue {
     avatarUrl: ""
   };
 
-  // 创建的歌单（排除 我喜欢） 我喜欢的歌单为用户歌单中第一个索引值
-  get mySongsList() {
-    return (this as any).userSongsheetList.filter(
-      (item: object[], index: number) => {
-        return index != 0;
-      }
-    );
-  }
-
   created() {
     this.getLoginStatus();
   }
@@ -57,6 +48,6 @@ export default class My extends Vue {
 }
 </script>
 <style scoped lang='less'>
-.My {
-}
+// .My {
+// }
 </style>

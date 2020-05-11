@@ -12,6 +12,7 @@ VueRouter.prototype.push = function push(location: string) {
 import myRoutes from './my'
 import loginRouters from './login'
 import musicListRouters from './musiclist'
+import songManage from './songManage'
 const find = () => import(/*webpackChunkName:'find'*/ 'views/find/index.vue')
 const video = () => import(/*webpackChunkName:'video'*/'views/video/index.vue')
 
@@ -30,6 +31,7 @@ const routes = [
   ...myRoutes,
   ...loginRouters,
   ...musicListRouters,
+  ...songManage,
   {
     path: '/',
     redirect: '/find'

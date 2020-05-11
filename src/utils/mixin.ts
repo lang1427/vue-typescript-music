@@ -114,6 +114,14 @@ export const userSongsManageMixin = {
   computed: {
     userID(): number {
       return (this as any).$store.state.account && (this as any).$store.state.account.account.id
+    },
+    // 我的歌单（排除 我喜欢） 我喜欢的歌单为用户歌单中第一个索引值
+    mySongsList() {
+      return (this as any).userSongsheetList.filter(
+        (item: object[], index: number) => {
+          return index != 0;
+        }
+      );
     }
   }
 }

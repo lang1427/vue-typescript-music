@@ -4,7 +4,7 @@ import { service } from './service'
 // 获取用户歌单
 export function userSongsheet(id: number) {
     return service({
-        url: '/user/playlist',
+        url: '/user/playlist?timestamp='+ Date.now(),
         params: {
             uid: id
         }
@@ -52,6 +52,17 @@ export function songsheetOperation(op: string, pid: number, tracks: string) {
             op,
             pid,
             tracks
+        }
+    })
+}
+
+
+// 删除歌单
+export function deleteSongsheet(id:number){
+    return service({
+        url:'/playlist/delete',
+        params:{
+            id
         }
     })
 }
