@@ -1,19 +1,14 @@
 <template>
   <div class="musicList">
-    <topbar :operation="isUserSong"/>
+    <topbar :operation="isUserSong" />
     <bg-info :info="baseInfo" />
     <songslist :songlist="songList" />
   </div>
 </template>
 
 <script lang='ts'>
-import {
-  albumContent,
-  AlbumBaseInfo,
-  songsDetail,
-  SongsBaseInfo
-} from "@/service/musiclist";
-import { IUserSongList } from "@/service/songsheet";
+import { albumContent, AlbumBaseInfo } from "@/service/musiclist";
+import { IUserSongList, songsDetail, SongsBaseInfo } from "@/service/songsheet";
 import { userSongsManageMixin } from "@/utils/mixin";
 import topbar from "./childComp/head.vue";
 import bgInfo from "./childComp/bg-info.vue";

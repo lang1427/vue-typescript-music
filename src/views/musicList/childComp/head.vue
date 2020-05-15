@@ -12,18 +12,24 @@
       </div>
     </topbar>
     <!-- 操作框 -->
-    <!-- <div v-show="operationShow">
-      <transition name="slide-fade">
-        <ul class="operation-dialog">
+    <div>
+      <div
+        v-show="operationShow"
+        class="operation-overlay"
+        @click.self.stop="hide"
+        @touchstart.self.stop="hide"
+      ></div>
+      <transition name="bounce">
+        <ul class="operation-dialog" v-show="operationShow">
           <li>
-            <span class="fa-plus-square-o"></span>添加歌曲
+            <span class="fa-plus-square-o"></span>&nbsp;&nbsp;添加歌曲
           </li>
-          <li>
-            <span class="fa-edit"></span>编辑歌单信息
+          <li @click="goEditSong">
+            <span class="fa-edit"></span>&nbsp;&nbsp;编辑歌单信息
           </li>
         </ul>
       </transition>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -39,15 +45,30 @@ export default class AlbumHead extends Vue {
   @Prop({ default: false }) operation!: boolean;
   private operationShow: boolean = false;
   created() {}
-  back() {
-    this.$router.back();
-  }
   get topTitle() {
     if (this.$route.path.match(/\/album\//)) {
       return "专辑";
     } else if (this.$route.path.match(/\/songsheet\//)) {
       return "歌单";
     }
+  }
+  back() {
+    this.$router.back();
+  }
+  goEditSong() {
+    this.$router.push({
+      path: "/songmanage/update?id="+this.$route.params.id
+      // query: {
+      //   songId: this.$route.params.id,
+      //   name: (this.$parent as any).baseInfo.title,
+      //   tags: (this.$parent as any).baseInfo.tags.join("-"),
+      //   desc: (this.$parent as any).baseInfo.description
+      // }
+    });
+  }
+
+  hide() {
+    this.operationShow = false;
   }
 }
 </script>
@@ -68,24 +89,41 @@ export default class AlbumHead extends Vue {
     font-size: 16px;
   }
 }
+.operation-overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1007;
+}
 .operation-dialog {
-  position: absolute;
+  position: fixed;
   right: 0;
   top: 0;
   width: 200px;
-  z-index: 1010;
+  z-index: 1008;
   border-left: 1px solid #dedecd;
   border-bottom: 1px solid #dedecd;
   box-shadow: 0 0 2px #eee;
   background-color: white;
+  li {
+    padding: 8px 4px;
+  }
 }
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: all 5s;
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
 }
-.slide-fade-enter,
-.slide-fade-leave-to {
-  transform-origin: right top;
-  transform: scale(1);
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+    transform-origin: right top;
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 </style>

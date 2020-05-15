@@ -72,9 +72,9 @@ export default class DeleteSong extends Vue {
   }
 
   async setDeleteSongsheet() {
-    let res = await deleteSongsheet(this.isChecks[0]);
+    let ids = this.isChecks.join(",");
+    let res = await deleteSongsheet(ids);
     if (res.code === 200) {
-      console.log(res);
       this.isChecks = [];
       (this as any).getUserSongsheet();
     }
@@ -97,16 +97,16 @@ export default class DeleteSong extends Vue {
       this.isChecks = [];
     }
   }
-  deleteConfirmShow(){
-    if(this.isChecks.length === 0){
-      this.$toast('未选择歌单')
+  deleteConfirmShow() {
+    if (this.isChecks.length === 0) {
+      this.$toast("未选择歌单");
       return !1;
     }
-    this.deleteShow = true
+    this.deleteShow = true;
   }
   deleteSong() {
-    this.setDeleteSongsheet()
-    this.deleteShow = false
+    this.setDeleteSongsheet();
+    this.deleteShow = false;
   }
 }
 </script>
@@ -117,7 +117,7 @@ export default class DeleteSong extends Vue {
   right: 0;
   top: 0;
   bottom: 0;
-  z-index: 1010;
+  z-index: 3003;
   background-color: white;
   .body {
     position: absolute;
