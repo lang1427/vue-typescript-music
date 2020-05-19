@@ -51,5 +51,31 @@ export const actions = {
       }
     })
 
+  },
+  // 播放历史记录操作
+  operationPlayHistory(context: any, newVal: object | number) {
+
+    if (lodash.isEqual(context.state.playList, context.state.playHistory)) return false
+
+    if (newVal === -1) {
+      context.commit('clearPlayHistory')
+      return false
+    }
+
+    if (context.state.playHistory.length != 0) {
+      let res = context.state.playHistory.findIndex((item: any) => {
+        return item.id === (newVal as any).id
+      })
+      if (res !== -1) {
+        context.commit('removeCurrentPlayHistory', res)
+      }
+    }
+
+    if (context.state.playHistory.length < 200) {
+      context.commit('unshiftPlayHistory', newVal)
+    } else {
+      context.commit('splicePlayHistory', newVal)
+    }
   }
+
 }

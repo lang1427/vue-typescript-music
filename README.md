@@ -18,7 +18,7 @@
 
 ### 后端 API 依赖
 
-`NeteaseCloudMusicApi 3.24.2`
+`NeteaseCloudMusicApi 3.29.0`
 
 1. [接口下载地址](https://github.com/Binaryify/NeteaseCloudMusicApi)
 2. [接口 API 文档地址](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=neteasecloudmusicapi)
@@ -42,10 +42,11 @@
 **我的页面**
 
 - [x] 登录
+- [x] 播放历史
+- [ ] 我的电台
 - [ ] 我的收藏
-- [ ] 我的音乐
-- [ ] 最近播放
 - [ ] 关注新歌
+- [ ] 我的音乐
 - [ ] 我喜欢的音乐
 
 **默认页（音乐馆）**

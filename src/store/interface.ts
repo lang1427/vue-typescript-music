@@ -1,5 +1,5 @@
 export interface IState {
-  loadingShow:boolean
+  loadingShow: boolean
   searchKeyWrold: string | null
   searchHistory: string | never[] | null
   loginAccount: string | null
@@ -7,6 +7,7 @@ export interface IState {
   playList: object[] | null
   currentPlayIndex: number
   playMode: EPlayMode
+  playHistory: object[] | null
 }
 // 定义播放的类型
 export enum EPlayMode {

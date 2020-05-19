@@ -225,7 +225,15 @@ export default class Player extends Vue {
   }
   // 歌曲已加载完成
   loadComplete(e: any) {
+    // 获取到歌曲总时长
     this.duration = e.target.duration;
+    // 200条历史播放功能
+    const { playMusicID, playMusicName, playMusicImg } = this.$store.getters;
+    this.$store.dispatch("operationPlayHistory", {
+      id: playMusicID,
+      name: playMusicName,
+      imgURL: playMusicImg
+    });
   }
   // 当前播放时间发生改变时执行
   timeupdate(e: any) {

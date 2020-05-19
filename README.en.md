@@ -18,7 +18,7 @@
 
 ### Back end API dependency
 
-`NeteaseCloudMusicApi 3.24.2`
+`NeteaseCloudMusicApi 3.29.0`
 
 1. [Interface download address](https://github.com/Binaryify/NeteaseCloudMusicApi)
 2. [Interface API document address](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=neteasecloudmusicapi)
@@ -42,11 +42,13 @@
 **Personal page**
 
 - [x] login
+- [x] Play history
+- [ ] My radio station
 - [ ] My star
-- [ ] My music
-- [ ] Recently played
 - [ ] Focus on new songs
+- [ ] My music
 - [ ] My favorite music
+
 
 **Default page（Music Hall）**
 

@@ -72,5 +72,24 @@ export const mutations = {
     if (newVal === state.currentPlayIndex && newVal === (state.playList as object[]).length) {
       mutations.changePlayIndex(state, 0)
     }
+  },
+
+  /** 播放历史 */
+  clearPlayHistory(state: IState) {
+    state.playHistory = []
+    window.localStorage.setItem('playHistory', JSON.stringify([]))
+  },
+  removeCurrentPlayHistory(state: IState, newVal: number) {
+    (state.playHistory as []).splice(newVal, 1)
+    window.localStorage.setItem('playHistory', JSON.stringify(state.playHistory))
+  },
+  unshiftPlayHistory(state: IState, newVal: object) {
+    (state.playHistory as any).unshift(newVal)
+    window.localStorage.setItem('playHistory', JSON.stringify(state.playHistory))
+  },
+  splicePlayHistory(state: IState, newVal: object) {
+    (state.playHistory as []).splice((<[]>state.playHistory).length - 1, 1)
+    mutations.unshiftPlayHistory(state, newVal)
   }
+
 }

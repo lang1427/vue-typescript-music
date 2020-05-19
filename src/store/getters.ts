@@ -16,5 +16,8 @@ export default {
     },
     playMusicImg(state: IState) {
         return state.currentPlayIndex != -1 ? (state.currentPlayIndex < (<object[]>state.playList).length ? (<any>state).playList[state.currentPlayIndex].imgURL : '') : ''
+    },
+    playHistoryLength(state:IState){
+        return (state.playHistory as object[]).length
     }
 }

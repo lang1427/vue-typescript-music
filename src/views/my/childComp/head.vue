@@ -32,8 +32,7 @@ import { IProfile } from "@/service/user";
 export default class Myhead extends Vue {
   @Prop() userBaseinfo!: IProfile;
   private relevantContent: object[] = [
-    { title: "本地音乐", path: "/my/localmusic", ico: "fa-music" },
-    { title: "下载管理", path: "/my/downloadmanager", ico: "fa-download" },
+    { title: "播放历史", path: "/my/playhistory", ico: "fa-history" },
     { title: "我的电台", path: "/my/radio", ico: "fa-video-camera" },
     { title: "我的收藏", path: "/my/star", ico: "fa-star-o" },
     { title: "关注新歌", path: "/my/watchnewmusic", ico: "fa-eye" }
@@ -57,8 +56,12 @@ export default class Myhead extends Vue {
     this.$router.push("/login");
   }
   goRelevant(path: string) {
-    this.$toast('很遗憾，暂未开放此功能')
-    return false
+    if ((path === "/my/playhistory")) {
+      this.$router.push(path);
+      return false;
+    }
+    this.$toast("很遗憾，暂未开放此功能");
+    return false;
     this.$router.push(path);
   }
 }
