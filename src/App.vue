@@ -18,7 +18,6 @@ import {
   playerSetMarginBottom,
   playerRemoveMarginBottom
 } from "@/conf/playlist";
-
 @Component({
   components: {
     hMenu,
@@ -28,10 +27,13 @@ import {
 export default class App extends Vue {
   mounted() {
     document.body.style.margin = "0px";
+  }
+  updated() {
+    // 界面DOM渲染完成的margin距离设置
     if (this.$store.getters.playListLength === 0) {
       playerRemoveMarginBottom();
     } else {
-      if (this.$store.state.playList.length != 0 && this.$route.path.indexOf("/login") == -1) {
+      if (this.$route.path.indexOf("/login") == -1) {
         playerSetMarginBottom();
       }
     }
@@ -39,12 +41,13 @@ export default class App extends Vue {
 
   // 当有播放内容时，底部需要margin出距离 需要注意的是 这里的marginBottom设置的值并不会被替换vw单位 ，要在postcss.config.js中配置
   // 登陆过程中不需要margin出距离
-  @Watch("$store.getters.playListLength")
+  // 有无播放容器时设置的margin
+  @Watch("$store.getters.playListLength", { immediate: true })
   changePlaylistLength(newVal: number) {
     if (newVal === 0) {
       playerRemoveMarginBottom();
     } else {
-      if (this.$store.state.playList.length != 0 && this.$route.path.indexOf("/login") == -1) {
+      if (this.$route.path.indexOf("/login") == -1) {
         playerSetMarginBottom();
       }
     }
