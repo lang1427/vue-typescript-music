@@ -21,7 +21,7 @@
       ></div>
       <transition name="bounce">
         <ul class="operation-dialog" v-show="operationShow">
-          <li>
+          <li @click="goAddSongPage">
             <span class="fa-plus-square-o"></span>&nbsp;&nbsp;添加歌曲
           </li>
           <li @click="goEditSong">
@@ -65,6 +65,9 @@ export default class AlbumHead extends Vue {
       //   desc: (this.$parent as any).baseInfo.description
       // }
     });
+  }
+  goAddSongPage(){
+    this.$router.push('/songmanage/add?id='+this.$route.params.id)
   }
 
   hide() {

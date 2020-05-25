@@ -3,6 +3,7 @@ const updateSong = () => import(/*webpackChunkName:'updateSong'*/'@/views/songMa
 const editSongName = () => import(/*webpackChunkName:'editSongName'*/'@/views/songManage/updateSong/edit-song-name.vue')
 const editSongTags = () => import(/*webpackChunkName:'editSongTags'*/'@/views/songManage/updateSong/edit-song-tags.vue')
 const editSongDesc = () => import(/*webpackChunkName:'editSongDesc'*/'@/views/songManage/updateSong/edit-song-desc.vue')
+const addSong = ()=>import(/*webpackChunkName:'addSong'*/'@/views/songManage/add-song.vue')
 
 export default [
     {
@@ -29,5 +30,9 @@ export default [
                 component: editSongDesc
             }
         ]
+    },{
+        path:'/songmanage/add',
+        name:'addSong',
+        component:addSong
     }
 ]
