@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="operation">
-      <div class="items">
+      <div class="items" @click="goCommentPage">
         <p class="fa-commenting-o ico"></p>
         <p>{{ info.commentCount }}</p>
       </div>
@@ -28,7 +28,7 @@
       <!-- <div class="items">
         <p class="fa-cloud-download ico"></p>
         <p>下载</p>
-      </div> -->
+      </div>-->
       <div class="items">
         <p class="fa-check-circle-o ico"></p>
         <p>多选</p>
@@ -64,6 +64,24 @@ export default class BgInfo extends Vue {
     }
   }
   created() {}
+
+  goCommentPage() {
+    // console.log(this.$route.name);
+    switch (this.$route.name) {
+      case "songsheet":
+        this.$router.push({
+          path: "/comment/songsheet",
+          query: { id: this.$route.params.id }
+        });
+        break;
+      case "album":
+        this.$router.push({
+          path: "/comment/album",
+          query: { id: this.$route.params.id }
+        });
+        break;
+    }
+  }
 }
 </script>
 <style scoped lang='less'>

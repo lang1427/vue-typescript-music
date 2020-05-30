@@ -87,6 +87,13 @@
 - [x] Album
 - [x] Mv
 
+**Comment interface**
+- [x] Comment like, cancel like
+- [x] Comment
+- [x] Reply to comments
+- [x] Copy comments
+- [x] Delete comment
+
 **Play music**
 
 - [x] Play

@@ -25,6 +25,8 @@ const singer = () =>
 const singerDetail = () =>
   import(/*webpackChunkName:'singerDetail'*/ 'views/singerDetail/index.vue')
 
+const comment = ()=>import(/*webpackChunkName:'comment'*/'@/views/comment/index.vue')
+
 const test = () => import('views/test.vue')
 
 const routes = [
@@ -77,6 +79,11 @@ const routes = [
         component: singerDetail
       }
     ]
+  },
+  {
+    path:'/comment/:type',
+    name:'comment',
+    component:comment
   },
 
   {

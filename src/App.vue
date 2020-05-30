@@ -33,21 +33,27 @@ export default class App extends Vue {
     if (this.$store.getters.playListLength === 0) {
       playerRemoveMarginBottom();
     } else {
-      if (this.$route.path.indexOf("/login") == -1) {
+      if (
+        this.$route.path.indexOf("/login") == -1 &&
+        !this.$route.path.match(/^\/comment\/((?:[^\/]+?))(?:\/(?=$))?$/i)
+      ) {
         playerSetMarginBottom();
       }
     }
   }
 
   // 当有播放内容时，底部需要margin出距离 需要注意的是 这里的marginBottom设置的值并不会被替换vw单位 ，要在postcss.config.js中配置
-  // 登陆过程中不需要margin出距离
+  // 登陆,评论 不需要margin出距离
   // 有无播放容器时设置的margin
   @Watch("$store.getters.playListLength", { immediate: true })
   changePlaylistLength(newVal: number) {
     if (newVal === 0) {
       playerRemoveMarginBottom();
     } else {
-      if (this.$route.path.indexOf("/login") == -1) {
+      if (
+        this.$route.path.indexOf("/login") == -1 &&
+        !this.$route.path.match(/^\/comment\/((?:[^\/]+?))(?:\/(?=$))?$/i)
+      ) {
         playerSetMarginBottom();
       }
     }
