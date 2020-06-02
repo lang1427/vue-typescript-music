@@ -10,6 +10,7 @@
 import { albumContent, AlbumBaseInfo } from "@/service/musiclist";
 import { IUserSongList, songsDetail, SongsBaseInfo } from "@/service/songsheet";
 import { userSongsManageMixin } from "@/utils/mixin";
+import { SongsInfoClass } from "@/conf/songsInfo";
 import topbar from "./childComp/head.vue";
 import bgInfo from "./childComp/bg-info.vue";
 import songslist from "./childComp/songlist.vue";
@@ -25,11 +26,9 @@ import { Component, Vue } from "vue-property-decorator";
 export default class MusicList extends Vue {
   private baseInfo = {};
   private songList: object[] = [];
-
   get id() {
     return parseInt(this.$route.params.id);
   }
-
   get isUserSong() {
     if (
       this.$route.path.match(/\/songsheet\//) &&
@@ -59,14 +58,22 @@ export default class MusicList extends Vue {
     let res = await albumContent(this.id);
     if (res.code === 200) {
       this.baseInfo = new AlbumBaseInfo(res.album);
-      this.songList = res.songs;
+      let arr = [];
+      for (const item of res.songs) {
+        arr.push(new SongsInfoClass(item));
+      }
+      this.songList = arr;
     }
   }
   async getSongsDetail() {
     let res = await songsDetail(this.id);
     if (res.code === 200) {
       this.baseInfo = new SongsBaseInfo(res.playlist);
-      this.songList = res.playlist.tracks;
+      let arr = [];
+      for (const item of res.playlist.tracks) {
+        arr.push(new SongsInfoClass(item));
+      }
+      this.songList = arr;
     }
   }
 }

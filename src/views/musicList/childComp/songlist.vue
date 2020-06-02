@@ -7,31 +7,39 @@
         <span class="count">{{ totalCount }}</span>
       </div>
       <div class="list">
-        <div v-for="(item,index) of songlist" :key="item.id" class="list-item" @click="play(index)">
+        <div
+          v-for="(item,index) of songlist"
+          :key="item.songsId"
+          class="list-item"
+          @click="play(index)"
+        >
           <div class="index" v-if="item.id!=$store.getters.playMusicID">{{ index+1 }}</div>
           <div class="index" v-else>
             <img style="height:25px" src="~@/components/common/loading/loading.gif" alt />
           </div>
           <div class="name">
-            <p class="song-name">{{ item.name }}</p>
-            <p class="singers">
-              <span v-for="arlist of item.ar" :key="arlist.id">{{ arlist.name }}</span>
-            </p>
+            <p class="song-name">{{ item.songsName }}</p>
+            <p class="singers">{{ item.singerName }}</p>
           </div>
-          <div class="operation">
+          <div class="operation" @click.stop="openOperation(item)">
             <span class="fa-ellipsis-v"></span>
           </div>
         </div>
       </div>
     </div>
+    <songlist-operation ref="songOperation"></songlist-operation>
     <loading v-show="$store.state.loadingShow" />
   </div>
 </template>
 
 <script lang='ts'>
+import songlistOperation from "@/components/content/songlist-operation/index.vue";
 import { loadingMixin, playMixin } from "@/utils/mixin";
 import { Component, Vue, Prop } from "vue-property-decorator";
 @Component({
+  components: {
+    songlistOperation
+  },
   mixins: [loadingMixin, playMixin]
 })
 export default class SongList extends Vue {
@@ -45,8 +53,12 @@ export default class SongList extends Vue {
   get totalCount() {
     return `(共${this.songlist.length}首)`;
   }
-
   created() {}
+
+  openOperation(obj: object) {
+    (<any>this).$refs.songOperation.operationShow = true;
+    (<any>this).$refs.songOperation.curSongInfo = obj;
+  }
 }
 </script>
 <style scoped lang='less'>
@@ -96,10 +108,8 @@ export default class SongList extends Vue {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          span {
-            color: #999;
-            font-size: 12px;
-          }
+          color: #999;
+          font-size: 12px;
         }
       }
       .operation {

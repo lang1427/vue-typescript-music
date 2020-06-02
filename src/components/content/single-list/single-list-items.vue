@@ -2,10 +2,10 @@
   <div class="single-list-items">
     <div class="order">{{ order }}</div>
     <div class="info">
-      <p class="name">{{ listItems.name }}</p>
-      <p class="desc">{{ desc }}</p>
+      <p class="name">{{ listItems.songsName }}</p>
+      <p class="desc">{{ listItems.singerName }}</p>
     </div>
-    <div class="operation">
+    <div class="operation" @click.stop="openOperation(listItems)">
       <span class="fa-ellipsis-v"></span>
     </div>
   </div>
@@ -13,7 +13,6 @@
 
 <script lang='ts'>
 import { Component, Vue, Prop } from "vue-property-decorator";
-
 @Component
 export default class SingleListItems extends Vue {
   @Prop({
@@ -24,8 +23,8 @@ export default class SingleListItems extends Vue {
   listItems!: any;
   @Prop() order!: number;
 
-  get desc() {
-    return `${this.listItems.ar[0].name} - ${this.listItems.al.name}`;
+  openOperation(obj: object) {
+    (<any>this).$bus.$emit("openOperation", obj);
   }
 }
 </script>

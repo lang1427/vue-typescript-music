@@ -16,9 +16,12 @@ import commentMain from "./childComp/main.vue";
 import commentFooter from "./childComp/footer.vue";
 import { getCookie } from "@/utils/cookie";
 import {
+  IComment,
   CommentClass,
   operationComment,
-  songSheetComment
+  songSheetComment,
+  albumComment,
+  songsComment
 } from "@/service/comment";
 import { Component, Vue } from "vue-property-decorator";
 @Component({
@@ -47,26 +50,80 @@ export default class Comment extends Vue {
         this.getSongsheetComment();
         this.commentType = 2;
         break;
+      case "/comment/album":
+        this.getAlbumComment();
+        this.commentType = 3;
+        break;
+      case "/comment/songs":
+        this.getSongsComment();
+        this.commentType = 0;
+        break;
     }
   }
-  async setOperationComment(t: number, content: string, replyId?: number) {
+  async setOperationComment(t: number, content: string, commentId?: number) {
     let res = await operationComment(
       t,
       this.commentType,
       parseInt(<string>this.$route.query.id),
       content,
-      replyId
+      commentId
     );
     if (res.code === 200) {
-      this.commentNewData.unshift(new CommentClass(res.comment));
-      replyId
-        ? ((<any>this).commentNewData[0].parentCommentId = replyId)
-        : null;
-      console.log(this.commentNewData[0]);
+      switch (t) {
+        case 0:
+          let index = this.commentNewData.findIndex(item => {
+            return (<IComment>item).commentId === commentId;
+          });
+          this.commentNewData.splice(index, 1);
+          this.commentTotal -= 1;
+          break;
+        case 1:
+          this.commentNewData.unshift(new CommentClass(res.comment));
+          this.commentTotal += 1;
+          break;
+        case 2:
+          this.commentNewData.unshift(new CommentClass(res.comment));
+          (<any>this).commentNewData[0].parentCommentId = commentId;
+          break;
+      }
+    } else {
+      this.$toast(res.msg);
     }
   }
   async getSongsheetComment() {
     let res = await songSheetComment(this.id, this.page);
+    if (res.code === 200) {
+      this.commentTotal = res.total;
+      // 最新评论
+      for (const item of res.comments) {
+        this.commentNewData.push(...[new CommentClass(item)]);
+      }
+      // 最热评论
+      if (this.page === 0) {
+        for (const item of res.hotComments) {
+          this.commentHotData.push(...[new CommentClass(item)]);
+        }
+      }
+    }
+  }
+  async getAlbumComment() {
+    let res = await albumComment(this.id, this.page);
+    if (res.code === 200) {
+      this.commentTotal = res.total;
+      // 最新评论
+      for (const item of res.comments) {
+        this.commentNewData.push(...[new CommentClass(item)]);
+      }
+      // 最热评论
+      if (this.page === 0) {
+        for (const item of res.hotComments) {
+          this.commentHotData.push(...[new CommentClass(item)]);
+        }
+      }
+    }
+  }
+  async getSongsComment() {
+    let res = await songsComment(this.id, this.page);
     if (res.code === 200) {
       this.commentTotal = res.total;
       // 最新评论
@@ -94,7 +151,17 @@ export default class Comment extends Vue {
   nextPage() {
     if (!this.mode) return false; // 最热评论 只获取第一页中的热门数据 不做加载更多
     this.page++;
-    this.getSongsheetComment();
+    switch (this.$route.path) {
+      case "/comment/songsheet":
+        this.getSongsheetComment();
+        break;
+      case "/comment/album":
+        this.getAlbumComment();
+        break;
+      case "/comment/songs":
+        this.getSongsComment();
+        break;
+    }
     window.clearTimeout(this.timer);
     this.timer = window.setTimeout(() => {
       (<any>this).$refs.commentMain.$refs.commentScroll.finishPullUp();
@@ -109,7 +176,7 @@ export default class Comment extends Vue {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1011;
+  z-index: 1112;
   background: white;
 }
 </style>

@@ -31,6 +31,7 @@
 ![hot singers page](./src/doc/images/singer.gif)
 ![Music playing](./src/doc/images/player.gif)
 ![New song list](./src/doc/images/createSong.gif)
+![Comment](./src/doc/images/comment.gif)
 
 </details>
 

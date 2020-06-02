@@ -32,6 +32,11 @@ export const mutations = {
     state.playList = newVal
     window.localStorage.setItem('playlist', JSON.stringify(newVal))
   },
+  // 单曲插入到歌单列表
+  insertPlaylist(state: IState, newVal: object) {
+    (state.playList as []).splice(state.currentPlayIndex + 1, 0, (<never>newVal))
+    window.localStorage.setItem('playlist', JSON.stringify(state.playList))
+  },
   changePlaylist(state: IState, newVal: object[]) {
     state.playList = newVal
     window.localStorage.setItem('playlist', JSON.stringify(newVal))

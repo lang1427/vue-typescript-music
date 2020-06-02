@@ -1,45 +1,48 @@
 <template>
-  <scroll class="singer-detail-scroll" ref="singerDetailScroll" :probeType="3" @scroll="scroll">
-    <div class="singer-detail">
-      <detail-head ref="detailHead" :singerHeadInfo="singerHeadInfo" />
+  <div>
+    <scroll class="singer-detail-scroll" ref="singerDetailScroll" :probeType="3" @scroll="scroll">
+      <div class="singer-detail">
+        <detail-head ref="detailHead" :singerHeadInfo="singerHeadInfo" />
+        <detail-tab-bar
+          v-show="isShowTabbar"
+          ref="detailTabbar"
+          class="singer-detail-tabbar1"
+          :tabbarInfo="tabbarList"
+          :isTopRadian="true"
+          @changeTabbar="changeTabbar"
+        ></detail-tab-bar>
+
+        <detail-home v-show="0 === tabbarContentIndex" :singleList="hotSongs" />
+        <detail-album
+          v-show="1 === tabbarContentIndex"
+          :albumList="hotAlbumsData"
+          :isMore="hotAlbumsMore"
+        />
+        <detail-mv v-show="2 === tabbarContentIndex" :mvList="mvsData" />
+      </div>
+      <!-- 不让scroll将以下组件滚动 -->
+      <topbar class="singer-detail-topbar" ref="detailTopbar">
+        <div slot="left">
+          <span @click="back" class="fa-arrow-left back"></span>
+        </div>
+        <div v-show="!isShowName" slot="center">
+          <h3 class="title">{{ singerHeadInfo.name }}</h3>
+        </div>
+        <div slot="right">
+          <span class="fa-ellipsis-v report"></span>
+        </div>
+      </topbar>
       <detail-tab-bar
-        v-show="isShowTabbar"
-        ref="detailTabbar"
-        class="singer-detail-tabbar1"
+        v-show="!isShowTabbar"
+        ref="detailTabbar2"
+        class="singer-detail-tabbar2"
         :tabbarInfo="tabbarList"
         :isTopRadian="true"
         @changeTabbar="changeTabbar"
       ></detail-tab-bar>
-
-      <detail-home v-show="0 === tabbarContentIndex" :singleList="hotSongs" />
-      <detail-album
-        v-show="1 === tabbarContentIndex"
-        :albumList="hotAlbumsData"
-        :isMore="hotAlbumsMore"
-      />
-      <detail-mv v-show="2 === tabbarContentIndex" :mvList="mvsData" />
-    </div>
-    <!-- 不让scroll将以下组件滚动 -->
-    <topbar class="singer-detail-topbar" ref="detailTopbar">
-      <div slot="left">
-        <span @click="back" class="fa-arrow-left back"></span>
-      </div>
-      <div v-show="!isShowName" slot="center">
-        <h3 class="title">{{ singerHeadInfo.name }}</h3>
-      </div>
-      <div slot="right">
-        <span class="fa-ellipsis-v report"></span>
-      </div>
-    </topbar>
-    <detail-tab-bar
-      v-show="!isShowTabbar"
-      ref="detailTabbar2"
-      class="singer-detail-tabbar2"
-      :tabbarInfo="tabbarList"
-      :isTopRadian="true"
-      @changeTabbar="changeTabbar"
-    ></detail-tab-bar>
-  </scroll>
+    </scroll>
+    <songlist-operation ref="songOperation"></songlist-operation>
+  </div>
 </template>
 
 <script lang="ts">
@@ -55,7 +58,8 @@ import detailTabBar from "components/content/tab-bar/tab-bar.vue";
 import detailHome from "./childComp/home.vue";
 import detailAlbum from "./childComp/album.vue";
 import detailMv from "./childComp/mv.vue";
-
+import songlistOperation from "@/components/content/songlist-operation/index.vue";
+import { SongsInfoClass } from "@/conf/songsInfo";
 import {
   getSingerDetail,
   ISingerHeadInfo,
@@ -72,7 +76,8 @@ import {
     detailTabBar,
     detailHome,
     detailAlbum,
-    detailMv
+    detailMv,
+    songlistOperation
   }
 })
 export default class SingerDetail extends Vue {
@@ -112,6 +117,15 @@ export default class SingerDetail extends Vue {
     (<HTMLElement>document.getElementById("singer-list-view")).classList.add(
       "none"
     );
+
+    (<any>this).$bus.$on("openOperation", (val: any) => {
+      (<any>this).$refs.songOperation
+        ? ((<any>this).$refs.songOperation.operationShow = true)
+        : null;
+      (<any>this).$refs.songOperation
+        ? ((<any>this).$refs.songOperation.curSongInfo = val)
+        : null;
+    });
   }
   // 歌手组件被缓存下来了，当从搜索结果中的歌手点击过来时，需要在activated组件被激活时去请求对应的数据
   activated() {
@@ -128,13 +142,18 @@ export default class SingerDetail extends Vue {
   }
   beforeDestroy() {
     (<any>this).$bus.$emit("leaveSingerDetail");
+    (<any>this).$bus.$off("openOperation");
   }
 
   async getSingerDateilData(id: number) {
     let res = await getSingerDetail(id);
     if (res.code === 200) {
       this.singerHeadInfo = res.artist;
-      this.hotSongs = res.hotSongs;
+      let arr = [];
+      for (const item of res.hotSongs) {
+        arr.push(new SongsInfoClass(item));
+      }
+      this.hotSongs = arr;
     }
   }
   async getSingerAlbumData(id: number, page?: number) {

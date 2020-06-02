@@ -127,10 +127,10 @@ export function likeComment(id: number, cid: number, t: number, type: number) {
  * @param operationType // 操作类型  0：删除   1：发送    2：回复
  * @param commentType  // 评论类型 0:歌曲  1:mv  2:歌单  3:专辑  4:电台  5:视频  6:动态
  * @param typeID // 评论类型对应的id
- * @param content // 评论内容 或 内容ID
- * @param replyId  // 回复的评论id
+ * @param content // 评论内容 
+ * @param commentId  // 回复的评论id 或 内容ID(删除)
  */
-export function operationComment(operationType: number, commentType: number, typeID: number, content: string, replyId?: number) {
+export function operationComment(operationType: number, commentType: number, typeID: number, content: string, commentId?: number) {
     return service({
         url: '/comment',
         params: {
@@ -138,7 +138,7 @@ export function operationComment(operationType: number, commentType: number, typ
             type: commentType,
             id: typeID,
             content,
-            commentId: replyId
+            commentId
         }
     })
 }

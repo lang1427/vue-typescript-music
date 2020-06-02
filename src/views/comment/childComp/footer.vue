@@ -28,8 +28,12 @@ export default class CommentFooter extends Vue {
   created() {}
   mounted() {
     (<any>this).$bus.$on("replyComment", (rid: number, name: string) => {
-      (this.$refs.commentInput as HTMLInputElement) && (this.$refs.commentInput as HTMLInputElement).focus();
-      (this.$refs.commentInput as HTMLInputElement).placeholder = "回复" + name;
+      (this.$refs.commentInput as HTMLInputElement) &&
+        (this.$refs.commentInput as HTMLInputElement).focus();
+      this.$refs.commentInput
+        ? ((this.$refs.commentInput as HTMLInputElement).placeholder =
+            "回复" + name)
+        : null;
       this.replyID = rid;
     });
   }
@@ -53,6 +57,10 @@ export default class CommentFooter extends Vue {
     );
     this.commentVal = "";
     this.replyID = -1;
+    this.$refs.commentInput
+      ? ((this.$refs.commentInput as HTMLInputElement).placeholder =
+          "随乐而起，有感而发")
+      : null;
   }
 }
 </script>

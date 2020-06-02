@@ -23,6 +23,20 @@
 1. [接口下载地址](https://github.com/Binaryify/NeteaseCloudMusicApi)
 2. [接口 API 文档地址](https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=neteasecloudmusicapi)
 
+### 涉及相关技术
+
+1. Vue全家桶  `vue 2.6.10`    `vue-router 3.1.3` `vuex 3.1.2`   `vue-cli 3.10.0`
+2. 网络请求 `axios`
+3. `better-scroll 1.13.2` 
+4. js强大的Api库 `lodash`
+5. 日期格式化插件 `moment`
+6. 汉语拼音 `pinyin`
+7. 图片懒加载 `vue-lazyload`
+8. 图标 `svg`  `font-awesome`
+9. 布局 `flex`
+10. `ES6语法`
+
+
 ### 示例效果图
 <details>
 <summary> 推荐直接访问线上地址 (图片文件大,可能加载不出来)</summary>
@@ -31,6 +45,7 @@
 ![热门歌手页](./src/doc/images/singer.gif)
 ![音乐播放](./src/doc/images/player.gif)
 ![新建歌单](./src/doc/images/createSong.gif)
+![评论](./src/doc/images/comment.gif)
 
 </details>
 

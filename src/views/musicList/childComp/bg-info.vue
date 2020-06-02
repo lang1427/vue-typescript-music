@@ -21,7 +21,7 @@
         <p class="fa-commenting-o ico"></p>
         <p>{{ info.commentCount }}</p>
       </div>
-      <div class="items">
+      <div class="items" @click="toast">
         <p class="fa-link ico"></p>
         <p>{{ info.shareCount }}</p>
       </div>
@@ -29,7 +29,7 @@
         <p class="fa-cloud-download ico"></p>
         <p>下载</p>
       </div>-->
-      <div class="items">
+      <div class="items" @click="toast">
         <p class="fa-check-circle-o ico"></p>
         <p>多选</p>
       </div>
@@ -64,6 +64,9 @@ export default class BgInfo extends Vue {
     }
   }
   created() {}
+  toast() {
+    this.$toast("很遗憾，不支持此项功能");
+  }
 
   goCommentPage() {
     // console.log(this.$route.name);

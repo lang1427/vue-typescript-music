@@ -15,9 +15,17 @@
       <div class="other-operation">
         <div class="fa-heart-o like list-items"></div>
         <div class="list-items">
-          <a class="fa-arrow-circle-o-down download" :href="downloadUrl" download @click="downloadMusic"></a>
+          <a
+            class="fa-arrow-circle-o-down download"
+            :href="downloadUrl"
+            download
+            @click="downloadMusic"
+          ></a>
         </div>
-        <div class="fa-commenting-o comment list-items"></div>
+        <div
+          @click="goCommentPage($store.getters.playMusicID)"
+          class="fa-commenting-o comment list-items"
+        ></div>
         <div class="fa-ellipsis-v info list-items"></div>
       </div>
       <progress-bar
@@ -110,11 +118,17 @@ export default class FullPlayer extends Vue {
   openPlayerList() {
     this.$emit("openPlayerlist", "open");
   }
-  downloadMusic(){
-    if(this.downloadUrl == null){
-      this.$toast('此首歌曲没有权限')
-      return false
+  downloadMusic() {
+    if (this.downloadUrl == null) {
+      this.$toast("此首歌曲没有权限");
+      return false;
     }
+  }
+  goCommentPage(id: string) {
+    this.$router.push({
+      path: "/comment/songs",
+      query: { id }
+    });
   }
 
   // 向外告知 进度被拖动，用于进度颜色的改变
