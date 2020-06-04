@@ -29,7 +29,7 @@ export const singlePlayMixin = {
   methods: {
     playSingle(item: ISongs) {
       let currentIndex = (this as any).$store.state.playList.findIndex((list: any) => {
-        return list.id === item.id
+        return list.id === item.songsId
       })
       if (currentIndex === -1) {
         (this as any).$store.commit('addSingle', new PlayList(item))

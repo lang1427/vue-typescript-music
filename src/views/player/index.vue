@@ -1,12 +1,15 @@
 <template>
   <div class="player" v-if="$store.getters.playListLength!=0">
     <full-player
+      ref="fullPlayer"
       v-show="!isMiniShow"
       :percent="Peraent"
       :playStatu="isPlay"
       :currentTime="currentTime"
       :totalTime="duration"
       :downloadUrl="url"
+      :lyricData="currentLyrics"
+      :lyricState="lyricState"
       @toggle="toggle"
       @playStatus="playStatus"
       @changePercent="changePercent"
@@ -40,11 +43,13 @@
 
 <script lang='ts'>
 // import { mapGetters } from 'vuex'
+// import Lyric from '@/utils/lyric-parser'
+const Lyric = require("@/utils/lyric-parser");
 import fullPlayer from "./childComp/full-player.vue";
 import miniPlayer from "./childComp/mini-player.vue";
 import playerList from "./childComp/player-list.vue";
 import klMessage from "@/components/common/message/message.vue";
-import { isCanMusic, musicUrl } from "@/service/player";
+import { isCanMusic, musicUrl, musicLyric } from "@/service/player";
 import { Component, Vue, Watch } from "vue-property-decorator";
 @Component({
   name: "Player",
@@ -66,9 +71,17 @@ export default class Player extends Vue {
   private isPlay: boolean = false;
   private isMove: boolean = false;
   private isLoading: boolean = false;
+  // 歌词部分
+  private currentLyrics: any= null; // 当前歌词
+  private currnetLineNum: number = 0; // 当前歌词行数
+  private playingLyric: string = ""; // 正在播放的歌词
+  private noLyric: boolean = false; // 是否有歌词
 
   get Peraent() {
     return this.duration === 0 ? 0 : this.currentTime / this.duration;
+  }
+  get lyricState() {
+    return this.noLyric ? "暂无歌词" : "歌词加载中";
   }
 
   created() {}
@@ -113,6 +126,31 @@ export default class Player extends Vue {
       });
     }
   }
+  async getMusicLyric(id: number) {
+    // 如果当前有歌词 则先来波清空操作
+    if (this.currentLyrics) {
+      this.currentLyrics.stop();
+      this.currentLyrics = null;
+    }
+    this.noLyric = false;
+    try {
+      let res = await musicLyric(id);
+      if (res.code === 200) {
+        this.currentLyrics = new Lyric(res.lrc.lyric, this.handleLyric);
+        if (this.isPlay) {
+          this.currentLyrics.play(this.currentTime);
+          this.currnetLineNum = 0;
+          (<any>this).$refs.fullPlayer.$refs &&
+            (<any>this).$refs.fullPlayer.$refs.lyricScroll.scrollTo(0, 0, 1000);
+        }
+      }
+    } catch (e) {
+      console.log("歌词加载失败: " + e);
+      this.currentLyrics = null;
+      this.currnetLineNum = 0;
+      this.noLyric = true;
+    }
+  }
   // 这里要是监听当前播放的index的话，要是从别的播放列表中点击当前对应的index，则不会watch到变化 就不会去请求新的歌曲的url
   // @Watch("$store.state.currentPlayIndex")
   // changeCurrentPlayIndex() {
@@ -125,6 +163,7 @@ export default class Player extends Vue {
   @Watch("url")
   changeURL(newVal: string) {
     (<HTMLAudioElement>this.$refs.audio).src = newVal;
+    this.getMusicLyric(this.$store.getters.playMusicID);
   }
 
   play() {
@@ -146,6 +185,9 @@ export default class Player extends Vue {
   singleloop() {
     (<HTMLAudioElement>this.$refs.audio).currentTime = 0;
     this.play();
+    if(this.currentLyrics){
+      this.currentLyrics.seek()
+    }
   }
   prev() {
     this.isLoading = true;
@@ -186,6 +228,9 @@ export default class Player extends Vue {
   changePercent(newVal: number) {
     this.isMove = true;
     this.currentTime = newVal * this.duration;
+    if (this.currentLyrics) {
+      this.currentLyrics.seek(this.currentTime * 1000);
+    }
   }
   endPercent(newVal: number) {
     this.currentTime = newVal * this.duration; // 因为点击事件 是没有滑动过程的，所以这行代码仅仅是为了直接在进度条中点击的操作
@@ -196,6 +241,9 @@ export default class Player extends Vue {
       this.play();
     }
     this.isMove = false;
+    if (this.currentLyrics) {
+      this.currentLyrics.seek(this.currentTime * 1000);
+    }
   }
   playStatus(val: boolean) {
     this.isPlay = val;
@@ -204,6 +252,10 @@ export default class Player extends Vue {
     } else {
       this.stop();
     }
+    // 切换歌词的播放状态
+    if (this.currentLyrics) {
+      this.currentLyrics.togglePlay();
+    }
   }
   toggle(newVal: boolean) {
     this.isMiniShow = newVal;
@@ -211,6 +263,24 @@ export default class Player extends Vue {
   openPlayerlist(newVal: string) {
     if (newVal === "open") {
       (this.$refs.playerList as any).playerListShow = true;
+    }
+  }
+
+  // 操作歌词事件
+  handleLyric({ lineNum, txt }: any) {
+    this.currnetLineNum = lineNum;
+    if (lineNum > 5) {
+      let lineEl = (<any>this).$refs.fullPlayer
+        ? (<any>this).$refs.fullPlayer.$refs.lyricLine[lineNum - 5]
+        : null;
+      (<any>this).$refs.fullPlayer &&
+        (<any>this).$refs.fullPlayer.$refs.lyricScroll.scrollToElement(
+          lineEl,
+          1000
+        );
+    } else {
+      (<any>this).$refs.fullPlayer &&
+        (<any>this).$refs.fullPlayer.$refs.lyricScroll.scrollTo(0, 0, 1000);
     }
   }
 

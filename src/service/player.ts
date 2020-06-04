@@ -19,3 +19,13 @@ export function musicUrl(id: number) {
         }
     })
 }
+
+// 获取音乐歌词
+export function musicLyric(id: number) {
+    return service({
+        url: 'lyric',
+        params: {
+            id
+        }
+    })
+}  

@@ -7,10 +7,32 @@
         </div>
       </notice-bar>
       <div class="CD-lyrics">
-        <div :class="[playStatu?'rotate cd':'cd']" @touchstart="toggleStart" @touchend="toggleEnd">
+        <div
+          v-show="currentShow==='cd'"
+          @click="currentShow='lyrics'"
+          :class="[playStatu?'rotate cd':'cd']"
+          @touchstart="toggleStart"
+          @touchend="toggleEnd"
+        >
           <img :src="$store.getters.playMusicImg" alt />
         </div>
-        <div class="lyrics"></div>
+        <!-- 歌词部分 -->
+        <div class="lyrics" v-show="currentShow==='lyrics'" @click="currentShow='cd'">
+          <lyric-scroll class="lyric-scroll-wrapper" ref="lyricScroll">
+            <div class="lyric-content">
+              <div class="current-lyric" v-if="lyricData">
+                <p
+                 ref="lyricLine"
+                  v-for="(line,index) of lyricData.lines"
+                  :key="line.key"
+                  :class="{'current':$parent.currnetLineNum===index}"
+                   class="text"
+                >{{ line.txt }}</p>
+              </div>
+              <p v-if="lyricData === null" class="lyric-state">{{ lyricState }}</p>
+            </div>
+          </lyric-scroll>
+        </div>
       </div>
       <div class="other-operation">
         <div class="fa-heart-o like list-items"></div>
@@ -54,6 +76,7 @@
 
 <script lang='ts'>
 import noticeBar from "@/components/common/noticeBar/notice-bar.vue";
+import lyricScroll from "@/components/common/scroll/scroll.vue";
 import progressBar from "@/components/content/progress-bar/progress-bar.vue";
 import klMessage from "@/components/common/message/message.vue";
 import { playModeMixin } from "@/utils/mixin";
@@ -62,6 +85,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 @Component({
   components: {
     noticeBar,
+    lyricScroll,
     progressBar,
     klMessage
   },
@@ -84,8 +108,11 @@ export default class FullPlayer extends Vue {
   @Prop({ default: 0 }) totalTime!: number;
   @Prop({ default: 0 }) currentTime!: number;
   @Prop() downloadUrl!: string;
+  @Prop() lyricData!: object;
+  @Prop() lyricState!: string;
 
   private isShow: boolean = false;
+  private currentShow: string = "cd";
   private touch = {
     startX: 0
   };
@@ -201,6 +228,33 @@ export default class FullPlayer extends Vue {
         height: 270px;
         width: 270px;
         border-radius: 50%;
+      }
+    }
+    .lyrics {
+      width: 100%;
+      height: 100%;
+      .lyric-scroll-wrapper {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        .lyric-content {
+          .current-lyric {
+            .text {
+              text-align: center;
+              color: rgba(189, 180, 180, 0.979);
+              font-size: 13px;
+              line-height: 35px;
+              &.current {
+                color: white;
+              }
+            }
+          }
+          .lyric-state {
+            padding-top: 35px;
+            text-align: center;
+            color: rgb(222, 222, 222);
+          }
+        }
       }
     }
   }

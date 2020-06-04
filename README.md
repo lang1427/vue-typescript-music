@@ -4,7 +4,7 @@
 
 [English](./README.en.md)
 
-**线上访问地址**[www.kanglang.xyz](http://www.kanglang.xyz)
+**线上访问地址**  [www.kanglang.xyz](http://www.kanglang.xyz)
 
 > 项目不断完善进行中 持续更新...
 
@@ -118,7 +118,7 @@
 - [x] 收藏歌单
 - [x] 删除播放列表
 - [x] 下载当前播放音乐
-- [ ] 歌词
+- [x] 歌词
 
 **视屏页面**
 

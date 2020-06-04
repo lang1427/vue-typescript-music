@@ -4,7 +4,7 @@
 
 [中文](./README.md)
 
-**Online access address**[www.kanglang.xyz](http://www.kanglang.xyz)
+**Online access address**  [www.kanglang.xyz](http://www.kanglang.xyz)
 
 > Continuous improvement of projects and ongoing updates...
 
@@ -105,7 +105,7 @@
 - [x] Star Song sheet
 - [x] Delete playlist
 - [x] Download currently playing music
-- [ ] Lyric
+- [x] Lyric
 
 **Video page**
 

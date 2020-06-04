@@ -15,13 +15,13 @@
           <div class="body">
             <div
               class="list-items"
-              v-for="item of overallList.song.songs"
-              :key="item.id"
+              v-for="item of Songs"
+              :key="item.songsId"
               @click="playSingle(item)"
             >
               <div class="info">
-                <p class="single-name">{{ item.name }}</p>
-                <p class="info-name">{{ item.ar[0].name }}-{{ item.al.name }}</p>
+                <p class="single-name">{{ item.songsName }}</p>
+                <p class="info-name">{{ item.singerName }}</p>
               </div>
             </div>
           </div>
@@ -180,9 +180,15 @@
 </template>
 
 <script lang="ts">
+interface IOverallList{
+  song:{
+    songs:[]
+  }
+}
 import scroll from "components/common/scroll/scroll.vue";
 import { formatDate } from "@/utils/formatDate";
 import { debounce } from "@/utils/debounce.js";
+import { SongsInfoClass } from "@/conf/songsInfo";
 import { loadingMixin, singlePlayMixin } from "@/utils/mixin";
 import { Component, Vue, Prop } from "vue-property-decorator";
 
@@ -208,10 +214,19 @@ export default class OverAll extends Vue {
       return {};
     }
   })
-  overallList!: object;
+  overallList!: IOverallList;
   imgLoad() {
     // 解决 refresh() of  undefined 的问题
     this.$refs.overallScroll && (this.$refs.overallScroll as any).refresh();
+  }
+
+  get Songs(){
+    let arr = (<IOverallList>this.overallList).song.songs
+    let songs = []
+    for (const item of arr) {
+      songs.push(new SongsInfoClass(item))
+    }
+    return songs
   }
 
   goSingerDetail(id: number) {

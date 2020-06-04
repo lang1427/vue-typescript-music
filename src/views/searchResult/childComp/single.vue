@@ -16,12 +16,12 @@
           <div class="body">
             <div
               class="list-items"
-              v-for="(item,index) of songlist"
+              v-for="(item,index) of songs"
               :key="index"
               @click="playSingle(item)"
             >
-              <p class="name">{{ item.name }}</p>
-              <p class="desc">{{ item.artists[0].name }} - {{ item.album.name }}</p>
+              <p class="name">{{ item.songsName }}</p>
+              <p class="desc">{{ item.singerName }}</p>
             </div>
           </div>
         </div>
@@ -33,6 +33,7 @@
 
 <script lang='ts'>
 import scroll from "components/common/scroll/scroll.vue";
+import { SongsInfoClass } from "@/conf/songsInfo";
 import { loadingMixin,playMixin, singlePlayMixin } from "@/utils/mixin";
 import { Component, Vue, Prop } from "vue-property-decorator";
 
@@ -48,8 +49,16 @@ export default class Single extends Vue {
       return [];
     }
   })
-  songlist!: object[];
+  songlist!: [];
   timer: any = null;
+
+  get songs(){
+    let arr = []
+    for (const item of this.songlist) {
+      arr.push(new SongsInfoClass(item))
+    }
+    return arr
+  }
 
   mounted() {
     (<any>this).$bus.$on("finishPullUp", () => {
