@@ -6,6 +6,8 @@
 
 **线上访问地址**  [www.kanglang.xyz](http://www.kanglang.xyz)
 
+**项目解析上线啦** [源码解析地址](https://blog.csdn.net/weixin_42661283/article/details/106552202)
+
 > 项目不断完善进行中 持续更新...
 
 ##### 欢迎 Star，Issues
@@ -51,6 +53,7 @@
 
 
 ### 界面、功能模块介绍
+
 <details>
 <summary></summary>
 
@@ -127,7 +130,226 @@
 </details>
 
 
+### 文件目录结构树
+
+ ├─ assets       //  静态资源文件目录
+ | ├─ images
+ | | ├─  singer-bg.png      // 歌手背景图
+ | | ├─  music-load.jpg     // 歌曲加载中背景图
+ | | ├─  music-ico.svg      
+ | | ├─  music-error.svg    // 歌曲加载失败背景图
+ | | ├─  logo.png           
+ | | └─  login-avatar.jpg  // 默认用户登陆头像
+ | ├─ less
+ | | └─  reset.less         // 重置的less样式
+ ├─ components              // 组件库
+ | ├─ common                // 公共的组件库
+ | | ├─ bottomPopup         // 封装的底部弹出层
+ | | | └─  bottom-popup.vue
+ | | ├─ gridview            // 封装的网格图
+ | | | └─  grid-view.vue
+ | | ├─ kl-confirm          // 封装的确认框
+ | | | └─  kl-confirm.vue
+ | | ├─ kl-dialog           // 封装的对话框
+ | | | └─  kl-dialog.vue
+ | | ├─ loading             // 封装的loading
+ | | | ├─  loading.vue
+ | | | └─  loading.gif
+ | | ├─ message             // 封装的消息提示
+ | | | └─  message.vue
+ | | ├─ navbar              // 封装的导航栏
+ | | | └─  navbar.vue
+ | | ├─ noticeBar           // 封装的 消息通知
+ | | | └─  notice-bar.vue   
+ | | ├─ scroll              // 对better-scroll 二次封装
+ | | | └─  scroll.vue
+ | | ├─ scrollNavBar        // better-scroll 二次封装的可滚动菜单与可滚动内容
+ | | | └─  scroll-nav-bar.vue
+ | | ├─ swiper              // 轮播图
+ | | | ├─  SwiperItem.vue
+ | | | └─  Swiper.vue
+ | | ├─ toast               // 封装的 轻提示 插件
+ | | | ├─  toast.vue
+ | | | ├─  main.js
+ | | | ├─  index.js
+ | | | └─  index.d.ts
+ | ├─ content               // 此项目需要的组件
+ | | ├─ album-list           // 专辑列表组件
+ | | | ├─  album-list.vue
+ | | | └─  album-list-items.vue
+ | | ├─ create-song-dialog      // 新建歌单弹框组件
+ | | | └─  index.vue
+ | | ├─ head-menu           // 顶部菜单组件
+ | | | └─  head-menu.vue
+ | | ├─ mv-list             // mv列表组件
+ | | | ├─  mv-list.vue
+ | | | └─  mv-list-items.vue
+ | | ├─ progress-bar        // 线性进度条组件
+ | | | └─  progress-bar.vue
+ | | ├─ progress-circle     // 环形进度条组件
+ | | | └─  progress-circle.vue
+ | | ├─ scroll-list-view    // 内容+右侧拼音联动组件
+ | | | └─  scroll-list-view.vue
+ | | ├─ single-list         // 歌手列表组件
+ | | | ├─  single-list.vue
+ | | | └─  single-list-items.vue
+ | | ├─ songlist-operation      // 歌曲列表操作组件
+ | | | └─  index.vue
+ | | ├─ tab-bar         
+ | | | └─  tab-bar.vue
+ | | ├─ verify-code         // 验证码组件
+ | | | └─  verify-code.vue
+ ├─ conf
+ | ├─  songsInfo.ts         // 歌曲信息数据处理
+ | └─  playlist.ts          // 播放列表数据处理
+ ├─ doc
+ | ├─ images
+ | | ├─  singer.gif
+ | | ├─  search.gif
+ | | ├─  player.gif
+ | | ├─  createSong.gif
+ | | └─  comment.gif
+ ├─ router                  // 路由模块
+ | ├─  songManage.ts        //  歌单管理者路由（添加，修改，删除）歌单等
+ | ├─  my.ts                //  我的相关  路由
+ | ├─  musiclist.ts         // 专辑，歌单 路由
+ | ├─  login.ts             // 登陆注册相关路由
+ | └─  index.ts             // 主路由模块
+ ├─ service                 // 网络请求模块
+ | ├─  user.ts              // 用户请求相关
+ | ├─  songsheet.ts         // 歌单请求相关
+ | ├─  singer.ts            // 歌手请求相关
+ | ├─  service.ts           // 二次封装axios
+ | ├─  search.ts            // 搜索请求相关
+ | ├─  player.ts            // 音乐请求相关
+ | ├─  musiclist.ts         // 专辑请求相关
+ | ├─  login.ts             // 登陆请求相关
+ | ├─  find.ts              // 主页请求相关
+ | └─  comment.ts           // 评论请求相关
+ ├─ store                   //  vuex模块
+ | ├─  mutatioins.ts
+ | ├─  interface.ts
+ | ├─  index.ts
+ | ├─  getters.ts
+ | └─  actions.ts
+ ├─ utils                   // 工具类
+ | ├─  mixin.ts             // 混入操作相关代码
+ | ├─  lyric-parser.js      // 歌词解析库
+ | ├─  longpress.ts         // 长按事件
+ | ├─  html.ts              // html编码转义 反转义
+ | ├─  formatDate.ts        // 日期格式化
+ | ├─  dom.ts               // dom操作
+ | ├─  debounce.ts          // 防抖
+ | └─  cookie.ts            
+ ├─ views
+ | ├─ comment               // 评论组件
+ | | ├─ childComp
+ | | | ├─  main.vue
+ | | | ├─  head.vue
+ | | | └─  footer.vue
+ | | └─  index.vue
+ | ├─ find                  // 主页组件
+ | | ├─ childComp
+ | | | ├─  recommend.vue
+ | | | ├─  recmend-songlist.vue
+ | | | ├─  new-album.vue
+ | | | └─  find-swiper.vue
+ | | ├─ image
+ | | | ├─  paihang.svg
+ | | | ├─  mv.svg
+ | | | ├─  music.svg
+ | | | ├─  jiemu.svg
+ | | | └─  diantai.svg
+ | | └─  index.vue
+ | ├─ login                 // 登陆组件
+ | | ├─  register.vue
+ | | ├─  phone.vue
+ | | ├─  login-phone.vue
+ | | ├─  index.vue
+ | | └─  email.vue
+ | ├─ musicList             //  歌单 专辑 组件
+ | | ├─ childComp
+ | | | ├─  songlist.vue
+ | | | ├─  head.vue
+ | | | └─  bg-info.vue
+ | | └─  index.vue  
+ | ├─ my                   // 我的  组件
+ | | ├─ childComp
+ | | | ├─  my_songslist.vue
+ | | | ├─  my_music.vue
+ | | | └─  head.vue
+ | | ├─ childRouter
+ | | | ├─  watch_new_music.vue
+ | | | ├─  play_history.vue
+ | | | ├─  my_star.vue
+ | | | └─  my_radio.vue
+ | | └─  index.vue
+ | ├─ player            // 音乐播放器组件
+ | | ├─ childComp
+ | | | ├─  player-list.vue
+ | | | ├─  mini-player.vue
+ | | | └─  full-player.vue
+ | | ├─ image
+ | | | ├─  singleloop.png
+ | | | ├─  random.png
+ | | | ├─  musiclist.svg
+ | | | └─  listloop.png
+ | | ├─  readme.ts
+ | | └─  index.vue
+ | ├─ search        // 搜索组件
+ | | ├─ childComp
+ | | | ├─  search-tab.vue
+ | | | ├─  search-history.vue
+ | | | └─  hot-search-list.vue
+ | | └─  index.vue
+ | ├─ searchResult  // 搜索结果组件
+ | | ├─ childComp
+ | | | ├─  video.vue
+ | | | ├─  user.vue
+ | | | ├─  topbar.vue
+ | | | ├─  song-sheet.vue
+ | | | ├─  single.vue
+ | | | ├─  singer.vue
+ | | | ├─  radio.vue
+ | | | ├─  overall.vue
+ | | | └─  album.vue
+ | | └─  index.vue
+ | ├─ singer        // 热门歌手组件
+ | | ├─ childComp
+ | | | └─  topbar.vue
+ | | └─  index.vue
+ | ├─ singerDetail      // 歌手详情组件
+ | | ├─ childComp
+ | | | ├─  mv.vue
+ | | | ├─  home.vue
+ | | | ├─  head.vue
+ | | | └─  album.vue
+ | | └─  index.vue
+ | ├─ songManage        // 歌单管理者组件
+ | | ├─ updateSong          
+ | | | ├─ image
+ | | | | ├─  theme.svg
+ | | | | ├─  style.svg
+ | | | | ├─  scene.svg
+ | | | | ├─  language.svg
+ | | | | └─  emotion.svg
+ | | | ├─  index.vue
+ | | | ├─  edit-song-tags.vue       // 修改歌单tags组件
+ | | | ├─  edit-song-name.vue       // 修改歌单名称组件
+ | | | └─  edit-song-desc.vue       // 修改歌单描述组件
+ | | ├─  delete-song.vue            // 删除歌单组件
+ | | └─  add-song.vue               // 歌单添加歌曲组件
+ | ├─ video             // 视频组件
+ | | └─  index.vue
+ | └─  test.vue         // 测试
+ ├─  shims-vue.d.ts
+ ├─  shims-tsx.d.ts
+ ├─  main.ts
+ └─  App.vue        //  主入口
+
 ---
+
+
 
 ## Project setup
 

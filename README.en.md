@@ -6,6 +6,8 @@
 
 **Online access address**  [www.kanglang.xyz](http://www.kanglang.xyz)
 
+**Project analysis online** [Source resolution address](https://blog.csdn.net/weixin_42661283/article/details/106552202)
+
 > Continuous improvement of projects and ongoing updates...
 
 ##### Please Star，Issues
