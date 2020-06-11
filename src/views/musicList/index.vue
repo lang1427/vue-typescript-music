@@ -9,6 +9,7 @@
 <script lang='ts'>
 import { albumContent, AlbumBaseInfo } from "@/service/musiclist";
 import { IUserSongList, songsDetail, SongsBaseInfo } from "@/service/songsheet";
+import { topList,RankBaseInfo } from "@/service/rankinglist";
 import { userSongsManageMixin } from "@/utils/mixin";
 import { SongsInfoClass } from "@/conf/songsInfo";
 import topbar from "./childComp/head.vue";
@@ -51,6 +52,8 @@ export default class MusicList extends Vue {
       this.getSongsDetail();
       // 当 歌单中是自身的歌单时 则可以对自身歌单进行编辑修改； 判断是否为自身歌单 则 需要获取用户歌单信息 对 歌单id进行find对比 存在相等时 则为自身歌单
       (this as any).getUserSongsheet();
+    } else if (this.$route.path.match(/\/toplist\//)) {
+      this.getTopList(this.id);
     }
   }
 
@@ -69,6 +72,17 @@ export default class MusicList extends Vue {
     let res = await songsDetail(this.id);
     if (res.code === 200) {
       this.baseInfo = new SongsBaseInfo(res.playlist);
+      let arr = [];
+      for (const item of res.playlist.tracks) {
+        arr.push(new SongsInfoClass(item));
+      }
+      this.songList = arr;
+    }
+  }
+  async getTopList(idx: number) {
+    let res = await topList(idx);
+    if (res.code === 200) {
+     this.baseInfo = new RankBaseInfo(res.playlist)
       let arr = [];
       for (const item of res.playlist.tracks) {
         arr.push(new SongsInfoClass(item));

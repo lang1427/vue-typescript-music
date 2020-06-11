@@ -83,6 +83,11 @@ export default class BgInfo extends Vue {
           query: { id: this.$route.params.id }
         });
         break;
+      case "toplist":
+        this.$router.push({
+          path: "/comment/songsheet",
+          query: { id: (<any>this).info.singerId }
+        });
     }
   }
 }

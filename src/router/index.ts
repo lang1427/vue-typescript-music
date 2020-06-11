@@ -14,6 +14,7 @@ import loginRouters from './login'
 import musicListRouters from './musiclist'
 import songManage from './songManage'
 const find = () => import(/*webpackChunkName:'find'*/ 'views/find/index.vue')
+const rankingList = () => import(/*webpackChunkName:'rankingList'*/'views/rankingList/index.vue')
 const video = () => import(/*webpackChunkName:'video'*/'views/video/index.vue')
 
 const search = () =>
@@ -25,7 +26,7 @@ const singer = () =>
 const singerDetail = () =>
   import(/*webpackChunkName:'singerDetail'*/ 'views/singerDetail/index.vue')
 
-const comment = ()=>import(/*webpackChunkName:'comment'*/'@/views/comment/index.vue')
+const comment = () => import(/*webpackChunkName:'comment'*/'@/views/comment/index.vue')
 
 const test = () => import('views/test.vue')
 
@@ -42,6 +43,11 @@ const routes = [
     path: '/find',
     name: 'find',
     component: find
+  },
+  {
+    path: '/rankingList',
+    name: 'rankingList',
+    component: rankingList
   },
   {
     path: '/video',
@@ -81,9 +87,9 @@ const routes = [
     ]
   },
   {
-    path:'/comment/:type',
-    name:'comment',
-    component:comment
+    path: '/comment/:type',
+    name: 'comment',
+    component: comment
   },
 
   {

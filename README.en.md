@@ -60,7 +60,7 @@
 - [x] New dish
 - [ ] Recommended new music
 - [ ] Recommended radio station
-- [ ] Ranking List
+- [x] Ranking List
 - [ ] Recommended programs
 - [ ] Recommended MV
 

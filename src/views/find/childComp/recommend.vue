@@ -1,7 +1,12 @@
 <template>
   <div class="recommend">
-    <div class="recommend-item" @click="toast" v-for="item of recommendList" :key="item.name">
-      <img :src="item.ico" class="ico">
+    <div
+      class="recommend-item"
+      @click="toast(item.path)"
+      v-for="item of recommendList"
+      :key="item.name"
+    >
+      <img :src="item.ico" class="ico" />
       <p class="title">{{ item.name }}</p>
     </div>
   </div>
@@ -15,13 +20,17 @@ export default class Recommend extends Vue {
   private recommendList: object[] = [
     { ico: require("../image/music.svg"), name: "推荐新音乐" },
     { ico: require("../image/diantai.svg"), name: "推荐电台" },
-    { ico: require("../image/paihang.svg"), name: "排行榜" },
+    { ico: require("../image/paihang.svg"), name: "排行榜", path: "/rankingList" },
     { ico: require("../image/jiemu.svg"), name: "推荐节目" },
     { ico: require("../image/mv.svg"), name: "推荐MV" }
   ];
-  toast(){
-    this.$toast('很遗憾，暂未开放此功能')
-    return false
+  toast(path: string) {
+    if (path) {
+      this.$router.push(path);
+      return
+    }
+    this.$toast("很遗憾，暂未开放此功能");
+    return false;
   }
 }
 </script>

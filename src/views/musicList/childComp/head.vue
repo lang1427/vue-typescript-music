@@ -50,6 +50,8 @@ export default class AlbumHead extends Vue {
       return "专辑";
     } else if (this.$route.path.match(/\/songsheet\//)) {
       return "歌单";
+    } else if (this.$route.path.match(/\/toplist\//)) {
+      return "排行榜";
     }
   }
   back() {
@@ -57,7 +59,7 @@ export default class AlbumHead extends Vue {
   }
   goEditSong() {
     this.$router.push({
-      path: "/songmanage/update?id="+this.$route.params.id
+      path: "/songmanage/update?id=" + this.$route.params.id
       // query: {
       //   songId: this.$route.params.id,
       //   name: (this.$parent as any).baseInfo.title,
@@ -66,8 +68,8 @@ export default class AlbumHead extends Vue {
       // }
     });
   }
-  goAddSongPage(){
-    this.$router.push('/songmanage/add?id='+this.$route.params.id)
+  goAddSongPage() {
+    this.$router.push("/songmanage/add?id=" + this.$route.params.id);
   }
 
   hide() {

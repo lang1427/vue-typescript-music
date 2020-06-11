@@ -160,6 +160,7 @@ export default class DeleteSong extends Vue {
     right: 0;
     height: 50px;
     line-height: 25px;
+    background: white;
     border-top: 1px solid #dedede;
     .delete-box {
       width: 50px;

@@ -74,7 +74,7 @@
 - [x] 新碟
 - [ ] 推荐新音乐
 - [ ] 推荐电台
-- [ ] 排行榜
+- [x] 排行榜
 - [ ] 推荐节目
 - [ ] 推荐 MV
 
@@ -131,6 +131,8 @@
 
 
 ### 文件目录结构树
+
+```
 
  ├─ assets       //  静态资源文件目录
  | ├─ images
@@ -222,6 +224,7 @@
  | ├─  service.ts           // 二次封装axios
  | ├─  search.ts            // 搜索请求相关
  | ├─  player.ts            // 音乐请求相关
+ | ├─  rankinglist.ts       // 排行榜请求相关
  | ├─  musiclist.ts         // 专辑请求相关
  | ├─  login.ts             // 登陆请求相关
  | ├─  find.ts              // 主页请求相关
@@ -296,6 +299,8 @@
  | | | └─  listloop.png
  | | ├─  readme.ts
  | | └─  index.vue
+ | ├─ rankingList        // 排行榜组件
+ | | └─  index.vue
  | ├─ search        // 搜索组件
  | | ├─ childComp
  | | | ├─  search-tab.vue
@@ -346,6 +351,7 @@
  ├─  shims-tsx.d.ts
  ├─  main.ts
  └─  App.vue        //  主入口
+ ```
 
 ---
 

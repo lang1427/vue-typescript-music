@@ -134,6 +134,10 @@ export default class CommentMain extends Vue {
       } else {
         (<any>domEvent).target.classList.remove("liked-active");
         (<any>domEvent).target.innerHTML -= 1;
+        // 因为这里的数据不是响应式了，所以点赞数量=0的判断在这里不起效，需手动设置为空字符串
+        if ((<any>domEvent).target.innerHTML == 0) {
+          (<any>domEvent).target.innerHTML = "";
+        }
         // this.$set(this.commentData, index, {
         //   ...this.commentData[index],
         //   commentLiked: false,
@@ -166,8 +170,8 @@ export default class CommentMain extends Vue {
     this.resetDialog();
   }
   removeComment() {
-    (<any>this).$parent.setOperationComment(0, null,this.commentContentId);
-    this.resetDialog()
+    (<any>this).$parent.setOperationComment(0, null, this.commentContentId);
+    this.resetDialog();
   }
   resetDialog() {
     this.longpress = false;
