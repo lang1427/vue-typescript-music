@@ -240,7 +240,7 @@ export default class CommentMain extends Vue {
             }
           }
           .liked {
-            width: 40px;
+            width: 80px;
             text-align: right;
             .liked-active {
               color: @klColor;

@@ -90,8 +90,9 @@ export default class CommentFooter extends Vue {
     flex: 1;
     position: relative;
     overflow: hidden;
+    background: white;
     input {
-      width: 100%;
+      width: 95%;
       height: 30px;
       padding-left: 6px;
       border: none;
