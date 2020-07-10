@@ -1,17 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>vue-typescript-music</title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but vue-typescript-music doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <style type="text/css">
+    @keyframes hourglass-spin {
+      0% {
+        transform: rotate(180deg) scale(0.4);
+      }
+
+      10% {
+        transform: rotate(360deg) scale(0.4);
+      }
+
+      50% {
+        transform: rotate(360deg) scale(0.4);
+      }
+
+      60% {
+        transform: rotate(540deg) scale(0.4);
+      }
+
+      100% {
+        transform: rotate(540deg) scale(0.4)
+      }
+    }
+
+    @keyframes hourglass-sand {
+      0% {
+        background-position: 0 250px;
+      }
+
+      50% {
+        background-position: 0 0;
+      }
+
+      100% {
+        background-position: 0 -250px;
+      }
+    }
+
+    @keyframes hourglass-stream {
+      0% {
+        top: 290px;
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      49.9% {
+        top: 290px;
+        opacity: 1;
+      }
+
+      50% {
+        top: 20px;
+        opacity: 0;
+      }
+
+      60% {
+        opacity: 1;
+      }
+
+      100% {
+        top: 20px;
+        opacity: 1;
+      }
+    }
+
+    /* All other browsers */
+
+    #first-loading {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hourglass {
+      position: relative;
+      width: 280px;
+      height: 560px;
+      animation: hourglass-spin 8s ease-in-out 0s infinite;
+    }
+
+    .hourglass::before,
+    .hourglass::after {
+      position: absolute;
+      content: '';
+      left: 0;
+      bottom: 0;
+      width: 240px;
+      height: 250px;
+      background: #ccc;
+      border: 20px solid #ccc;
+      border-top-left-radius: 150px 250px;
+      border-top-right-radius: 150px 250px;
+    }
+
+    .hourglass::before {
+      top: 0;
+      transform: rotate(180deg);
+      -webkit-transform: rotate(180deg);
+    }
+
+    .hourglass .hourglass-stand::after,
+    .hourglass .hourglass-stand::before {
+      position: absolute;
+      content: '';
+      z-index: 3;
+      left: -40px;
+      bottom: 0;
+      width: 360px;
+      height: 50px;
+      background: #ccc;
+    }
+
+    .hourglass .hourglass-stand::before {
+      top: 0;
+    }
+
+    .hourglass .hourglass-sand::before,
+    .hourglass .hourglass-sand::after {
+      position: absolute;
+      content: '';
+      z-index: 2;
+      left: 20px;
+      bottom: 20px;
+      width: 240px;
+      height: 250px;
+      background: linear-gradient(yellow 0%, yellow 50%, #fff 50%, #eee 100%);
+      background-size: 300px 500px;
+      border-top-left-radius: 130px 230px;
+      border-top-right-radius: 130px 230px;
+      animation: hourglass-sand 8s ease-in-out 0s infinite;
+    }
+
+    .hourglass .hourglass-sand::before {
+      top: 20px;
+      transform: rotate(180deg);
+      animation-delay: -4s;
+      -webkit-transform: rotate(180deg);
+    }
+
+    .hourglass .hourglass-stream {
+      position: absolute;
+      z-index: 2;
+      left: 130px;
+      width: 10px;
+      height: 250px;
+      opacity: 0;
+      background: yellow;
+      animation: hourglass-stream 8s linear 0.6s infinite;
+      box-shadow: 0 3px 3px yellow,
+        0 3px 5px yellow, 0 3px 3px yellow,
+        0 4px 45px yellow, 0 3px 3px yellow,
+        0 3px 30px yellow, 0 3px 3px yellow,
+        0 3px 3px yellow, 0 3px 3px yellow,
+        0 3px 31px yellow, 0 3px 3px yellow;
+    }
+  </style>
+  <title>vue-typescript-music</title>
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but vue-typescript-music doesn't work properly without JavaScript enabled. Please enable it to
+      continue.</strong>
+  </noscript>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+  <div id="first-loading">
+    <div class="hourglass">
+      <div class="hourglass-stand"></div>
+      <div class="hourglass-sand"></div>
+      <div class="hourglass-stream"></div>
+    </div>
+  </div>
+</body>
+
 </html>

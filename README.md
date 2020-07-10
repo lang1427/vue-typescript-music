@@ -8,6 +8,8 @@
 
 **项目解析上线啦** [源码解析地址](https://blog.csdn.net/weixin_42661283/article/details/106552202)
 
+> vue-content-loader [TypeScript Support](https://github.com/egoist/vue-content-loader/pull/13)
+
 > 项目不断完善进行中 持续更新...
 
 ##### 欢迎 Star，Issues

@@ -8,6 +8,8 @@
 
 **Project analysis online** [Source resolution address](https://blog.csdn.net/weixin_42661283/article/details/106552202)
 
+> vue-content-loader [TypeScript Support](https://github.com/egoist/vue-content-loader/pull/13)
+
 > Continuous improvement of projects and ongoing updates...
 
 ##### Please Star，Issues

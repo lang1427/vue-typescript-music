@@ -25,6 +25,12 @@ import {
   }
 })
 export default class App extends Vue {
+  created() {
+    let first_loading = document.getElementById("first-loading");
+    if (!!first_loading) {
+      document.body.removeChild(<HTMLElement>first_loading);
+    }
+  }
   mounted() {
     document.body.style.margin = "0px";
   }
