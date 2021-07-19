@@ -358,6 +358,9 @@
 ---
 
 
+> 笔者最近正在学node相关知识体系，正在打造 koa + typescript 实现美食天下项目 欢迎感兴趣的小伙伴参考指点 
+[美食天下项目](https://github.com/lang1427/gourmet-world)
+
 
 ## Project setup
 
