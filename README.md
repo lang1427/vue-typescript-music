@@ -4,7 +4,7 @@
 
 [English](./README.en.md)
 
-**线上访问地址**  [www.kanglang.xyz](http://www.kanglang.xyz)
+**线上访问地址**  [网易云音乐在线项目体验入口](http://47.93.187.37/)
 
 **项目解析上线啦** [源码解析地址](https://blog.csdn.net/weixin_42661283/article/details/106552202)
 
