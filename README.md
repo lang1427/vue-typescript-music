@@ -29,6 +29,8 @@
 
 ### 涉及相关技术
 
+**node.js版本：v12.16.1**
+
 1. Vue全家桶  `vue 2.6.10`    `vue-router 3.1.3` `vuex 3.1.2`   `vue-cli 3.10.0`
 2. 网络请求 `axios`
 3. `better-scroll 1.13.2` 
