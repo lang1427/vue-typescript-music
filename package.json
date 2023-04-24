@@ -16,7 +16,7 @@
     "fastclick": "^1.0.6",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.15",
-    "moment": "^2.26.0",
+    "moment": "^2.29.4",
     "pinyin": "^2.9.0",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
