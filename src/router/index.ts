@@ -1,34 +1,30 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from "vue";
+import VueRouter from "vue-router";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
-// 解决 vue-router 新版本 重复点击路由 浏览器 Console 输出的异常 
-const originalPush = VueRouter.prototype.push
+// 解决 vue-router 新版本 重复点击路由 浏览器 Console 输出的异常
+const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location: string) {
-  return (<any>originalPush).call(this, location).catch((err: string) => err)
-}
+  return (<any>originalPush).call(this, location).catch((err: string) => err);
+};
 
-import myRoutes from './my'
-import loginRouters from './login'
-import musicListRouters from './musiclist'
-import songManage from './songManage'
-const find = () => import(/*webpackChunkName:'find'*/ 'views/find/index.vue')
-const rankingList = () => import(/*webpackChunkName:'rankingList'*/'views/rankingList/index.vue')
-const video = () => import(/*webpackChunkName:'video'*/'views/video/index.vue')
+import myRoutes from "./my";
+import loginRouters from "./login";
+import musicListRouters from "./musiclist";
+import songManage from "./songManage";
+const find = () => import("views/find/index.vue");
+const rankingList = () => import("views/rankingList/index.vue");
+const video = () => import("views/video/index.vue");
 
-const search = () =>
-  import(/*webpackChunkName:'search'*/ 'views/search/index.vue')
-const searchResult = () =>
-  import(/*webpackChunkName:'searchResult'*/ 'views/searchResult/index.vue')
-const singer = () =>
-  import(/*webpackChunkName:'singer'*/ 'views/singer/index.vue')
-const singerDetail = () =>
-  import(/*webpackChunkName:'singerDetail'*/ 'views/singerDetail/index.vue')
+const search = () => import("views/search/index.vue");
+const searchResult = () => import("views/searchResult/index.vue");
+const singer = () => import("views/singer/index.vue");
+const singerDetail = () => import("views/singerDetail/index.vue");
 
-const comment = () => import(/*webpackChunkName:'comment'*/'@/views/comment/index.vue')
+const comment = () => import("@/views/comment/index.vue");
 
-const test = () => import('views/test.vue')
+const test = () => import("views/test.vue");
 
 const routes = [
   ...myRoutes,
@@ -36,37 +32,37 @@ const routes = [
   ...musicListRouters,
   ...songManage,
   {
-    path: '/',
-    redirect: '/find'
+    path: "/",
+    redirect: "/find",
   },
   {
-    path: '/find',
-    name: 'find',
-    component: find
+    path: "/find",
+    name: "find",
+    component: find,
   },
   {
-    path: '/rankingList',
-    name: 'rankingList',
-    component: rankingList
+    path: "/rankingList",
+    name: "rankingList",
+    component: rankingList,
   },
   {
-    path: '/video',
-    name: 'video',
-    component: video
+    path: "/video",
+    name: "video",
+    component: video,
   },
   {
-    path: '/search',
-    name: 'search',
-    component: search
+    path: "/search",
+    name: "search",
+    component: search,
   },
   {
-    path: '/searchresult',
-    name: 'searchresult',
-    component: searchResult
+    path: "/searchresult",
+    name: "searchresult",
+    component: searchResult,
   },
   {
-    path: '/singer',
-    name: 'singer',
+    path: "/singer",
+    name: "singer",
     component: singer,
     /**
      * 子路由所带来的无穷问题？
@@ -80,26 +76,26 @@ const routes = [
      */
     children: [
       {
-        path: 'detail/:id',
-        name: 'singerDetail',
-        component: singerDetail
-      }
-    ]
+        path: "detail/:id",
+        name: "singerDetail",
+        component: singerDetail,
+      },
+    ],
   },
   {
-    path: '/comment/:type',
-    name: 'comment',
-    component: comment
+    path: "/comment/:type",
+    name: "comment",
+    component: comment,
   },
 
   {
-    path: '/test',
-    component: test
-  }
-]
+    path: "/test",
+    component: test,
+  },
+];
 
 const router = new VueRouter({
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
