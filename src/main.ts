@@ -9,9 +9,6 @@ const app = createApp(App);
 
 // Vue.config.productionTip = false
 
-import FastClick from "fastclick";
-(<any>FastClick).attach(document.body);
-
 // import LazyLoad from "vue-lazyload";
 // app.use(LazyLoad, {
 //   loading: require("./assets/images/music-load.jpg"),
