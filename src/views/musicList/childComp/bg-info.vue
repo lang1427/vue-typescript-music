@@ -10,8 +10,10 @@
         <div class="detail-info">
           <div
             class="publish-time"
-            :style="info.publishTime?'':'visibility: hidden;'"
-          >发行时间 : {{ info.publishTime | newTime }}</div>
+            :style="info.publishTime ? '' : 'visibility: hidden;'"
+          >
+            发行时间 : {{ info.publishTime | newTime }}
+          </div>
           <div class="desc">{{ info.description }}</div>
         </div>
       </div>
@@ -37,62 +39,70 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { formatDate } from "@/utils/formatDate";
-import { Component, Vue, Prop } from "vue-property-decorator";
-@Component({
-  filters: {
-    newTime(oldVal: number) {
-      let date = new Date(oldVal);
-      return formatDate(date, "yyyy.MM.dd");
-    }
-  }
-})
-export default class BgInfo extends Vue {
-  @Prop({
-    default() {
-      return {};
-    }
-  })
-  info!: object;
+// @Component({
+//   filters: {
+//     newTime(oldVal: number) {
+//       let date = new Date(oldVal);
+//       return formatDate(date, "yyyy.MM.dd");
+//     }
+//   }
+// })
+export default {
+  // @Prop({
+  //   default() {
+  //     return {};
+  //   }
+  // })
+  // info!: object;
 
-  get singerInfo() {
-    if (this.$route.path.match(/\/album\//)) {
-      return `歌手 : ${(<any>this.info).singerName} >`;
-    } else if (this.$route.path.match(/\/songsheet\//)) {
-      return `${(<any>this.info).tags && (<any>this.info).tags.join("-")}`;
-    }
-  }
-  created() {}
-  toast() {
-    this.$toast("很遗憾，不支持此项功能");
-  }
+  props: {
+    info: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+  computed: {
+    singerInfo() {
+      if (this.$route.path.match(/\/album\//)) {
+        return `歌手 : ${(<any>this.info).singerName} >`;
+      } else if (this.$route.path.match(/\/songsheet\//)) {
+        return `${(<any>this.info).tags && (<any>this.info).tags.join("-")}`;
+      }
+    },
+  },
+  methods: {
+    toast() {
+      this.$toast("很遗憾，不支持此项功能");
+    },
 
-  goCommentPage() {
-    // console.log(this.$route.name);
-    switch (this.$route.name) {
-      case "songsheet":
-        this.$router.push({
-          path: "/comment/songsheet",
-          query: { id: this.$route.params.id }
-        });
-        break;
-      case "album":
-        this.$router.push({
-          path: "/comment/album",
-          query: { id: this.$route.params.id }
-        });
-        break;
-      case "toplist":
-        this.$router.push({
-          path: "/comment/songsheet",
-          query: { id: (<any>this).info.singerId }
-        });
-    }
-  }
-}
+    goCommentPage() {
+      // console.log(this.$route.name);
+      switch (this.$route.name) {
+        case "songsheet":
+          this.$router.push({
+            path: "/comment/songsheet",
+            query: { id: this.$route.params.id },
+          });
+          break;
+        case "album":
+          this.$router.push({
+            path: "/comment/album",
+            query: { id: this.$route.params.id },
+          });
+          break;
+        case "toplist":
+          this.$router.push({
+            path: "/comment/songsheet",
+            query: { id: (<any>this).info.singerId },
+          });
+      }
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .bg-info {
   padding: 10px;
   background-color: #8a5e5d;

@@ -10,24 +10,29 @@
 </template>
 
 <script lang="ts">
-import singleList from 'components/content/single-list/single-list.vue'
-import { loadingMixin } from '@/utils/mixin'
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import singleList from "components/content/single-list/single-list.vue";
+import { loadingMixin } from "@/utils/mixin";
 
-@Component({
-  components: {
-    singleList
+// @Component({
+//   components: {
+//     singleList
+//   },
+//   mixins: [loadingMixin]
+// })
+export default {
+  // @Prop({
+  //   default() {
+  //     return []
+  //   }
+  // })
+  // singleList!: object[]
+  props: {
+    singleList: {
+      type: Array,
+      default: () => [],
+    },
   },
-  mixins: [loadingMixin]
-})
-export default class SingerDetailHome extends Vue {
-  @Prop({
-    default() {
-      return []
-    }
-  })
-  singleList!: object[]
-}
+};
 </script>
 
 <style lang="less" scoped>

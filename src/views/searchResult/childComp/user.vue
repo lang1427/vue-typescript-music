@@ -1,9 +1,18 @@
 <template>
   <div>
-    <scroll class="user-scroll" ref="userScroll" :pullUpLoad="true" @pullingUp="pullingUp">
+    <scroll
+      class="user-scroll"
+      ref="userScroll"
+      :pullUpLoad="true"
+      @pullingUp="pullingUp"
+    >
       <div>
         <div class="user" v-if="userList.length != 0">
-          <div class="list-items" v-for="(item, index) of userList" :key="index">
+          <div
+            class="list-items"
+            v-for="(item, index) of userList"
+            :key="index"
+          >
             <div class="items-img">
               <img v-lazy="item.avatarUrl" @load="imgLoad" />
             </div>
@@ -23,40 +32,47 @@
 <script lang="ts">
 import scroll from "components/common/scroll/scroll.vue";
 import { loadingMixin } from "@/utils/mixin";
-import { Component, Vue, Prop } from "vue-property-decorator";
 
-@Component({
-  components: {
-    scroll
+// @Component({
+//   components: {
+//     scroll
+//   },
+//   mixins: [loadingMixin]
+// })
+export default {
+  // @Prop({
+  //   default() {
+  //     return [];
+  //   }
+  // })
+  // userList!: object[];
+
+  props: {
+    userList: {
+      type: Array,
+      default: () => [],
+    },
   },
-  mixins: [loadingMixin]
-})
-export default class User extends Vue {
-  @Prop({
-    default() {
-      return [];
-    }
-  })
-  userList!: object[];
 
   mounted() {
     (<any>this).$bus.$on("finishPullUp", () => {
       this.$refs.userScroll && (<any>this.$refs.userScroll).finishPullUp();
       this.$refs.userScroll && (<any>this.$refs.userScroll).refresh();
     });
-  }
+  },
   destroyed() {
     (<any>this).$bus.$off("finishPullUp");
-  }
+  },
 
-  imgLoad() {
-    this.$refs.userScroll && (this.$refs.userScroll as any).refresh();
-  }
-
-  pullingUp() {
-    this.$emit("pullingUp", 7);
-  }
-}
+  methods: {
+    imgLoad() {
+      this.$refs.userScroll && (this.$refs.userScroll as any).refresh();
+    },
+    pullingUp() {
+      this.$emit("pullingUp", 7);
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

@@ -4,7 +4,7 @@
     <div
       v-show="dialogShow"
       class="dialog-overlay"
-      :style="{zIndex:overlayZIndex}"
+      :style="{ zIndex: overlayZIndex }"
       @click.self.stop="hide"
       @touchmove.self.stop="hide"
     ></div>
@@ -17,29 +17,35 @@
   </div>
 </template>
 
-<script lang='ts'>
-import { Component, Vue, Prop } from "vue-property-decorator";
-@Component
-export default class Dialog extends Vue {
-  @Prop({ default: false }) dialogShow!: boolean;
-  @Prop({ default: "white" }) bgcolor!: string;
-  @Prop({ default: 99999 }) overlayZIndex!: number;
-  @Prop({ default: 111111 }) zIndex!: number;
-  created() {}
+<script lang="ts">
+export default {
+  // @Prop({ default: false }) dialogShow!: boolean;
+  // @Prop({ default: "white" }) bgcolor!: string;
+  // @Prop({ default: 99999 }) overlayZIndex!: number;
+  // @Prop({ default: 111111 }) zIndex!: number;
+  props: {
+    dialogShow: { type: Boolean, default: false },
+    bgcolor: { type: String, default: "white" },
+    overlayZIndex: { type: Number, default: 99999 },
+    zIndex: { type: Number, default: 111111 },
+  },
 
-  get objStyle() {
-    return {
-      backgroundColor: this.bgcolor,
-      zIndex: this.zIndex
-    };
-  }
-
-  hide() {
-    this.$emit("hide");
-  }
-}
+  computed: {
+    objStyle() {
+      return {
+        backgroundColor: this.bgcolor,
+        zIndex: this.zIndex,
+      };
+    },
+  },
+  methods: {
+    hide() {
+      this.$emit("hide");
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .dialog {
   .dialog-overlay {
     position: fixed;

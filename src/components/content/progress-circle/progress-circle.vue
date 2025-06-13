@@ -8,7 +8,13 @@
       xmlns="http://www.w3.org/2000/svg"
     >
       <!-- 圆心坐标（50,50） 半径50 -->
-      <circle class="progress-background" r="50" cx="50" cy="50" fill="transparent" />
+      <circle
+        class="progress-background"
+        r="50"
+        cx="50"
+        cy="50"
+        fill="transparent"
+      />
       <circle
         class="progress-bar"
         r="50"
@@ -24,24 +30,43 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 /** cx,cy:圆心坐标  r:半径  fill:填充颜色 */
-import { Component, Vue, Prop } from "vue-property-decorator";
-@Component
-export default class ProgressCircle extends Vue {
-  @Prop({ default: 100 }) size!: number; // 圆的大小
-  @Prop({ default: 0 }) currentProgress!: number; // 当前进度  0 ~ 1
-  @Prop({ default: "red" }) progressColor!: string; // 进度条的颜色
+export default {
+  // @Prop({ default: 100 }) size!: number; // 圆的大小
+  // @Prop({ default: 0 }) currentProgress!: number; // 当前进度  0 ~ 1
+  // @Prop({ default: "red" }) progressColor!: string; // 进度条的颜色
 
-  private dashArray: number = Math.PI * 100; // 圆的周长
+  props: {
+    size: {
+      type: Number,
+      default: 100,
+    },
+    currentProgress: {
+      type: Number,
+      default: 0,
+    },
+    progressColor: {
+      type: String,
+      default: "red",
+    },
+  },
+  data() {
+    return {
+      dashArray: Math.PI * 100, // 圆的周长
+    };
+  },
 
-  get dashOffset() {
-    return (1 - this.currentProgress) * this.dashArray;
-  }
-  created() {}
-}
+  // private dashArray: number = Math.PI * 100; // 圆的周长
+
+  computed: {
+    dashOffset() {
+      return (1 - this.currentProgress) * this.dashArray;
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .progress-circle {
   position: relative;
   circle {

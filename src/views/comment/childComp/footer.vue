@@ -14,18 +14,25 @@
       <span></span>
     </div>
     <div class="send-btn" @click="send">
-      <span class="text" :class="commentVal.length != 0 ? 'yes' : '' ">发送</span>
+      <span class="text" :class="commentVal.length != 0 ? 'yes' : ''"
+        >发送</span
+      >
     </div>
   </div>
 </template>
 
-<script lang='ts'>
-import { Component, Vue } from "vue-property-decorator";
-@Component
-export default class CommentFooter extends Vue {
-  private commentVal: string = "";
-  private replyID: number = -1;
-  created() {}
+<script lang="ts">
+export default {
+  // private commentVal: string = "";
+  // private replyID: number = -1;
+
+  data() {
+    return {
+      commentVal: "",
+      replyID: -1,
+    };
+  },
+  created() {},
   mounted() {
     (<any>this).$bus.$on("replyComment", (rid: number, name: string) => {
       (this.$refs.commentInput as HTMLInputElement) &&
@@ -36,35 +43,36 @@ export default class CommentFooter extends Vue {
         : null;
       this.replyID = rid;
     });
-  }
-
-  send() {
-    if (this.commentVal.trim() === "") {
-      return false;
-    }
-    let operationType = 1;
-    if (
-      (this.$refs.commentInput as HTMLInputElement).placeholder !==
-      "随乐而起，有感而发"
-    ) {
-      operationType = 2;
-    }
-    this.$emit(
-      "sendComment",
-      operationType,
-      this.commentVal,
-      this.replyID !== -1 ? this.replyID : null
-    );
-    this.commentVal = "";
-    this.replyID = -1;
-    this.$refs.commentInput
-      ? ((this.$refs.commentInput as HTMLInputElement).placeholder =
-          "随乐而起，有感而发")
-      : null;
-  }
-}
+  },
+  methods: {
+    send() {
+      if (this.commentVal.trim() === "") {
+        return false;
+      }
+      let operationType = 1;
+      if (
+        (this.$refs.commentInput as HTMLInputElement).placeholder !==
+        "随乐而起，有感而发"
+      ) {
+        operationType = 2;
+      }
+      this.$emit(
+        "sendComment",
+        operationType,
+        this.commentVal,
+        this.replyID !== -1 ? this.replyID : null
+      );
+      this.commentVal = "";
+      this.replyID = -1;
+      this.$refs.commentInput
+        ? ((this.$refs.commentInput as HTMLInputElement).placeholder =
+            "随乐而起，有感而发")
+        : null;
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .comment-footer {
   position: fixed;
   bottom: 0;

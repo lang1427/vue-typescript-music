@@ -8,26 +8,32 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
 import { ISingerHeadInfo } from "@/service/singer";
 
-@Component
-export default class SingerDetailHead extends Vue {
-  @Prop({
-    default() {
-      return [];
-    }
-  })
-  singerHeadInfo!: ISingerHeadInfo;
-
-  get bgImg() {
-    return {
-      backgroundImage: `url(${this.singerHeadInfo &&
-        this.singerHeadInfo.img1v1Url})`,
-      height: "250px"
-    };
-  }
-}
+export default {
+  // @Prop({
+  //   default() {
+  //     return [];
+  //   }
+  // })
+  // singerHeadInfo!: ISingerHeadInfo;
+  props: {
+    singerHeadInfo: {
+      type: Object as () => ISingerHeadInfo,
+      default: () => ({}),
+    },
+  },
+  computed: {
+    bgImg() {
+      return {
+        backgroundImage: `url(${
+          this.singerHeadInfo && this.singerHeadInfo.img1v1Url
+        })`,
+        height: "250px",
+      };
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

@@ -1,7 +1,7 @@
 <template>
   <div class="album-list-items" @click="goAlbum(albumListItems.id)">
     <div class="avatar">
-      <img v-lazy="albumListItems.blurPicUrl" alt />
+      <img v-lazy="albumListItems.blurPicUrl" />
     </div>
     <div class="info">
       <p class="name">{{ albumListItems.name }}</p>
@@ -12,39 +12,50 @@
 
 <script lang="ts">
 interface IAlbum {
-  publishTime: number
-  size: number
+  id: number;
+  name: string;
+  blurPicUrl: string;
+  publishTime: number;
+  size: number;
   artist: {
-    name: string
-  }
+    name: string;
+  };
 }
-import { formatDate } from '@/utils/formatDate'
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { formatDate } from "@/utils/formatDate";
+export default {
+  // @Prop({
+  //   default() {
+  //     return {}
+  //   }
+  // })
+  // albumListItems!: IAlbum
 
-@Component
-export default class AlbumListItems extends Vue {
-  @Prop({
-    default() {
-      return {}
-    }
-  })
-  albumListItems!: IAlbum
+  props: {
+    albumListItems: {
+      type: Object as () => IAlbum,
+      required: true,
+    },
+  },
 
-  get desc() {
-    let date = new Date(this.albumListItems.publishTime)
-    if (window.location.href.match(/\/singer\/detail\//)) {
-      return `${formatDate(date, 'yyyy-MM-dd')}
-      歌曲 ${this.albumListItems.size}`
-    } else {
-      return `${this.albumListItems.artist.name}
-     ${formatDate(date, 'yyyy-MM-dd')}`
-    }
-  }
+  computed: {
+    desc() {
+      let date = new Date(this.albumListItems.publishTime);
+      if (window.location.href.match(/\/singer\/detail\//)) {
+        return `${formatDate(date, "yyyy-MM-dd")}
+      歌曲 ${this.albumListItems.size}`;
+      } else {
+        return `${this.albumListItems.artist.name}
+     ${formatDate(date, "yyyy-MM-dd")}`;
+      }
+    },
+  },
 
-  goAlbum(id:number){
-    this.$router.push('/album/'+id)
-  }
-}
+  methods: {
+    goAlbum(id: number) {
+      this.$router.push("/album/" + id);
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

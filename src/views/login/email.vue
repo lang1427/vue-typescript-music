@@ -8,13 +8,23 @@
     </navbar>
     <div class="input-box">
       <div class="email-account">
-        <input type="text" v-model.trim="emailAccount" placeholder="请输入邮箱账号" />
+        <input
+          type="text"
+          v-model.trim="emailAccount"
+          placeholder="请输入邮箱账号"
+        />
         <ul class="email-list" v-show="false">
-          <li @click="checkEmail(item)" v-for="item of emailList" :key="item">{{ emailAccount + item }}</li>
+          <li @click="checkEmail(item)" v-for="item of emailList" :key="item">
+            {{ emailAccount + item }}
+          </li>
         </ul>
       </div>
       <div class="email-pawd">
-        <input type="password" v-model.trim="emailPawd" placeholder="请输入密码" />
+        <input
+          type="password"
+          v-model.trim="emailPawd"
+          placeholder="请输入密码"
+        />
         <span class="forget-pawd" @click="forgetPawd">忘记密码?</span>
       </div>
     </div>
@@ -22,32 +32,51 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import navbar from "components/common/navbar/navbar.vue";
 import { emailLogin } from "@/service/login";
-import { Component, Vue, Watch } from "vue-property-decorator";
-@Component({
-  components: {
-    navbar
-  }
-})
-export default class Email extends Vue {
-  private emailAccount: string = "";
-  private emailPawd: string = "";
-  private emailList: string[] = [
-    "@163.com",
-    "@126.com",
-    "@yeah.net",
-    "@vip.163.com",
-    "@vip.126.com",
-    "@popo.163.com",
-    "@188.com",
-    "@qq.com",
-    "@yahoo.com",
-    "@sina.com",
-    "@soho.com",
-    "@live.com"
-  ];
+// @Component({
+//   components: {
+//     navbar
+//   }
+// })
+export default {
+  // private emailAccount: string = "";
+  // private emailPawd: string = "";
+  // private emailList: string[] = [
+  //   "@163.com",
+  //   "@126.com",
+  //   "@yeah.net",
+  //   "@vip.163.com",
+  //   "@vip.126.com",
+  //   "@popo.163.com",
+  //   "@188.com",
+  //   "@qq.com",
+  //   "@yahoo.com",
+  //   "@sina.com",
+  //   "@soho.com",
+  //   "@live.com"
+  // ];
+  data() {
+    return {
+      emailAccount: "",
+      emailPawd: "",
+      emailList: [
+        "@163.com",
+        "@126.com",
+        "@yeah.net",
+        "@vip.163.com",
+        "@vip.126.com",
+        "@popo.163.com",
+        "@188.com",
+        "@qq.com",
+        "@yahoo.com",
+        "@sina.com",
+        "@soho.com",
+        "@live.com",
+      ],
+    };
+  },
   // get emailListShow(){
   //   if(this.emailAccount.length >= 2){
   //    return this.emailList.find(item=>{
@@ -56,28 +85,29 @@ export default class Email extends Vue {
   //   }
   //   return false
   // }
-  created() {}
   // checkEmail(val:string){
   //   this.emailAccount = this.emailAccount+val
   // }
-  async goEmailLogin() {
-    let res = await emailLogin(this.emailAccount, this.emailPawd);
-    if (res.code === 200) {
-      this.$store.dispatch("loginMode", res.account);
-      this.$router.push("/my");
-    } else {
-      console.log(res.msg || res.message);
-    }
-  }
-  forgetPawd() {
-    console.log('暂不支持更换密码，如有需要，请前往对应邮箱官网更换')
-  }
-  back() {
-    this.$router.back();
-  }
-}
+  methods: {
+    async goEmailLogin() {
+      let res = await emailLogin(this.emailAccount, this.emailPawd);
+      if (res.code === 200) {
+        this.$store.dispatch("loginMode", res.account);
+        this.$router.push("/my");
+      } else {
+        console.log(res.msg || res.message);
+      }
+    },
+    forgetPawd() {
+      console.log("暂不支持更换密码，如有需要，请前往对应邮箱官网更换");
+    },
+    back() {
+      this.$router.back();
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .email {
   position: absolute;
   top: 0;

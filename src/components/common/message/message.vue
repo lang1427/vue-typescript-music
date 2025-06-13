@@ -4,24 +4,28 @@
   </div>
 </template>
 
-<script lang='ts'>
-import { Component, Vue, Prop } from "vue-property-decorator";
-@Component
-export default class Message extends Vue {
-  @Prop({ default: "新的消息" }) message!: string;
-  @Prop({ default: false }) isShow!: boolean;
-  @Prop({ default: 100 }) bottom!: number;
+<script lang="ts">
+export default {
+  // @Prop({ default: "新的消息" }) message!: string;
+  // @Prop({ default: false }) isShow!: boolean;
+  // @Prop({ default: 100 }) bottom!: number;
 
-  get offsetBottom() {
-    return {
-      bottom: this.bottom + "px"
-    };
-  }
+  props: {
+    message: { type: String, default: "新的消息" },
+    isShow: { type: Boolean, default: false },
+    bottom: { type: Number, default: 100 },
+  },
 
-  created() {}
-}
+  computed: {
+    offsetBottom() {
+      return {
+        bottom: this.bottom + "px",
+      };
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .message-box {
   position: fixed;
   left: 0;

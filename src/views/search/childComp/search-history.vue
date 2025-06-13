@@ -1,5 +1,5 @@
 <template>
-  <div class="search-history" v-if="historyArr.length!=0">
+  <div class="search-history" v-if="historyArr.length != 0">
     <div class="head clearfix">
       <h3 class="fl title">历史记录</h3>
       <span class="fa-trash-o fr" @click="remove"></span>
@@ -11,36 +11,39 @@
           v-for="item of historyArr"
           :key="item"
           @click="goSearchResult(item)"
-        >{{ item }}</div>
+        >
+          {{ item }}
+        </div>
       </div>
     </scroll-bar>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import scrollBar from "components/common/scroll/scroll.vue";
 
-import { Component, Vue } from "vue-property-decorator";
+// @Component({
+//   components: {
+//     scrollBar
+//   }
+// })
+export default {
+  computed: {
+    historyArr() {
+      return this.$store.state.searchHistory;
+    },
+  },
+  methods: {
+    remove() {
+      this.$store.commit("removeHistorySearch");
+    },
 
-@Component({
-  components: {
-    scrollBar
-  }
-})
-export default class SearchHistory extends Vue {
-  get historyArr() {
-    return this.$store.state.searchHistory;
-  }
-
-  remove() {
-    this.$store.commit("removeHistorySearch");
-  }
-
-  goSearchResult(keyWorld: string) {
-    this.$store.commit("changeSearchKey", keyWorld);
-    this.$router.push(`/searchresult?keywords=${keyWorld}`);
-  }
-}
+    goSearchResult(keyWorld: string) {
+      this.$store.commit("changeSearchKey", keyWorld);
+      this.$router.push(`/searchresult?keywords=${keyWorld}`);
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

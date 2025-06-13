@@ -1,22 +1,25 @@
 <template>
   <div>
-    <scroll class="single-scroll" ref="singleScroll" :pullUpLoad="true" @pullingUp="pullingUp">
+    <scroll
+      class="single-scroll"
+      ref="singleScroll"
+      :pullUpLoad="true"
+      @pullingUp="pullingUp"
+    >
       <div>
-        <div class="single" v-if="songlist.length!=0">
+        <div class="single" v-if="songlist.length != 0">
           <div class="head">
             <div class="play-all">
               <span @click="play(0)">
                 <span class="fa-play-circle-o"></span> 播放全部
               </span>
             </div>
-            <div class="checkbox">
-              <span class="fa-list-ul"></span> 多选
-            </div>
+            <div class="checkbox"><span class="fa-list-ul"></span> 多选</div>
           </div>
           <div class="body">
             <div
               class="list-items"
-              v-for="(item,index) of songs"
+              v-for="(item, index) of songs"
               :key="index"
               @click="playSingle(item)"
             >
@@ -31,50 +34,66 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import scroll from "components/common/scroll/scroll.vue";
 import { SongsInfoClass } from "@/conf/songsInfo";
-import { loadingMixin,playMixin, singlePlayMixin } from "@/utils/mixin";
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { loadingMixin, playMixin, singlePlayMixin } from "@/utils/mixin";
 
-@Component({
-  components: {
-    scroll
+// @Component({
+//   components: {
+//     scroll
+//   },
+//   mixins: [loadingMixin,playMixin, singlePlayMixin]
+// })
+export default {
+  // @Prop({
+  //   default() {
+  //     return [];
+  //   }
+  // })
+  // songlist!: [];
+
+  props: {
+    songlist: {
+      type: Array,
+      default: () => [],
+    },
   },
-  mixins: [loadingMixin,playMixin, singlePlayMixin]
-})
-export default class Single extends Vue {
-  @Prop({
-    default() {
-      return [];
-    }
-  })
-  songlist!: [];
-  timer: any = null;
 
-  get songs(){
-    let arr = []
-    for (const item of this.songlist) {
-      arr.push(new SongsInfoClass(item))
-    }
-    return arr
-  }
+  // timer: any = null;
+  data() {
+    return {
+      timer: null,
+    };
+  },
+
+  computed: {
+    songs() {
+      let arr = [];
+      for (const item of this.songlist) {
+        arr.push(new SongsInfoClass(item));
+      }
+      return arr;
+    },
+  },
 
   mounted() {
     (<any>this).$bus.$on("finishPullUp", () => {
       this.$refs.singleScroll && (<any>this.$refs.singleScroll).finishPullUp();
       this.$refs.singleScroll && (<any>this.$refs.singleScroll).refresh();
     });
-  }
+  },
   destroyed() {
     (<any>this).$bus.$off("finishPullUp");
-  }
+  },
 
-  pullingUp() {
-    this.$emit("pullingUp", 1);
-    // (<any>this.$refs.singleScroll).finishPullUp();
-  }
-}
+  methods: {
+    pullingUp() {
+      this.$emit("pullingUp", 1);
+      // (<any>this.$refs.singleScroll).finishPullUp();
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

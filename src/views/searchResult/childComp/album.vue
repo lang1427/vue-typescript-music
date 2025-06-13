@@ -1,6 +1,11 @@
 <template>
   <div>
-    <scroll class="album-scroll" ref="albumScroll" :pullUpLoad="true" @pullingUp="pullingUp">
+    <scroll
+      class="album-scroll"
+      ref="albumScroll"
+      :pullUpLoad="true"
+      @pullingUp="pullingUp"
+    >
       <div>
         <div class="album" v-if="albumList.length != 0">
           <album-list :albumList="albumList" />
@@ -17,37 +22,43 @@ import albumList from "components/content/album-list/album-list.vue";
 
 import { formatDate } from "@/utils/formatDate";
 import { loadingMixin } from "@/utils/mixin";
-import { Component, Vue, Prop } from "vue-property-decorator";
 
-@Component({
-  components: {
-    scroll,
-    albumList
+// @Component({
+//   components: {
+//     scroll,
+//     albumList
+//   },
+//   mixins: [loadingMixin]
+// })
+export default {
+  // @Prop({
+  //   default() {
+  //     return [];
+  //   }
+  // })
+  // albumList!: object[];
+  props: {
+    albumList: {
+      type: Array,
+      default: () => [],
+    },
   },
-  mixins: [loadingMixin]
-})
-export default class Album extends Vue {
-  @Prop({
-    default() {
-      return [];
-    }
-  })
-  albumList!: object[];
 
   mounted() {
     (<any>this).$bus.$on("finishPullUp", () => {
       this.$refs.albumScroll && (<any>this.$refs.albumScroll).finishPullUp();
       this.$refs.albumScroll && (<any>this.$refs.albumScroll).refresh();
     });
-  }
+  },
   destroyed() {
     (<any>this).$bus.$off("finishPullUp");
-  }
-
-  pullingUp() {
-    this.$emit("pullingUp", 4);
-  }
-}
+  },
+  methods: {
+    pullingUp() {
+      this.$emit("pullingUp", 4);
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

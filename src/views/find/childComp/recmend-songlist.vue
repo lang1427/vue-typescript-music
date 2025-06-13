@@ -4,7 +4,7 @@
       <span class="fl title">推荐歌单</span>
       <span class="fr more">歌单广场</span>
     </div>
-    <template v-if="songlist.length!=0">
+    <template v-if="songlist.length != 0">
       <grid-view :cols="3" :v-margin="8">
         <div
           v-for="item of songlist"
@@ -21,7 +21,7 @@
         </div>
       </grid-view>
     </template>
-    <ContentLoader v-else :speed="1" :height=350>
+    <ContentLoader v-else :speed="1" :height="350">
       <rect x="5" y="0" rx="0" ry="0" width="120" height="100" />
       <rect x="5" y="110" rx="0" ry="0" width="120" height="20" />
       <rect x="135" y="0" rx="0" ry="0" width="120" height="100" />
@@ -38,28 +38,35 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import gridView from "components/common/gridview/grid-view.vue";
 import { ContentLoader } from "vue-content-loader";
-import { Component, Vue, Prop } from "vue-property-decorator";
 
-@Component({
-  components: {
-    ContentLoader,
-    gridView
-  }
-})
-export default class RecmendSonglist extends Vue {
-  @Prop({
-    default() {
-      return [];
-    }
-  })
-  private songlist!: object[];
-  goSongSheet(id: number) {
-    this.$router.push("/songsheet/" + id);
-  }
-}
+// @Component({
+//   components: {
+//     ContentLoader,
+//     gridView
+//   }
+// })
+export default {
+  // @Prop({
+  //   default() {
+  //     return [];
+  //   }
+  // })
+  // private songlist!: object[];
+  props: {
+    songlist: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  methods: {
+    goSongSheet(id: number) {
+      this.$router.push("/songsheet/" + id);
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

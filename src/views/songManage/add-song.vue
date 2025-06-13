@@ -9,12 +9,18 @@
           class="search-input"
           type="text"
           v-model="searchContent"
-          @focus="isActive=true"
-          @blur="isActive=false"
+          @focus="isActive = true"
+          @blur="isActive = false"
         />
-        <div class="fa-close clear-input" v-show="Flag" @click="clearInput"></div>
+        <div
+          class="fa-close clear-input"
+          v-show="Flag"
+          @click="clearInput"
+        ></div>
         <ul class="search-list" v-show="Flag && isActive">
-          <li class="list-items" @click="getSearchResult(searchContent)">搜索“{{ searchContent }}”</li>
+          <li class="list-items" @click="getSearchResult(searchContent)">
+            搜索“{{ searchContent }}”
+          </li>
           <li
             class="list-items"
             @click="getSearchResult(item.keyword)"
@@ -29,7 +35,7 @@
       <div class="slot"></div>
     </div>
 
-    <div class="recently-played" v-if="searchRes.length===0">
+    <div class="recently-played" v-if="searchRes.length === 0">
       <h6 class="title">最近播放</h6>
       <ul class="list">
         <li
@@ -37,7 +43,9 @@
           v-for="item of playHistoryList"
           :key="item.id"
           @click="add(item.id)"
-        >{{ item.name }}</li>
+        >
+          {{ item.name }}
+        </li>
       </ul>
     </div>
 
@@ -51,9 +59,14 @@
     >
       <div class="search-result">
         <ul class="result-list">
-          <li class="items" v-for="(item,index) of searchRes" :key="index" @click="add(item.id)">
+          <li
+            class="items"
+            v-for="(item, index) of searchRes"
+            :key="index"
+            @click="add(item.id)"
+          >
             <p class="name">{{ item.name }}</p>
-            <p class="desc">{{ item.desc}}</p>
+            <p class="desc">{{ item.desc }}</p>
           </li>
         </ul>
       </div>
@@ -61,7 +74,7 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 interface ISearchRes {
   id: number;
   name: string;
@@ -82,90 +95,112 @@ class SearchResClass {
 import { searchSuggest, search } from "@/service/search";
 import { songsheetOperation } from "@/service/songsheet";
 import searchResScroll from "@/components/common/scroll/scroll.vue";
-import { Component, Vue, Watch } from "vue-property-decorator";
-@Component({
-  components: {
-    searchResScroll
-  }
-})
-export default class AddSong extends Vue {
-  private searchContent: string = "";
-  private searchRes: object[] = [];
-  private allMatch: object[] = []; // 输入框搜索内容全匹配
-  private isActive: boolean = true; // 用于动态显示搜索列表
-  private timer: any = null;
-  private page: number = 0;
 
-  get Flag() {
-    return !(this.searchContent === "");
-  }
-  get playHistoryList() {
-    return this.$store.state.playHistory;
-  }
-  get bottomSty() {
-    return this.searchRes.length !== 0 &&
-      this.$store.state.playList.length !== 0
-      ? { bottom: "50px" }
-      : { bottom: "0px" };
-  }
+// @Component({
+//   components: {
+//     searchResScroll
+//   }
+// })
+export default {
+  // private searchContent: string = "";
+  // private searchRes: object[] = [];
+  // private allMatch: object[] = []; // 输入框搜索内容全匹配
+  // private isActive: boolean = true; // 用于动态显示搜索列表
+  // private timer: any = null;
+  // private page: number = 0;
 
-  clearInput() {
-    this.searchContent = "";
-  }
-  back() {
-    this.$router.back();
-  }
-  nextSearchRes() {
-    let timer = window.setTimeout(() => {
-      this.page++;
-      this.getSearchResult(this.searchContent);
-      (<any>this).$refs.searchResScroll.finishPullUp();
-      window.clearTimeout(timer);
-    }, 1000);
-  }
-  async getSearchResult(searchWord: string) {
-    this.searchContent = searchWord;
-    let res = await search(searchWord, 1, 30, this.page);
-    if (res.code === 200) {
-      if (!res.result.songs) return false;
-      for (let item of res.result.songs) {
-        this.searchRes.push(...[new SearchResClass(item)]);
+  data() {
+    return {
+      searchContent: "",
+      searchRes: [],
+      allMatch: [],
+      isActive: true,
+      timer: null,
+      page: 0,
+    };
+  },
+
+  computed: {
+    Flag() {
+      return !(this.searchContent === "");
+    },
+    playHistoryList() {
+      return this.$store.state.playHistory;
+    },
+    bottomSty() {
+      return this.searchRes.length !== 0 &&
+        this.$store.state.playList.length !== 0
+        ? { bottom: "50px" }
+        : { bottom: "0px" };
+    },
+  },
+  methods: {
+    clearInput() {
+      this.searchContent = "";
+    },
+    back() {
+      this.$router.back();
+    },
+    nextSearchRes() {
+      let timer = window.setTimeout(() => {
+        this.page++;
+        this.getSearchResult(this.searchContent);
+        (<any>this).$refs.searchResScroll.finishPullUp();
+        window.clearTimeout(timer);
+      }, 1000);
+    },
+    async getSearchResult(searchWord: string) {
+      this.searchContent = searchWord;
+      let res = await search(searchWord, 1, 30, this.page);
+      if (res.code === 200) {
+        if (!res.result.songs) return false;
+        for (let item of res.result.songs) {
+          this.searchRes.push(...[new SearchResClass(item)]);
+        }
+        this.$refs.searchResScroll &&
+          (<any>this).$refs.searchResScroll.refresh();
       }
-      this.$refs.searchResScroll && (<any>this).$refs.searchResScroll.refresh();
-    }
-  }
-  async getSearchSuggest(keyworld: string) {
-    let res = await searchSuggest(keyworld);
-    if (res.code === 200) {
-      this.allMatch = res.result.allMatch;
-    }
-  }
-  async add(id: string) {
-    let res = await songsheetOperation(
-      "add",
-      parseInt(<string>this.$route.query.id),
-      id
-    );
-    if (res.code === 200) this.$toast("歌单添加歌曲成功");
-    else this.$toast(res.message);
-  }
+    },
+    async getSearchSuggest(keyworld: string) {
+      let res = await searchSuggest(keyworld);
+      if (res.code === 200) {
+        this.allMatch = res.result.allMatch;
+      }
+    },
+    async add(id: string) {
+      let res = await songsheetOperation(
+        "add",
+        parseInt(<string>this.$route.query.id),
+        id
+      );
+      if (res.code === 200) this.$toast("歌单添加歌曲成功");
+      else this.$toast(res.message);
+    },
 
-  /** 防抖处理 */
-  debounce(fn: any, delay: number = 500) {
-    if (this.timer) clearTimeout(this.timer);
-    this.timer = window.setTimeout(() => {
-      fn.call(this, this.searchContent);
-    }, delay);
-  }
-  @Watch("searchContent")
-  changeSearchContent(newVal: string) {
-    if (newVal.trim().length !== 0) {
-      this.debounce(this.getSearchSuggest);
-    }
-  }
-}
+    /** 防抖处理 */
+    debounce(fn: any, delay: number = 500) {
+      if (this.timer) clearTimeout(this.timer);
+      this.timer = window.setTimeout(() => {
+        fn.call(this, this.searchContent);
+      }, delay);
+    },
+  },
+  watch: {
+    searchContent(newVal: string) {
+      if (newVal.trim().length !== 0) {
+        this.debounce(this.getSearchSuggest);
+      }
+    },
+  },
+  // @Watch("searchContent")
+  // changeSearchContent(newVal: string) {
+  //   if (newVal.trim().length !== 0) {
+  //     this.debounce(this.getSearchSuggest);
+  //   }
+  // }
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .add-song {
   .search-tab {
     position: fixed;

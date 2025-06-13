@@ -6,44 +6,54 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { albumContent, AlbumBaseInfo } from "@/service/musiclist";
 import { IUserSongList, songsDetail, SongsBaseInfo } from "@/service/songsheet";
-import { topList,RankBaseInfo } from "@/service/rankinglist";
+import { topList, RankBaseInfo } from "@/service/rankinglist";
 import { userSongsManageMixin } from "@/utils/mixin";
 import { SongsInfoClass } from "@/conf/songsInfo";
 import topbar from "./childComp/head.vue";
 import bgInfo from "./childComp/bg-info.vue";
 import songslist from "./childComp/songlist.vue";
-import { Component, Vue } from "vue-property-decorator";
-@Component({
-  components: {
-    topbar,
-    bgInfo,
-    songslist
+// @Component({
+//   components: {
+//     topbar,
+//     bgInfo,
+//     songslist
+//   },
+//   mixins: [userSongsManageMixin]
+// })
+export default {
+  // private baseInfo = {};
+  // private songList: object[] = [];
+
+  data() {
+    return {
+      baseInfo: {},
+      songList: [],
+    };
   },
-  mixins: [userSongsManageMixin]
-})
-export default class MusicList extends Vue {
-  private baseInfo = {};
-  private songList: object[] = [];
-  get id() {
-    return parseInt(this.$route.params.id);
-  }
-  get isUserSong() {
-    if (
-      this.$route.path.match(/\/songsheet\//) &&
-      (this as any).userSongsheetList.length != 0
-    ) {
-      let res = (this as any).userSongsheetList.find((item: IUserSongList) => {
-        return item.id === (this.baseInfo as SongsBaseInfo).singerId;
-      });
-      if (res != undefined) {
-        return true;
+  computed: {
+    id() {
+      return parseInt(this.$route.params.id);
+    },
+    isUserSong() {
+      if (
+        this.$route.path.match(/\/songsheet\//) &&
+        (this as any).userSongsheetList.length != 0
+      ) {
+        let res = (this as any).userSongsheetList.find(
+          (item: IUserSongList) => {
+            return item.id === (this.baseInfo as SongsBaseInfo).singerId;
+          }
+        );
+        if (res != undefined) {
+          return true;
+        }
       }
-    }
-    return false;
-  }
+      return false;
+    },
+  },
 
   created() {
     if (this.$route.path.match(/\/album\//)) {
@@ -55,42 +65,42 @@ export default class MusicList extends Vue {
     } else if (this.$route.path.match(/\/toplist\//)) {
       this.getTopList(this.id);
     }
-  }
-
-  async getAlbumContent() {
-    let res = await albumContent(this.id);
-    if (res.code === 200) {
-      this.baseInfo = new AlbumBaseInfo(res.album);
-      let arr = [];
-      for (const item of res.songs) {
-        arr.push(new SongsInfoClass(item));
+  },
+  methods: {
+    async getAlbumContent() {
+      let res = await albumContent(this.id);
+      if (res.code === 200) {
+        this.baseInfo = new AlbumBaseInfo(res.album);
+        let arr = [];
+        for (const item of res.songs) {
+          arr.push(new SongsInfoClass(item));
+        }
+        this.songList = arr;
       }
-      this.songList = arr;
-    }
-  }
-  async getSongsDetail() {
-    let res = await songsDetail(this.id);
-    if (res.code === 200) {
-      this.baseInfo = new SongsBaseInfo(res.playlist);
-      let arr = [];
-      for (const item of res.playlist.tracks) {
-        arr.push(new SongsInfoClass(item));
+    },
+    async getSongsDetail() {
+      let res = await songsDetail(this.id);
+      if (res.code === 200) {
+        this.baseInfo = new SongsBaseInfo(res.playlist);
+        let arr = [];
+        for (const item of res.playlist.tracks) {
+          arr.push(new SongsInfoClass(item));
+        }
+        this.songList = arr;
       }
-      this.songList = arr;
-    }
-  }
-  async getTopList(idx: number) {
-    let res = await topList(idx);
-    if (res.code === 200) {
-     this.baseInfo = new RankBaseInfo(res.playlist)
-      let arr = [];
-      for (const item of res.playlist.tracks) {
-        arr.push(new SongsInfoClass(item));
+    },
+    async getTopList(idx: number) {
+      let res = await topList(idx);
+      if (res.code === 200) {
+        this.baseInfo = new RankBaseInfo(res.playlist);
+        let arr = [];
+        for (const item of res.playlist.tracks) {
+          arr.push(new SongsInfoClass(item));
+        }
+        this.songList = arr;
       }
-      this.songList = arr;
-    }
-  }
-}
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
-</style>
+<style scoped lang="less"></style>

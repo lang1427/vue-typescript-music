@@ -1,10 +1,10 @@
 <template>
-  <div v-if="tabbarInfo.length!=0">
-    <div class="tab-bar" :style="[radianStyle,bgC]">
+  <div v-if="tabbarInfo.length != 0">
+    <div class="tab-bar" :style="[radianStyle, bgC]">
       <div
         class="tabbar-items"
-        :class="{'items-active':currentIndex===index}"
-        v-for="(item,index) of tabbarInfo"
+        :class="{ 'items-active': currentIndex === index }"
+        v-for="(item, index) of tabbarInfo"
         :key="item.title"
         @click="changeTabbar(index)"
       >
@@ -18,46 +18,65 @@
   </div>
 </template>
 
-<script lang='ts'>
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+<script lang="ts">
+export default {
+  // @Prop({
+  //   default() {
+  //     return [];
+  //   }
+  // })
+  // tabbarInfo!: object[];
+  // @Prop({
+  //   default: false
+  // })
+  // isTopRadian!: boolean; // 是否显示顶部弧度
+  // @Prop({
+  //   default: "white"
+  // })
+  // bgColor!: string;
 
-@Component
-export default class TabBar extends Vue {
-  @Prop({
-    default() {
-      return [];
-    }
-  })
-  tabbarInfo!: object[];
-  @Prop({
-    default: false
-  })
-  isTopRadian!: boolean; // 是否显示顶部弧度
-  @Prop({
-    default: "white"
-  })
-  bgColor!: string;
-
-  currentIndex: number = 0;
-
-  get radianStyle() {
-    if (this.isTopRadian) {
-      return {
-        borderRadius: "17px 17px 0 0"
-      };
-    }
-  }
-  get bgC() {
+  props: {
+    tabbarInfo: {
+      type: Array,
+      default: () => [],
+    },
+    isTopRadian: {
+      type: Boolean,
+      default: false,
+    },
+    bgColor: {
+      type: String,
+      default: "white",
+    },
+  },
+  data() {
     return {
-      backgroundColor: this.bgColor
+      currentIndex: 0,
     };
-  }
+  },
 
-  changeTabbar(index: number) {
-    this.currentIndex = index;
-    this.$emit("changeTabbar", index);
-  }
-}
+  // currentIndex: number = 0;
+  computed: {
+    radianStyle() {
+      if (this.isTopRadian) {
+        return {
+          borderRadius: "17px 17px 0 0",
+        };
+      }
+    },
+    bgC() {
+      return {
+        backgroundColor: this.bgColor,
+      };
+    },
+  },
+  methods: {
+    changeTabbar(index: number) {
+      this.currentIndex = index;
+      this.$emit("changeTabbar", index);
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

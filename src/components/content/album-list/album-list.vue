@@ -9,22 +9,21 @@
 </template>
 
 <script lang="ts">
-import albumListItems from './album-list-items.vue'
-import { Component, Vue, Prop } from 'vue-property-decorator'
-
-@Component({
-  components: {
-    albumListItems
-  }
-})
-export default class AlbumList extends Vue {
-  @Prop({
-    default() {
-      return []
-    }
-  })
-  albumList!: object[]
-}
+import albumListItems from "./album-list-items.vue";
+export default {
+  // @Prop({
+  //   default() {
+  //     return []
+  //   }
+  // })
+  // albumList!: object[]
+  props: {
+    albumList: {
+      type: Array,
+      default: () => [],
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

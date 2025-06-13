@@ -14,41 +14,50 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { updateSongDesc } from "@/service/songsheet";
-import { Component, Vue } from "vue-property-decorator";
-@Component
-export default class EditSongDesc extends Vue {
-  private descInfo: string | (string | null)[] = "";
-  get id() {
-    return parseInt(<string>this.$route.query.songid);
-  }
-  get residue() {
-    return `${1000 - this.descInfo.length}`;
-  }
+export default {
+  // private descInfo: string | (string | null)[] = "";
+  data() {
+    return {
+      descInfo: "",
+    };
+  },
+
+  computed: {
+    id() {
+      return parseInt(<string>this.$route.query.songid);
+    },
+    residue() {
+      return `${1000 - this.descInfo.length}`;
+    },
+  },
   created() {
     this.descInfo = this.$route.query.desc;
-  }
-  async setUpdateSongDesc() {
-    let res = await updateSongDesc(this.id, <string>this.descInfo);
-    if (res.code === 200) {
-      this.$toast("修改成功");
-      this.back();
-    }
-  }
-  back() {
-    this.$router.back();
-  }
-  save() {
-    if (this.descInfo === this.$route.query.desc) {
-      this.$toast("未修改");
-      return false;
-    }
-    this.setUpdateSongDesc();
-  }
-}
+  },
+
+  methods: {
+    async setUpdateSongDesc() {
+      let res = await updateSongDesc(this.id, <string>this.descInfo);
+      if (res.code === 200) {
+        this.$toast("修改成功");
+        this.back();
+      }
+    },
+    back() {
+      this.$router.back();
+    },
+    save() {
+      if (this.descInfo === this.$route.query.desc) {
+        this.$toast("未修改");
+        return false;
+      }
+      this.setUpdateSongDesc();
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .edit-song-desc {
   position: absolute;
   left: 0;

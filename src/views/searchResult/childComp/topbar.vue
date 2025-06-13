@@ -4,7 +4,11 @@
       <span class="fa-arrow-left back"></span>
     </div>
     <div class="search-input-box" slot="center">
-      <input class="search-input" type="text" v-model="$store.state.searchKeyWrold" />
+      <input
+        class="search-input"
+        type="text"
+        v-model="$store.state.searchKeyWrold"
+      />
     </div>
     <div slot="right" @click="empty">
       <span class="fa-close close"></span>
@@ -12,16 +16,15 @@
   </navbar>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import navbar from "components/common/navbar/navbar.vue";
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
-@Component({
-  components: {
-    navbar
-  }
-})
-export default class Topbar extends Vue {
+// @Component({
+//   components: {
+//     navbar
+//   }
+// })
+export default {
   // @Prop() searchContent!: string;
   // @Watch("searchContent")
   // changeSearchContent(newVla: string) {
@@ -31,14 +34,16 @@ export default class Topbar extends Vue {
   // trueSearchContent: string = "";
 
   // private SearchContent: string = '';
-  back() {
-    this.$router.back();
-  }
-  empty() {
-    // this.trueSearchContent = "";
-    this.$store.commit("changeSearchKey", "");
-  }
-}
+  methods: {
+    back() {
+      this.$router.back();
+    },
+    empty() {
+      // this.trueSearchContent = "";
+      this.$store.commit("changeSearchKey", "");
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

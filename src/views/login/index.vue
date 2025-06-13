@@ -15,30 +15,33 @@
   </div>
 </template>
 
-<script lang='ts'>
-import { Component, Vue, Watch } from "vue-property-decorator";
-@Component
-export default class Login extends Vue {
-  private isAgree: boolean = false;
-
-  created() {}
-  goPhoneLogin() {
-    if (this.isAgree == false) {
-      this.$toast("勾选协议");
-      return !1;
-    }
-    this.$router.push("/login/phone");
-  }
-  goEmailLogin() {
-    if (this.isAgree == false) {
-      window.alert("勾选协议");
-      return !1;
-    }
-    this.$router.push("/login/email");
-  }
-}
+<script lang="ts">
+export default {
+  // private isAgree: boolean = false;
+  data() {
+    return {
+      isAgree: false,
+    };
+  },
+  methods: {
+    goPhoneLogin() {
+      if (this.isAgree == false) {
+        this.$toast("勾选协议");
+        return !1;
+      }
+      this.$router.push("/login/phone");
+    },
+    goEmailLogin() {
+      if (this.isAgree == false) {
+        window.alert("勾选协议");
+        return !1;
+      }
+      this.$router.push("/login/email");
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .login {
   position: absolute;
   left: 0;

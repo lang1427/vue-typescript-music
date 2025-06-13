@@ -10,20 +10,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import navbar from "components/common/navbar/navbar.vue";
 
-import navbar from 'components/common/navbar/navbar.vue'
-
-@Component({
-  components: {
-    navbar
-  }
-})
-export default class Topbar extends Vue {
-  back() {
-    this.$router.back()
-  }
-}
+// @Component({
+//   components: {
+//     navbar
+//   }
+// })
+export default {
+  methods: {
+    back() {
+      this.$router.back();
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

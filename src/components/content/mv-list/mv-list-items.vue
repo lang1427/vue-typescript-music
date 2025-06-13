@@ -14,17 +14,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+export default {
+  // @Prop({
+  //   default() {
+  //     return {}
+  //   }
+  // })
+  // mvListItems!: object
 
-@Component
-export default class MvListItems extends Vue {
-  @Prop({
-    default() {
-      return {}
-    }
-  })
-  mvListItems!: object
-}
+  props: {
+    mvListItems: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

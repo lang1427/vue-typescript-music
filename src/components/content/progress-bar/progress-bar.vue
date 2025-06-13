@@ -19,60 +19,79 @@
   </div>
 </template>
 
-<script lang='ts'>
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-@Component
-export default class ProgressBar extends Vue {
-  @Prop({ default: 0 }) progress!: number;
-  private totalProgress: number = 0; // 初始值不能<0，小于0 则需要移动进度条至左外侧才能生效 (bug)
-  private percent: number = 0;
-  private moveStatus: boolean = false;
+<script lang="ts">
+export default {
+  // @Prop({ default: 0 }) progress!: number;
+  // private totalProgress: number = 0; // 初始值不能<0，小于0 则需要移动进度条至左外侧才能生效 (bug)
+  // private percent: number = 0;
+  // private moveStatus: boolean = false;
 
-  created() {}
+  props: {
+    progress: {
+      type: Number,
+      default: 0,
+    },
+  },
+  data() {
+    return {
+      totalProgress: 0, // 初始值不能<0，小于0 则需要移动进度条至左外侧才能生效 (bug)
+      percent: 0,
+      moveStatus: false,
+    };
+  },
+
+  created() {},
   mounted() {
     // 当采用v-show条件渲染时，这里的clientWidth = 0 ，所以需要在update时设置进度条的宽度
     // this.totalProgress = (<any>this.$refs).progress.clientWidth;
-  }
+  },
   updated() {
     this.totalProgress = (<any>this.$refs).progress.clientWidth;
-  }
-  get width() {
-    return {
-      width:
-        this.totalProgress === 0
-          ? "0px"
-          : this.totalProgress * this.progress >= this.totalProgress
-          ? this.totalProgress + "px"
-          : this.totalProgress * this.progress + "px"
-    };
-  }
+  },
+  computed: {
+    width() {
+      return {
+        width:
+          this.totalProgress === 0
+            ? "0px"
+            : this.totalProgress * this.progress >= this.totalProgress
+            ? this.totalProgress + "px"
+            : this.totalProgress * this.progress + "px",
+      };
+    },
+  },
 
-  progressClick(e: MouseEvent) {
-    let moveLineWidth = e.pageX - (<any>this.$refs).currentTime.offsetWidth;
-    this.percent = Math.max(0, moveLineWidth / (e as any).toElement.offsetWidth); // e.toElement.offsetWidth 解决 totalProgress获取值不正确的问题
-    this.$emit("endPercent", this.percent);
-  }
-  progressStart(e: TouchEvent) {
-    this.moveStatus = true;
-  }
-  progressMove(e: TouchEvent) {
-    if (!this.moveStatus) return;
+  methods: {
+    progressClick(e: MouseEvent) {
+      let moveLineWidth = e.pageX - (<any>this.$refs).currentTime.offsetWidth;
+      this.percent = Math.max(
+        0,
+        moveLineWidth / (e as any).toElement.offsetWidth
+      ); // e.toElement.offsetWidth 解决 totalProgress获取值不正确的问题
+      this.$emit("endPercent", this.percent);
+    },
+    progressStart(e: TouchEvent) {
+      this.moveStatus = true;
+    },
+    progressMove(e: TouchEvent) {
+      if (!this.moveStatus) return;
 
-    // 移动过程中进度条的宽度  =  当前移动过程中PageX的值 - 展示当前时间div的宽度
-    let moveLineWidth =
-      e.touches[0].pageX - (<any>this.$refs).currentTime.offsetWidth;
-    // 进度百分比 = 移动过程中进度条的宽度 / 进度栏
-    this.percent = Math.max(0, moveLineWidth / this.totalProgress);
-    // 向外告知 当前移动过程中的百分比
-    this.$emit("changePercent", this.percent);
-  }
-  progressEnd(e: TouchEvent) {
-    this.moveStatus = false;
-    this.$emit("endPercent", this.percent);
-  }
-}
+      // 移动过程中进度条的宽度  =  当前移动过程中PageX的值 - 展示当前时间div的宽度
+      let moveLineWidth =
+        e.touches[0].pageX - (<any>this.$refs).currentTime.offsetWidth;
+      // 进度百分比 = 移动过程中进度条的宽度 / 进度栏
+      this.percent = Math.max(0, moveLineWidth / this.totalProgress);
+      // 向外告知 当前移动过程中的百分比
+      this.$emit("changePercent", this.percent);
+    },
+    progressEnd(e: TouchEvent) {
+      this.moveStatus = false;
+      this.$emit("endPercent", this.percent);
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .progress-bar {
   display: flex;
   height: 30px;

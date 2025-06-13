@@ -2,14 +2,14 @@
   <div class="my_songslist">
     <div class="tab-head">
       <div
-        :class="['songs','create-songs',isCreateShow ? '' : 'noActive']"
+        :class="['songs', 'create-songs', isCreateShow ? '' : 'noActive']"
         @click="isCreateShow = true"
       >
         创建歌单
         <span class="count">{{ songsList.length }}</span>
       </div>
       <div
-        :class="['songs','star-songs',isCreateShow ? 'noActive' : '']"
+        :class="['songs', 'star-songs', isCreateShow ? 'noActive' : '']"
         @click="isCreateShow = false"
       >
         收藏歌单
@@ -18,10 +18,10 @@
     </div>
     <div class="tab-content">
       <div class="create-content" v-show="isCreateShow">
-        <div class="songs-list" v-if="songsList.length!=0">
+        <div class="songs-list" v-if="songsList.length != 0">
           <div
             class="list-items"
-            v-for="(item) of songsList"
+            v-for="item of songsList"
             :key="item.id"
             @click="goSongsheet(item.id)"
           >
@@ -36,7 +36,7 @@
             </div>
           </div>
         </div>
-        <div class="songs-manage" @click="isManageDialog=true">
+        <div class="songs-manage" @click="isManageDialog = true">
           <span class="fa-file-text-o ico"></span> 歌单管理
         </div>
       </div>
@@ -44,9 +44,9 @@
         <div class="no-star">暂无收藏的歌单</div>
       </div>
     </div>
-    <manage-dialog :dialogShow="isManageDialog" @hide="isManageDialog=false">
+    <manage-dialog :dialogShow="isManageDialog" @hide="isManageDialog = false">
       <div class="manage-dialog">
-        <div class="items" @click="createSongShow=true">
+        <div class="items" @click="createSongShow = true">
           <span class="fa-plus-square-o ico"></span>&nbsp;&nbsp;新建歌单
         </div>
         <div class="items" @click="deleteSong">
@@ -57,43 +57,55 @@
     <createSongDialog
       :isAddSong="false"
       :createSongShow="createSongShow"
-      @close="createSongShow=false"
+      @close="createSongShow = false"
       @complete="createSongComplete"
     />
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import manageDialog from "@/components/common/kl-dialog/kl-dialog.vue";
 import createSongDialog from "@/components/content/create-song-dialog/index.vue";
-import { Component, Vue, Prop } from "vue-property-decorator";
-@Component({
-  components: {
-    manageDialog,
-    createSongDialog
-  }
-})
-export default class MySongslist extends Vue {
-  @Prop({ default: [] }) songsList!: boolean;
-  private isCreateShow: boolean = true;
-  private isManageDialog: boolean = false;
-  private createSongShow: boolean = false;
+// @Component({
+//   components: {
+//     manageDialog,
+//     createSongDialog
+//   }
+// })
+export default {
+  // @Prop({ default: [] }) songsList!: boolean;
+  props: {
+    songsList: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  // private isCreateShow: boolean = true;
+  // private isManageDialog: boolean = false;
+  // private createSongShow: boolean = false;
+  data() {
+    return {
+      isCreateShow: true,
+      isManageDialog: false,
+      createSongShow: false,
+    };
+  },
 
-  created() {}
-
-  createSongComplete() {
-    this.isManageDialog = false;
-    (this.$parent as any).getUserSongsheet();
-  }
-  goSongsheet(id: number) {
-    this.$router.push("/songsheet/" + id);
-  }
-  deleteSong() {
-    this.$router.push("/songmanage/delete");
-  }
-}
+  methods: {
+    createSongComplete() {
+      this.isManageDialog = false;
+      (this.$parent as any).getUserSongsheet();
+    },
+    goSongsheet(id: number) {
+      this.$router.push("/songsheet/" + id);
+    },
+    deleteSong() {
+      this.$router.push("/songmanage/delete");
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .my_songslist {
   padding: 15px;
   .tab-head {

@@ -8,10 +8,14 @@
     </head-bar>
     <scroll-bar class="scroll-wrapper" ref="playHistoryScroll">
       <div class="scroll-content">
-        <div class="list" v-if="playHistoryList.length!=0">
+        <div class="list" v-if="playHistoryList.length != 0">
           <ul>
-            <li v-for="(item,index) of playHistoryList" :key="item.id" @click="playHistoryMusic(index)">
-              <span class="index">{{ index+1 }}</span>
+            <li
+              v-for="(item, index) of playHistoryList"
+              :key="item.id"
+              @click="playHistoryMusic(index)"
+            >
+              <span class="index">{{ index + 1 }}</span>
               {{ item.name }}
             </li>
           </ul>
@@ -21,46 +25,47 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import scrollBar from "@/components/common/scroll/scroll.vue";
 import headBar from "@/components/common/navbar/navbar.vue";
-import { Component, Vue, Watch } from "vue-property-decorator";
-@Component({
-  components: {
-    scrollBar,
-    headBar
-  }
-})
-export default class PlayHistory extends Vue {
-  created() {}
+// @Component({
+//   components: {
+//     scrollBar,
+//     headBar
+//   }
+// })
+export default {
+  created() {},
   mounted() {
     if (this.$store.getters.playListLength != 0) {
       (<any>this).$refs.playHistoryScroll.$el.style.bottom = "50px";
     }
-  }
+  },
   updated() {
     if (this.$store.getters.playListLength != 0) {
       (<any>this).$refs.playHistoryScroll.$el.style.bottom = "50px";
     }
-  }
-
-  get title() {
-    return `最近播放(${this.$store.getters.playHistoryLength})`;
-  }
-  get playHistoryList() {
-    return this.$store.state.playHistory;
-  }
-
-  back() {
-    this.$router.back();
-  }
-  playHistoryMusic(index:number){
-    this.$store.dispatch('changePlayList',this.$store.state.playHistory)
-    this.$store.dispatch('changeCurrentPlayIndex',index)
-  }
-}
+  },
+  computed: {
+    title() {
+      return `最近播放(${this.$store.getters.playHistoryLength})`;
+    },
+    playHistoryList() {
+      return this.$store.state.playHistory;
+    },
+  },
+  methods: {
+    back() {
+      this.$router.back();
+    },
+    playHistoryMusic(index: number) {
+      this.$store.dispatch("changePlayList", this.$store.state.playHistory);
+      this.$store.dispatch("changeCurrentPlayIndex", index);
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .play-history {
   position: fixed;
   top: 0;

@@ -21,7 +21,7 @@
               <div class="name">{{ item.name }}</div>
               <div class="desc">
                 {{ item.trackCount }}首 by {{ item.creator.nickname }} 播放{{
-                item.playCount | finalPlayCount
+                  item.playCount | finalPlayCount
                 }}次
               </div>
             </div>
@@ -36,21 +36,27 @@
 <script lang="ts">
 import scroll from "components/common/scroll/scroll.vue";
 import { loadingMixin } from "@/utils/mixin";
-import { Component, Vue, Prop } from "vue-property-decorator";
 
-@Component({
-  components: {
-    scroll
+// @Component({
+//   components: {
+//     scroll
+//   },
+//   mixins: [loadingMixin]
+// })
+export default {
+  // @Prop({
+  //   default() {
+  //     return [];
+  //   }
+  // })
+  // songSheetList!: object[];
+
+  props: {
+    songSheetList: {
+      type: Array,
+      default: () => [],
+    },
   },
-  mixins: [loadingMixin]
-})
-export default class SongSheet extends Vue {
-  @Prop({
-    default() {
-      return [];
-    }
-  })
-  songSheetList!: object[];
 
   mounted() {
     (<any>this).$bus.$on("finishPullUp", () => {
@@ -58,22 +64,25 @@ export default class SongSheet extends Vue {
         (<any>this.$refs.songsheetScroll).finishPullUp();
       this.$refs.songsheetScroll && (<any>this.$refs.songsheetScroll).refresh();
     });
-  }
+  },
   destroyed() {
     (<any>this).$bus.$off("finishPullUp");
-  }
+  },
 
-  goSongsheet(id: number) {
-    this.$router.push("/songsheet/" + id);
-  }
-  imgLoad() {
-    this.$refs.songsheetScroll && (this.$refs.songsheetScroll as any).refresh();
-  }
+  methods: {
+    goSongsheet(id: number) {
+      this.$router.push("/songsheet/" + id);
+    },
+    imgLoad() {
+      this.$refs.songsheetScroll &&
+        (this.$refs.songsheetScroll as any).refresh();
+    },
 
-  pullingUp() {
-    this.$emit("pullingUp", 5);
-  }
-}
+    pullingUp() {
+      this.$emit("pullingUp", 5);
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

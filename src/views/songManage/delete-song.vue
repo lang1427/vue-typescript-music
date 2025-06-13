@@ -8,10 +8,15 @@
       <div slot="right" @click="allCheck">{{ isAllCheckText }}</div>
     </top-bar>
     <div class="body">
-      <div v-if="mySongsList.length!=0" ref="songlistREF">
+      <div v-if="mySongsList.length != 0" ref="songlistREF">
         <div class="list-items" v-for="item of mySongsList" :key="item.id">
           <div class="check">
-            <input type="checkbox" class="checkbox-items" v-model="isChecks" :value="item.id" />
+            <input
+              type="checkbox"
+              class="checkbox-items"
+              v-model="isChecks"
+              :value="item.id"
+            />
           </div>
           <div class="info">
             <div class="img">
@@ -40,77 +45,88 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { userSongsManageMixin } from "@/utils/mixin";
 import { deleteSongsheet } from "@/service/songsheet";
 import topBar from "@/components/common/navbar/navbar.vue";
 import deleteConfirm from "@/components/common/kl-confirm/kl-confirm.vue";
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-@Component({
-  components: {
-    topBar,
-    deleteConfirm
+// @Component({
+//   components: {
+//     topBar,
+//     deleteConfirm
+//   },
+//   mixins: [userSongsManageMixin]
+// })
+export default {
+  // private isChecks: number[] = [];
+  // private deleteShow: boolean = false;
+
+  data() {
+    return {
+      isChecks: [],
+      deleteShow: false,
+    };
   },
-  mixins: [userSongsManageMixin]
-})
-export default class DeleteSong extends Vue {
-  private isChecks: number[] = [];
-  private deleteShow: boolean = false;
+
   created() {
     (this as any).getUserSongsheet();
-  }
+  },
 
-  get isAllCheckText() {
-    if (this.isChecks.length === (this as any).mySongsList.length) {
-      return "取消全选";
-    }
-    return "全选";
-  }
-
-  get selectedItems() {
-    return `已选择${this.isChecks.length}项`;
-  }
-
-  async setDeleteSongsheet() {
-    let ids = this.isChecks.join(",");
-    let res = await deleteSongsheet(ids);
-    if (res.code === 200) {
-      this.isChecks = [];
-      (this as any).getUserSongsheet();
-    }
-  }
-
-  back() {
-    this.$router.go(-1);
-  }
-  allCheck() {
-    let checkBox = this.$refs.songlistREF;
-    let checkItems = (checkBox as HTMLElement).querySelectorAll(
-      ".checkbox-items"
-    );
-    if (this.isAllCheckText === "全选") {
-      this.isChecks = [];
-      for (let item of checkItems) {
-        this.isChecks.push((item as any).value);
+  computed: {
+    isAllCheckText() {
+      if (this.isChecks.length === (this as any).mySongsList.length) {
+        return "取消全选";
       }
-    } else {
-      this.isChecks = [];
-    }
-  }
-  deleteConfirmShow() {
-    if (this.isChecks.length === 0) {
-      this.$toast("未选择歌单");
-      return !1;
-    }
-    this.deleteShow = true;
-  }
-  deleteSong() {
-    this.setDeleteSongsheet();
-    this.deleteShow = false;
-  }
-}
+      return "全选";
+    },
+
+    selectedItems() {
+      return `已选择${this.isChecks.length}项`;
+    },
+  },
+
+  methods: {
+    async setDeleteSongsheet() {
+      let ids = this.isChecks.join(",");
+      let res = await deleteSongsheet(ids);
+      if (res.code === 200) {
+        this.isChecks = [];
+        (this as any).getUserSongsheet();
+      }
+    },
+
+    back() {
+      this.$router.go(-1);
+    },
+    allCheck() {
+      let checkBox = this.$refs.songlistREF;
+      let checkItems = (checkBox as HTMLElement).querySelectorAll(
+        ".checkbox-items"
+      );
+      if (this.isAllCheckText === "全选") {
+        this.isChecks = [];
+        for (let item of checkItems) {
+          this.isChecks.push((item as any).value);
+        }
+      } else {
+        this.isChecks = [];
+      }
+    },
+    deleteConfirmShow() {
+      if (this.isChecks.length === 0) {
+        this.$toast("未选择歌单");
+        return !1;
+      }
+      this.deleteShow = true;
+    },
+    deleteSong() {
+      this.setDeleteSongsheet();
+      this.deleteShow = false;
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .delete-song {
   position: fixed;
   left: 0;

@@ -1,7 +1,7 @@
 <template>
   <div v-show="isShow && overlay" class="confirm-overlay">
     <div class="kl-confirm" v-show="isShow">
-      <div class="confirm-header" v-if="title!==''" :style="align">
+      <div class="confirm-header" v-if="title !== ''" :style="align">
         <h5>{{ title }}</h5>
       </div>
       <div class="confirm-content">{{ content }}</div>
@@ -13,33 +13,63 @@
   </div>
 </template>
 
-<script lang='ts'>
-import { Component, Vue, Prop } from "vue-property-decorator";
-@Component
-export default class KlConfirm extends Vue {
-  @Prop({ default: false }) isShow!: boolean;
-  @Prop({ default: true }) overlay!: boolean;
-  @Prop({ default: "" }) title!: string;
-  @Prop({ default: "left" }) titleAlign!: string;
-  @Prop({ required: true }) content!: string;
+<script lang="ts">
+export default {
+  // @Prop({ default: false }) isShow!: boolean;
+  // @Prop({ default: true }) overlay!: boolean;
+  // @Prop({ default: "" }) title!: string;
+  // @Prop({ default: "left" }) titleAlign!: string;
+  // @Prop({ required: true }) content!: string;
 
-  created() {}
+  props: {
+    isShow: {
+      type: Boolean,
+      default: false,
+    },
+    overlay: {
+      type: Boolean,
+      default: true,
+    },
+    title: {
+      type: String,
+      default: "",
+    },
+    titleAlign: {
+      type: String,
+      default: "left",
+    },
+    content: {
+      type: String,
+      required: true,
+    },
+  },
 
-  get align() {
-    return {
-      textAlign: this.titleAlign
-    };
-  }
+  created() {},
 
-  cancel() {
-    this.$emit("cancel", "取消");
-  }
-  confirm() {
-    this.$emit("confirm", "确定");
-  }
-}
+  computed: {
+    align() {
+      return {
+        textAlign: this.titleAlign,
+      };
+    },
+  },
+
+  // get align() {
+  //   return {
+  //     textAlign: this.titleAlign
+  //   };
+  // }
+  methods: {
+    cancel() {
+      this.$emit("cancel", "取消");
+    },
+    confirm() {
+      this.$emit("confirm", "确定");
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .confirm-overlay {
   position: fixed;
   left: 0;

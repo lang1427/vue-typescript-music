@@ -1,5 +1,9 @@
 <template>
-  <popup class="songlist-operation" :popupShow="operationShow" @hide="operationShow = false">
+  <popup
+    class="songlist-operation"
+    :popupShow="operationShow"
+    @hide="operationShow = false"
+  >
     <div class="operation-box">
       <div class="info">
         <div class="avatar">
@@ -24,44 +28,49 @@
   </popup>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import popup from "@/components/common/bottomPopup/bottom-popup.vue";
-import { Component, Vue, Prop } from "vue-property-decorator";
-@Component({
-  components: {
-    popup
-  }
-})
-export default class SonglistOperation extends Vue {
-  private operationShow: boolean = false;
-  private curSongInfo: object = {}; // 当前歌曲信息 需要从外界赋值
-  created() {}
+export default {
+  // private operationShow: boolean = false;
+  // private curSongInfo: object = {}; // 当前歌曲信息 需要从外界赋值
 
-  get isAlbumPage() {
-    return new RegExp(/^\/album\/((?:[^\/]+?))(?:\/(?=$))?$/i).test(
-      this.$route.path
-    );
-  }
-  nextPlay(playInfo: any) {
-    let obj = {
-      id: playInfo.songsId,
-      imgURL: playInfo.imgUrl,
-      name: playInfo.songsName
+  data() {
+    return {
+      operationShow: false,
+      curSongInfo: {},
     };
-    this.$store.commit("insertPlaylist", obj);
-    this.operationShow = false;
-  }
-  goComment(songsId: string) {
-    this.$router.push({
-      path: "/comment/songs",
-      query: {
-        id: songsId
-      }
-    });
-  }
-}
+  },
+
+  computed: {
+    isAlbumPage() {
+      return new RegExp(/^\/album\/((?:[^\/]+?))(?:\/(?=$))?$/i).test(
+        this.$route.path
+      );
+    },
+  },
+
+  methods: {
+    nextPlay(playInfo: any) {
+      let obj = {
+        id: playInfo.songsId,
+        imgURL: playInfo.imgUrl,
+        name: playInfo.songsName,
+      };
+      this.$store.commit("insertPlaylist", obj);
+      this.operationShow = false;
+    },
+    goComment(songsId: string) {
+      this.$router.push({
+        path: "/comment/songs",
+        query: {
+          id: songsId,
+        },
+      });
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .songlist-operation {
   .operation-box {
     padding: 15px 10px 0;

@@ -9,47 +9,61 @@
 
     <div class="explain">未注册手机号登录后将自动创建账号</div>
     <div class="phone-box">
-      <span class="ico" :class="isActive ? 'active':''">+86</span>
-      <input class="phone-input" type="tel"  maxlength="11"  v-model.trim="phoneNumber"  placeholder="请输入手机号" 
-          @keyup="isNumber"/>
+      <span class="ico" :class="isActive ? 'active' : ''">+86</span>
+      <input
+        class="phone-input"
+        type="tel"
+        maxlength="11"
+        v-model.trim="phoneNumber"
+        placeholder="请输入手机号"
+        @keyup="isNumber"
+      />
     </div>
     <div class="next" @click="next">下一步</div>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import navbar from "components/common/navbar/navbar.vue";
-import { Component, Vue, Watch } from "vue-property-decorator";
-@Component({
-  components: {
-    navbar
-  }
-})
-export default class Phone extends Vue {
-  private phoneNumber:string = ''
-  get isActive(){
-    if(this.phoneNumber.length>=1 && this.phoneNumber.match(/^\d/)){
-      return true
-    }
-  }
-  created() {}
-  back() {
-    this.$router.back();
-  }
-  isNumber(){
-   this.phoneNumber =  this.phoneNumber.replace(/[^\d]/g,'')
-  }
-  next(){
-    if(/^1[3|4|5|7|8|9][0-9]\d{4,11}$/.test(this.phoneNumber)){ 
-      this.$store.commit('changeloginAccount',this.phoneNumber)
-      this.$router.push('/login/login-phone')
-    }else{
-      this.$toast('请输入正确的手机号')
-    }
-  }
-}
+// @Component({
+//   components: {
+//     navbar
+//   }
+// })
+export default {
+  // private phoneNumber:string = '',
+  data() {
+    return {
+      phoneNumber: "",
+    };
+  },
+  computed: {
+    isActive() {
+      if (this.phoneNumber.length >= 1 && this.phoneNumber.match(/^\d/)) {
+        return true;
+      }
+    },
+  },
+
+  methods: {
+    back() {
+      this.$router.back();
+    },
+    isNumber() {
+      this.phoneNumber = this.phoneNumber.replace(/[^\d]/g, "");
+    },
+    next() {
+      if (/^1[3|4|5|7|8|9][0-9]\d{4,11}$/.test(this.phoneNumber)) {
+        this.$store.commit("changeloginAccount", this.phoneNumber);
+        this.$router.push("/login/login-phone");
+      } else {
+        this.$toast("请输入正确的手机号");
+      }
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .phone {
   position: absolute;
   top: 0;
@@ -75,8 +89,8 @@ export default class Phone extends Vue {
       left: 10px;
       bottom: 10px;
       color: #999;
-      &.active{
-          color: #333;
+      &.active {
+        color: #333;
       }
     }
     .phone-input {
@@ -90,7 +104,7 @@ export default class Phone extends Vue {
     }
   }
   .next {
-    margin:35px;
+    margin: 35px;
     background-color: #e00;
     text-align: center;
     color: #fff;

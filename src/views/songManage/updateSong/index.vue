@@ -8,15 +8,30 @@
       <ul>
         <li @click="goEditName">
           <span class="key">名称</span>
-          <input type="text" class="edit-input" placeholder="请输入歌单名称" v-model="songName" />
+          <input
+            type="text"
+            class="edit-input"
+            placeholder="请输入歌单名称"
+            v-model="songName"
+          />
         </li>
         <li @click="goEditTags">
           <span class="key">标签</span>
-          <input type="text" class="edit-input" placeholder="请输入歌单标签" v-model="songTags" />
+          <input
+            type="text"
+            class="edit-input"
+            placeholder="请输入歌单标签"
+            v-model="songTags"
+          />
         </li>
         <li @click="goEditDesc">
           <span class="key">描述</span>
-          <input type="text" class="edit-input" placeholder="请输入歌单描述" v-model="songDesc" />
+          <input
+            type="text"
+            class="edit-input"
+            placeholder="请输入歌单描述"
+            v-model="songDesc"
+          />
         </li>
       </ul>
     </div>
@@ -24,87 +39,97 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 interface IBaseinfo {
   title: string;
   tags: string[];
   description: string;
 }
 import { songsDetail, SongsBaseInfo } from "@/service/songsheet";
-import { Component, Vue } from "vue-property-decorator";
-Component.registerHooks(["beforeRouteUpdate"]);
-@Component
-export default class UpdateSong extends Vue {
-  private baseInfo = {};
+
+// Component.registerHooks(["beforeRouteUpdate"]);
+// @Component
+export default {
+  // private baseInfo = {};
+  data() {
+    return {
+      baseInfo: {},
+    };
+  },
+
   beforeRouteUpdate(to: any, from: any, next: any) {
     if (to.path === "/songmanage/update") {
       this.getSongDetail(to.query.id);
     }
     next();
-  }
+  },
   created() {
     if (this.$route.path === "/songmanage/update") {
       this.getSongDetail();
     }
-  }
+  },
 
-  get songName() {
-    // return this.$route.query.name;
-    return (this.baseInfo as IBaseinfo).title;
-  }
-  get songTags() {
-    // return this.$route.query.tags;
-    return (
-      (this.baseInfo as IBaseinfo).tags &&
-      (this.baseInfo as IBaseinfo).tags.join("-")
-    );
-  }
-  get songDesc() {
-    // return this.$route.query.desc;
-    return (this.baseInfo as IBaseinfo).description;
-  }
-  get id() {
-    return parseInt(<string>this.$route.query.id);
-  }
+  computed: {
+    songName() {
+      // return this.$route.query.name;
+      return (this.baseInfo as IBaseinfo).title;
+    },
+    songTags() {
+      // return this.$route.query.tags;
+      return (
+        (this.baseInfo as IBaseinfo).tags &&
+        (this.baseInfo as IBaseinfo).tags.join("-")
+      );
+    },
+    songDesc() {
+      // return this.$route.query.desc;
+      return (this.baseInfo as IBaseinfo).description;
+    },
+    id() {
+      return parseInt(<string>this.$route.query.id);
+    },
+  },
 
-  async getSongDetail(id = this.id) {
-    let res = await songsDetail(id);
-    this.baseInfo = new SongsBaseInfo(res.playlist);
-  }
+  methods: {
+    async getSongDetail() {
+      let res = await songsDetail(this.id);
+      this.baseInfo = new SongsBaseInfo(res.playlist);
+    },
 
-  back() {
-    this.$router.back();
-  }
-  goEditName() {
-    this.$router.push({
-      path: "/songmanage/update/editname",
-      query: {
-        songid: this.id + "",
-        songname: this.songName
-      }
-    });
-  }
-  goEditTags() {
-    this.$router.push({
-      path: "/songmanage/update/edittags",
-      query: {
-        songid: this.id + "",
-        tags: this.songTags
-      }
-    });
-  }
-  goEditDesc() {
-    this.$router.push({
-      path: "/songmanage/update/editdesc",
-      query: {
-        songid: this.id + "",
-        desc: this.songDesc
-      }
-    });
-  }
-}
+    back() {
+      this.$router.back();
+    },
+    goEditName() {
+      this.$router.push({
+        path: "/songmanage/update/editname",
+        query: {
+          songid: this.id + "",
+          songname: this.songName,
+        },
+      });
+    },
+    goEditTags() {
+      this.$router.push({
+        path: "/songmanage/update/edittags",
+        query: {
+          songid: this.id + "",
+          tags: this.songTags,
+        },
+      });
+    },
+    goEditDesc() {
+      this.$router.push({
+        path: "/songmanage/update/editdesc",
+        query: {
+          songid: this.id + "",
+          desc: this.songDesc,
+        },
+      });
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .update-song {
   position: absolute;
   left: 0;

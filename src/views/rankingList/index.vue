@@ -14,12 +14,21 @@
         v-for="item of officialList"
         :key="item.id"
       >
-        <div class="bg-img" :style="{'background-image':'url('+item.coverImgUrl+')'}">
+        <div
+          class="bg-img"
+          :style="{ 'background-image': 'url(' + item.coverImgUrl + ')' }"
+        >
           <div class="update-text">{{ item.updateFrequency }}</div>
         </div>
         <div class="song-info">
-          <div class="song-items" v-for="(song,sIndex) of item.songsInfo" :key="song.first">
-            <p class="song-text">{{ sIndex+1 }}.{{ song.first }}-{{ song.second }}</p>
+          <div
+            class="song-items"
+            v-for="(song, sIndex) of item.songsInfo"
+            :key="song.first"
+          >
+            <p class="song-text">
+              {{ sIndex + 1 }}.{{ song.first }}-{{ song.second }}
+            </p>
           </div>
         </div>
       </div>
@@ -33,7 +42,10 @@
           v-for="item of recommendList"
           :key="item.id"
         >
-          <div class="bg-img" :style="{'background-image':'url('+item.coverImgUrl+')'}">
+          <div
+            class="bg-img"
+            :style="{ 'background-image': 'url(' + item.coverImgUrl + ')' }"
+          >
             <div class="update-text">{{ item.updateFrequency }}</div>
           </div>
           <div class="name">{{ item.name }}</div>
@@ -43,57 +55,66 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import topBar from "@/components/common/navbar/navbar.vue";
 import gridView from "@/components/common/gridview/grid-view.vue";
 import { rankIdx, topListDetail, RankData } from "@/service/rankinglist";
-import { Component, Vue } from "vue-property-decorator";
-@Component({
-  components: {
-    topBar,
-    gridView
-  }
-})
-export default class RankingList extends Vue {
-  private rankList: object[] = [];
-  get officialList() {
-    return this.rankList.filter(item => {
-      return (<any>item).songsInfo.length !== 0;
-    });
-  }
-  get recommendList() {
-    return this.rankList.filter(item => {
-      return (<any>item).songsInfo.length === 0;
-    });
-  }
+// @Component({
+//   components: {
+//     topBar,
+//     gridView
+//   }
+// })
+export default {
+  // private rankList: object[] = [];
+
+  data() {
+    return {
+      rankList: [],
+    };
+  },
+
+  computed: {
+    officialList() {
+      return this.rankList.filter((item) => {
+        return (<any>item).songsInfo.length !== 0;
+      });
+    },
+    recommendList() {
+      return this.rankList.filter((item) => {
+        return (<any>item).songsInfo.length === 0;
+      });
+    },
+  },
 
   created() {
     this.getToplistDetail();
-  }
+  },
+  methods: {
+    back() {
+      this.$router.back();
+    },
+    goToplist(name: string) {
+      let idx = rankIdx.findIndex((item) => {
+        return item === name;
+      });
+      this.$router.push("/toplist/" + idx);
+    },
 
-  back() {
-    this.$router.back();
-  }
-  goToplist(name: string) {
-    let idx = rankIdx.findIndex(item => {
-      return item === name;
-    });
-    this.$router.push("/toplist/" + idx);
-  }
-
-  async getToplistDetail() {
-    let res = await topListDetail();
-    if (res.code === 200) {
-      let arr = [];
-      for (const item of res.list) {
-        arr.push(new RankData(item));
+    async getToplistDetail() {
+      let res = await topListDetail();
+      if (res.code === 200) {
+        let arr = [];
+        for (const item of res.list) {
+          arr.push(new RankData(item));
+        }
+        this.rankList = arr;
       }
-      this.rankList = arr;
-    }
-  }
-}
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .ranking-list {
   .top-bar {
     position: fixed;

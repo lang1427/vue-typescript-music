@@ -1,7 +1,12 @@
 <template>
   <div>
     <div v-if="data.length != 0" class="scroll-list-view">
-      <scroll ref="scrollListview" class="list-view" :probeType="3" @scroll="scroll">
+      <scroll
+        ref="scrollListview"
+        class="list-view"
+        :probeType="3"
+        @scroll="scroll"
+      >
         <div class="content">
           <ul>
             <li v-for="group of data" :key="group.title" ref="listGroup">
@@ -32,12 +37,14 @@
               :key="index"
               :data-index="index"
               :class="{ 'items-active': currentIndex === index }"
-            >{{ item }}</li>
+            >
+              {{ item }}
+            </li>
           </ul>
         </div>
       </scroll>
     </div>
-    <loading style="margin-top:100px;" v-show="$store.state.loadingShow" />
+    <loading style="margin-top: 100px" v-show="$store.state.loadingShow" />
   </div>
 </template>
 
@@ -58,117 +65,168 @@ import scroll from "components/common/scroll/scroll.vue";
 import { getData } from "@/utils/dom";
 import { loadingMixin } from "@/utils/mixin";
 
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+// @Component({
+//   components: {
+//     scroll
+//   },
+//   mixins: [loadingMixin]
+// })
+export default {
+  // @Prop({
+  //   default() {
+  //     return [];
+  //   }
+  // })
+  // data!: object[];
 
-@Component({
-  components: {
-    scroll
+  props: {
+    data: {
+      type: Array,
+      default: () => [],
+    },
   },
-  mixins: [loadingMixin]
-})
-export default class scrollListView extends Vue {
-  @Prop({
-    default() {
-      return [];
-    }
-  })
-  data!: object[];
+  data() {
+    return {
+      currentIndex: 0,
+      scrollY: -1,
+      touch: {
+        y1: 0,
+        y2: 0,
+        anchorIndex: "",
+      },
+      listHeight: [], // 用于存储每个类型对应的高度
+    };
+  },
 
-  currentIndex: number = 0;
-  scrollY: number = -1;
-  touch: ITouch = {
-    y1: 0,
-    y2: 0,
-    anchorIndex: ""
-  };
-  listHeight: number[] = []; // 用于存储每个类型对应的高度
-  get shortcurList() {
-    return this.data.map(item => {
-      return (item as any).title.substr(0, 1);
-    });
-  }
+  // currentIndex: number = 0;
+  // scrollY: number = -1;
+  // touch: ITouch = {
+  //   y1: 0,
+  //   y2: 0,
+  //   anchorIndex: ""
+  // };
+  // listHeight: number[] = []; // 用于存储每个类型对应的高度
+  computed: {
+    shortcurList() {
+      return this.data.map((item) => {
+        return (item as any).title.substr(0, 1);
+      });
+    },
+  },
 
-  selector(id: number) {
-    this.$router.push("/singer/detail/" + id);
-  }
+  methods: {
+    selector(id: number) {
+      this.$router.push("/singer/detail/" + id);
+    },
 
-  /** 滑动右侧导航，实现主题内容联动效果 Start */
-  touchStart(e: TouchEvent) {
-    let anchorIndex = getData(e.target as HTMLElement, "index"); // 获取当前开始移动的元素的自定义属性值===index
-    this.touch.y1 = e.touches[0].pageY; // 获取当前移动元素的pageY
-    this.touch.anchorIndex = <string>anchorIndex;
-    this._scrollTo(anchorIndex as any); // 滚动到指定当前的元素中
-  }
-  touchMove(e: TouchEvent) {
-    this.touch.y2 = e.touches[0].pageY;
-    let delta = ((this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT) | 0;
-    let anchorIndex = parseInt(this.touch.anchorIndex) + delta;
-    this._scrollTo(anchorIndex);
-  }
-  _scrollTo(index: string | number) {
-    if (!index && index != 0) {
-      return;
-    }
-    if (index < 0) {
-      index = 0;
-    } else if (index > this.listHeight.length - 2) {
-      index = this.listHeight.length - 2;
-    }
-    this.scrollY = -this.listHeight[<number>index];
-    (this.$refs.scrollListview as any).scrollToElement(
-      (<any>this.$refs).listGroup[index],
-      0
-    );
-  }
-  /** 滑动右侧导航，实现主题内容联动效果 End */
-
-  /** 滑动主题内容，右侧导航联动效果 Start */
-  scroll(position: IPosition) {
-    this.scrollY = position.y;
-  }
-  /**计算高度 clientHeight（实际内容的高度）  设置好了每个li的高度为50px；并不会因为图片没有被加载，高度计算不正确 */
-  calcHeight() {
-    const list: any = this.$refs.listGroup;
-    let height = 0;
-    this.listHeight.push(height); // 初始 0
-    for (let i = 0; i < list.length; i++) {
-      let item = list[i];
-      height += item.clientHeight;
-      this.listHeight.push(height);
-    }
-  }
-  /** 监听Prop中的data是否传入了值，当传入了值时，设置好listHeight：每个类型的高度 */
-  @Watch("data")
-  changeData() {
-    setTimeout(() => {
-      this.calcHeight();
-    }, 20);
-  }
-  /** 监听scrollY 滚动的距离，设置 当滚动的距离在某个范围内的currentIndex的值 */
-  @Watch("scrollY")
-  changeScrollY(newVal: number) {
-    const listHeight = this.listHeight;
-    /** 最上方 下拉滑动，激活 第一个 类型 热门 */
-    if (newVal > 0) {
-      this.currentIndex = 0;
-      return;
-    }
-    /** 上拉 取对应类型 激活currentIndex */
-
-    for (let i = 0; i < listHeight.length - 1; i++) {
-      let height1 = listHeight[i];
-      let height2 = listHeight[i + 1];
-      // 如果滚动的距离 在当前类型的高度与下一个类型之前的高度 则设置 对应的 currentIndex
-      if (-newVal >= height1 && -newVal < height2) {
-        this.currentIndex = i;
+    /** 滑动右侧导航，实现主题内容联动效果 Start */
+    touchStart(e: TouchEvent) {
+      let anchorIndex = getData(e.target as HTMLElement, "index"); // 获取当前开始移动的元素的自定义属性值===index
+      this.touch.y1 = e.touches[0].pageY; // 获取当前移动元素的pageY
+      this.touch.anchorIndex = <string>anchorIndex;
+      this._scrollTo(anchorIndex as any); // 滚动到指定当前的元素中
+    },
+    touchMove(e: TouchEvent) {
+      this.touch.y2 = e.touches[0].pageY;
+      let delta = ((this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT) | 0;
+      let anchorIndex = parseInt(this.touch.anchorIndex) + delta;
+      this._scrollTo(anchorIndex);
+    },
+    _scrollTo(index: number) {
+      if (!index && index != 0) {
         return;
       }
-    }
-    // 滑动到最后
-    this.currentIndex = this.listHeight.length - 2;
-  }
+      if (index < 0) {
+        index = 0;
+      } else if (index > this.listHeight.length - 2) {
+        index = this.listHeight.length - 2;
+      }
+      this.scrollY = -this.listHeight[index];
+      (this.$refs.scrollListview as any).scrollToElement(
+        (<any>this.$refs).listGroup[index],
+        0
+      );
+    },
+    /** 滑动右侧导航，实现主题内容联动效果 End */
+
+    /** 滑动主题内容，右侧导航联动效果 Start */
+    scroll(position: IPosition) {
+      this.scrollY = position.y;
+    },
+    /**计算高度 clientHeight（实际内容的高度）  设置好了每个li的高度为50px；并不会因为图片没有被加载，高度计算不正确 */
+    calcHeight() {
+      const list: any = this.$refs.listGroup;
+      let height = 0;
+      this.listHeight.push(height); // 初始 0
+      for (let i = 0; i < list.length; i++) {
+        let item = list[i];
+        height += item.clientHeight;
+        this.listHeight.push(height);
+      }
+    },
+  },
+
+  watch: {
+    data() {
+      setTimeout(() => {
+        this.calcHeight();
+      }, 20);
+    },
+    scrollY(newVal: number) {
+      const listHeight = this.listHeight;
+      /** 最上方 下拉滑动，激活 第一个 类型 热门 */
+      if (newVal > 0) {
+        this.currentIndex = 0;
+        return;
+      }
+      /** 上拉 取对应类型 激活currentIndex */
+
+      for (let i = 0; i < listHeight.length - 1; i++) {
+        let height1 = listHeight[i];
+        let height2 = listHeight[i + 1];
+        // 如果滚动的距离 在当前类型的高度与下一个类型之前的高度 则设置 对应的 currentIndex
+        if (-newVal >= height1 && -newVal < height2) {
+          this.currentIndex = i;
+          return;
+        }
+      }
+      // 滑动到最后
+      this.currentIndex = this.listHeight.length - 2;
+    },
+  },
+
+  /** 监听Prop中的data是否传入了值，当传入了值时，设置好listHeight：每个类型的高度 */
+  // @Watch("data")
+  // changeData() {
+  //   setTimeout(() => {
+  //     this.calcHeight();
+  //   }, 20);
+  // }
+  // /** 监听scrollY 滚动的距离，设置 当滚动的距离在某个范围内的currentIndex的值 */
+  // @Watch("scrollY")
+  // changeScrollY(newVal: number) {
+  //   const listHeight = this.listHeight;
+  //   /** 最上方 下拉滑动，激活 第一个 类型 热门 */
+  //   if (newVal > 0) {
+  //     this.currentIndex = 0;
+  //     return;
+  //   }
+  //   /** 上拉 取对应类型 激活currentIndex */
+
+  //   for (let i = 0; i < listHeight.length - 1; i++) {
+  //     let height1 = listHeight[i];
+  //     let height2 = listHeight[i + 1];
+  //     // 如果滚动的距离 在当前类型的高度与下一个类型之前的高度 则设置 对应的 currentIndex
+  //     if (-newVal >= height1 && -newVal < height2) {
+  //       this.currentIndex = i;
+  //       return;
+  //     }
+  //   }
+  //   // 滑动到最后
+  //   this.currentIndex = this.listHeight.length - 2;
+  // }
   /** 滑动主题内容，右侧导航联动效果 End */
-}
+};
 </script>
 
 <style lang="less" scoped>

@@ -1,16 +1,11 @@
 <template>
-  <div class='my-star'></div>
+  <div class="my-star"></div>
 </template>
 
-<script lang='ts'>
-import { Component, Vue } from 'vue-property-decorator';
-@Component
-export default class MyStar extends Vue{
-  
-created(){}
- 
-}
+<script lang="ts">
+export default {};
 </script>
-<style scoped lang='less'>
-.my-star{}
+<style scoped lang="less">
+.my-star {
+}
 </style>

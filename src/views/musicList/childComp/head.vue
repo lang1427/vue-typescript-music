@@ -7,7 +7,7 @@
       <div slot="center">
         <h2 class="title">{{ topTitle }}</h2>
       </div>
-      <div slot="right" v-if="operation" @click="operationShow=true">
+      <div slot="right" v-if="operation" @click="operationShow = true">
         <span class="fa-ellipsis-v"></span>
       </div>
     </topbar>
@@ -33,51 +33,64 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import topbar from "@/components/common/navbar/navbar.vue";
-import { Component, Vue, Prop } from "vue-property-decorator";
-@Component({
-  components: {
-    topbar
-  }
-})
-export default class AlbumHead extends Vue {
-  @Prop({ default: false }) operation!: boolean;
-  private operationShow: boolean = false;
-  created() {}
-  get topTitle() {
-    if (this.$route.path.match(/\/album\//)) {
-      return "专辑";
-    } else if (this.$route.path.match(/\/songsheet\//)) {
-      return "歌单";
-    } else if (this.$route.path.match(/\/toplist\//)) {
-      return "排行榜";
-    }
-  }
-  back() {
-    this.$router.back();
-  }
-  goEditSong() {
-    this.$router.push({
-      path: "/songmanage/update?id=" + this.$route.params.id
-      // query: {
-      //   songId: this.$route.params.id,
-      //   name: (this.$parent as any).baseInfo.title,
-      //   tags: (this.$parent as any).baseInfo.tags.join("-"),
-      //   desc: (this.$parent as any).baseInfo.description
-      // }
-    });
-  }
-  goAddSongPage() {
-    this.$router.push("/songmanage/add?id=" + this.$route.params.id);
-  }
+// @Component({
+//   components: {
+//     topbar
+//   }
+// })
+export default {
+  // @Prop({ default: false }) operation!: boolean;
+  props: {
+    operation: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  // private operationShow: boolean = false;
+  data() {
+    return {
+      operationShow: false,
+    };
+  },
+  computed: {
+    topTitle() {
+      if (this.$route.path.match(/\/album\//)) {
+        return "专辑";
+      } else if (this.$route.path.match(/\/songsheet\//)) {
+        return "歌单";
+      } else if (this.$route.path.match(/\/toplist\//)) {
+        return "排行榜";
+      }
+    },
+  },
+  methods: {
+    back() {
+      this.$router.back();
+    },
+    goEditSong() {
+      this.$router.push({
+        path: "/songmanage/update?id=" + this.$route.params.id,
+        // query: {
+        //   songId: this.$route.params.id,
+        //   name: (this.$parent as any).baseInfo.title,
+        //   tags: (this.$parent as any).baseInfo.tags.join("-"),
+        //   desc: (this.$parent as any).baseInfo.description
+        // }
+      });
+    },
+    goAddSongPage() {
+      this.$router.push("/songmanage/add?id=" + this.$route.params.id);
+    },
 
-  hide() {
-    this.operationShow = false;
-  }
-}
+    hide() {
+      this.operationShow = false;
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .album-head {
   position: fixed;
   top: 0;

@@ -26,42 +26,49 @@
 </template>
 
 <script lang="ts">
-import { loadingMixin } from '@/utils/mixin'
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { loadingMixin } from "@/utils/mixin";
 
-@Component({ mixins: [loadingMixin] })
-export default class HotSearchList extends Vue {
-  @Prop({
-    default() {
-      return []
-    }
-  })
-  hotsearch!: object[]
+// @Component({ mixins: [loadingMixin] })
+export default {
+  // @Prop({
+  //   default() {
+  //     return []
+  //   }
+  // })
+  // hotsearch!: object[]
+  props: {
+    hotsearch: {
+      type: Array,
+      default: () => [],
+    },
+  },
 
-  touchStart() {
-    ;(<any>this).$bus.$emit('isShow', false)
-  }
+  methods: {
+    touchStart() {
+      (<any>this).$bus.$emit("isShow", false);
+    },
 
-  // private keywords: string = "";
+    // private keywords: string = "";
 
-  // beforeDestroy() {   使用 vuex 将搜索关键字 发射出去
-  //   (<any>this).$bus.$emit("searchResult", this.keywords);
-  // }
+    // beforeDestroy() {   使用 vuex 将搜索关键字 发射出去
+    //   (<any>this).$bus.$emit("searchResult", this.keywords);
+    // }
 
-  goSearchResult(searchWord: string) {
-    /** $bus事件总线第一次不能执行的问题
-     * 在页面（search）通过$emit方法传递数据然后跳转路由的时候，其实页面（searchresult）的$on监听还没有建立，因此无法得到数据！
-     *  解决办法： 在页面（search）的beforeDestroy或者destroyed钩子函数中emit数据，在页面（searchresult）的beforeCreate、created或者beforeMount钩子函数中建立$on监听事件
-     */
-    // this.$nextTick(function() {  // 这里的$nextTick 无效
-    //   this.$bus.$emit("searchResult", searchWord);
-    // });
-    // this.keywords = searchWord;
-    this.$store.commit('changeSearchKey', searchWord)
-    this.$store.dispatch('addHistorySearchArr', searchWord)
-    this.$router.push(`/searchresult?keywords=${searchWord}`)
-  }
-}
+    goSearchResult(searchWord: string) {
+      /** $bus事件总线第一次不能执行的问题
+       * 在页面（search）通过$emit方法传递数据然后跳转路由的时候，其实页面（searchresult）的$on监听还没有建立，因此无法得到数据！
+       *  解决办法： 在页面（search）的beforeDestroy或者destroyed钩子函数中emit数据，在页面（searchresult）的beforeCreate、created或者beforeMount钩子函数中建立$on监听事件
+       */
+      // this.$nextTick(function() {  // 这里的$nextTick 无效
+      //   this.$bus.$emit("searchResult", searchWord);
+      // });
+      // this.keywords = searchWord;
+      this.$store.commit("changeSearchKey", searchWord);
+      this.$store.dispatch("addHistorySearchArr", searchWord);
+      this.$router.push(`/searchresult?keywords=${searchWord}`);
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

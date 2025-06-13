@@ -6,7 +6,12 @@
       </div>
       <div slot="center">手机号注册</div>
     </navbar>
-    <input class="input" type="password" v-model.trim="pawd" placeholder="设置登录密码，不少于6位" />
+    <input
+      class="input"
+      type="password"
+      v-model.trim="pawd"
+      placeholder="设置登录密码，不少于6位"
+    />
     <div class="next" @click="next">下一步</div>
 
     <!-- 昵称框 -->
@@ -17,55 +22,75 @@
         </div>
         <div slot="center">手机号注册</div>
       </navbar>
-    <input class="input" type="text" v-model.trim="nickname" placeholder="请输入您的昵称" />
-    <div class="next" @click="register">注册</div>
+      <input
+        class="input"
+        type="text"
+        v-model.trim="nickname"
+        placeholder="请输入您的昵称"
+      />
+      <div class="next" @click="register">注册</div>
     </div>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import navbar from "components/common/navbar/navbar.vue";
-import { registerAccount } from '@/service/login'
-import { Component, Vue } from "vue-property-decorator";
-@Component({
-  components: {
-    navbar
-  }
-})
-export default class Register extends Vue {
-  private pawd: string = "";
-  private nickname:string =""
-  private isShow: boolean = false;
-  private verifyCode:string = ''
-  created() {
-    (<any>this).$bus.$on('verifycodeVal',(code:string)=>{
-      this.verifyCode = code
-    })
-  }
+import { registerAccount } from "@/service/login";
+// @Component({
+//   components: {
+//     navbar
+//   }
+// })
+export default {
+  // private pawd: string = "";
+  // private nickname:string =""
+  // private isShow: boolean = false;
+  // private verifyCode:string = '',
 
-  back() {
-    this.$router.back();
-  }
-  next() {
-    if(this.pawd == ''){
-     this.$toast('请输入密码，在进行下一步操作')
-      return false
-    }
-    this.isShow = true;
-  }
-  async register(){
-    if(this.nickname == ''){
-     this.$toast('请输入昵称，在进行注册')
-      return false
-    } 
-    let res = await registerAccount(this.verifyCode,this.$store.state.loginAccount,this.pawd,this.nickname)
-    if(res.code===200){
-      console.log(res)
-    }
-  }
-}
+  data() {
+    return {
+      pawd: "",
+      nickname: "",
+      isShow: false,
+      verifyCode: "",
+    };
+  },
+
+  created() {
+    (<any>this).$bus.$on("verifycodeVal", (code: string) => {
+      this.verifyCode = code;
+    });
+  },
+  methods: {
+    back() {
+      this.$router.back();
+    },
+    next() {
+      if (this.pawd == "") {
+        this.$toast("请输入密码，在进行下一步操作");
+        return false;
+      }
+      this.isShow = true;
+    },
+    async register() {
+      if (this.nickname == "") {
+        this.$toast("请输入昵称，在进行注册");
+        return false;
+      }
+      let res = await registerAccount(
+        this.verifyCode,
+        this.$store.state.loginAccount,
+        this.pawd,
+        this.nickname
+      );
+      if (res.code === 200) {
+        console.log(res);
+      }
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .register {
   position: absolute;
   top: 0;

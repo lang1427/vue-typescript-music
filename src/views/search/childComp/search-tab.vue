@@ -33,79 +33,95 @@
 </template>
 
 <script lang="ts">
-import navbar from 'components/common/navbar/navbar.vue'
-import { searchSuggest } from '@/service/search'
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import navbar from "components/common/navbar/navbar.vue";
+import { searchSuggest } from "@/service/search";
 
-@Component({
-  components: {
-    navbar
-  }
-})
-export default class SearchTab extends Vue {
-  private searchContent: string = ''
-  private allMatch: object[] = [] // 输入框搜索内容全匹配
-  private isActive: boolean = true // 用于动态显示搜索列表
-  private timer: any = null
+// @Component({
+//   components: {
+//     navbar
+//   }
+// })
+export default {
+  // private searchContent: string = ''
+  // private allMatch: object[] = [] // 输入框搜索内容全匹配
+  // private isActive: boolean = true // 用于动态显示搜索列表
+  // private timer: any = null
 
-  get Flag() {
-    return !(this.searchContent === '')
-  }
+  data() {
+    return {
+      searchContent: "",
+      allMatch: [], // 输入框搜索内容全匹配
+      isActive: true, // 用于动态显示搜索列表
+      timer: null,
+    };
+  },
+  computed: {
+    Flag() {
+      return !(this.searchContent === "");
+    },
+  },
+
   /**
    *  当滑动热搜榜时，如果当前的搜索列表（isActive）为true状态，则设置为失效状态
    */
   mounted() {
-    ;(<any>this).$bus.$on('isShow', (state: boolean) => {
-      this.isActive = state
-    })
-  }
+    (<any>this).$bus.$on("isShow", (state: boolean) => {
+      this.isActive = state;
+    });
+  },
   destroyed() {
-    ;(<any>this).$bus.$off('isShow')
-  }
+    (<any>this).$bus.$off("isShow");
+  },
 
-  // 点击input输入框时，如果当前的搜索列表（isActive）为false状态，则激活搜索列表
-  activeInput() {
-    if (!this.isActive) {
-      this.isActive = true
-    }
-  }
-  clearInput() {
-    this.searchContent = ''
-  }
-  back() {
-    this.$router.back()
-  }
-  goSinger() {
-    this.$router.push('/singer')
-  }
-
-  goSearchResult(searchWord: string) {
-    this.$store.commit('changeSearchKey', searchWord)
-    this.$store.dispatch('addHistorySearchArr', searchWord)
-    this.$router.push(`/searchresult?keywords=${searchWord}`)
-  }
-
-  async getSearchSuggest(keyworld: string) {
-    let res = await searchSuggest(keyworld)
-    if (res.code === 200) {
-      this.allMatch = res.result.allMatch
-    }
-  }
-
-  /** 防抖处理 */
-  debounce(fn: any, delay: number = 500) {
-    if (this.timer) clearTimeout(this.timer)
-    this.timer = window.setTimeout(() => {
-      fn.call(this, this.searchContent)
-    }, delay)
-  }
-  @Watch('searchContent')
-  changeSearchContent(newVal: string) {
-    if (newVal.trim().length !== 0) {
-      this.debounce(this.getSearchSuggest)
-    }
-  }
-}
+  methods: {
+    // 点击input输入框时，如果当前的搜索列表（isActive）为false状态，则激活搜索列表
+    activeInput() {
+      if (!this.isActive) {
+        this.isActive = true;
+      }
+    },
+    clearInput() {
+      this.searchContent = "";
+    },
+    back() {
+      this.$router.back();
+    },
+    goSinger() {
+      this.$router.push("/singer");
+    },
+    goSearchResult(searchWord: string) {
+      this.$store.commit("changeSearchKey", searchWord);
+      this.$store.dispatch("addHistorySearchArr", searchWord);
+      this.$router.push(`/searchresult?keywords=${searchWord}`);
+    },
+    async getSearchSuggest(keyworld: string) {
+      let res = await searchSuggest(keyworld);
+      if (res.code === 200) {
+        this.allMatch = res.result.allMatch;
+      }
+    },
+    /** 防抖处理 */
+    debounce(fn: any, delay: number = 500) {
+      if (this.timer) clearTimeout(this.timer);
+      this.timer = window.setTimeout(() => {
+        fn.call(this, this.searchContent);
+      }, delay);
+    },
+  },
+  watch: {
+    searchContent(newVal: string) {
+      if (newVal.trim().length !== 0) {
+        this.debounce(this.getSearchSuggest);
+      }
+    },
+  },
+  // @Watch('searchContent')
+  // changeSearchContent(newVal: string) {
+  //   if (newVal.trim().length !== 0) {
+  //     this.debounce(this.getSearchSuggest)
+  //   }
+  // }
+};
 </script>
 
 <style lang="less" scoped>

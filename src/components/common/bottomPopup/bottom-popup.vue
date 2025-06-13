@@ -9,49 +9,71 @@
     ></div>
     <!-- 内容层 -->
     <transition name="bottom-popup">
-      <div class="popup-bottom" v-show="popupShow" :style="'background:'+bgcolor">
+      <div
+        class="popup-bottom"
+        v-show="popupShow"
+        :style="'background:' + bgcolor"
+      >
         <slot />
       </div>
     </transition>
   </div>
 </template>
 
-<script lang='ts'>
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-@Component
-export default class BottomPopup extends Vue {
-  @Prop() popupShow!: boolean;
-  @Prop({
-    default: "white"
-  })
-  bgcolor!: string;
+<script lang="ts">
+export default {
+  // @Prop() popupShow!: boolean;
+  // @Prop({
+  //   default: "white"
+  // })
+  // bgcolor!: string;
+
+  props: {
+    popupShow: Boolean,
+    bgcolor: {
+      type: String,
+      default: "white",
+    },
+  },
 
   destroyed() {
     document.body.classList.remove("hidden");
-  }
+  },
 
-  hide() {
-    this.$emit("hide");
-  }
+  methods: {
+    hide() {
+      this.$emit("hide");
+    },
+  },
 
-  // 锁定背景滚动 操作
-  @Watch("popupShow")
-  changePopupShow(newVal: boolean) {
-    if (newVal === true) {
-      document.body.classList.add("hidden");
-    } else {
-      document.body.classList.remove("hidden");
-    }
-  }
-}
+  watch: {
+    // 锁定背景滚动 操作
+    popupShow: function (newVal: boolean) {
+      if (newVal === true) {
+        document.body.classList.add("hidden");
+      } else {
+        document.body.classList.remove("hidden");
+      }
+    },
+  },
+
+  // @Watch("popupShow")
+  // changePopupShow(newVal: boolean) {
+  //   if (newVal === true) {
+  //     document.body.classList.add("hidden");
+  //   } else {
+  //     document.body.classList.remove("hidden");
+  //   }
+  // }
+};
 </script>
-<style lang='less'>
+<style lang="less">
 // 不让cssModules 添加 哈希值的方式 ： 不要 scoped
 .hidden {
   overflow: hidden;
 }
 </style>
-<style scoped lang='less'>
+<style scoped lang="less">
 .bottom-popup {
   position: fixed;
   left: 0;

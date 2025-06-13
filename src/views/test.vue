@@ -22,34 +22,33 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import {
   ContentLoader,
   FacebookLoader,
   CodeLoader,
   BulletListLoader,
   InstagramLoader,
-  ListLoader
+  ListLoader,
 } from "vue-content-loader";
-import { Component, Vue } from "vue-property-decorator";
-@Component({
-  components: {
-    ContentLoader,
-    FacebookLoader,
-    CodeLoader,
-    BulletListLoader,
-    InstagramLoader,
-    ListLoader
-  }
-})
-export default class Test extends Vue {
+// @Component({
+//   components: {
+//     ContentLoader,
+//     FacebookLoader,
+//     CodeLoader,
+//     BulletListLoader,
+//     InstagramLoader,
+//     ListLoader
+//   }
+// })
+export default {
   mounted() {
     (document.getElementsByClassName("mini-player")[0] as any).style.display =
       "none";
-  }
-}
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .test {
   position: absolute;
   left: 0;

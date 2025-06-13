@@ -10,43 +10,58 @@
     <div class="play-or-stop" @click="playStatus">
       <progress-circle :size="40" :currentProgress="percent">
         <!-- 中间需要展示的暂停或播放的图标 -->
-        <span :class="[playStatu?'fa-stop':'fa-play','ico']"></span>
+        <span :class="[playStatu ? 'fa-stop' : 'fa-play', 'ico']"></span>
       </progress-circle>
     </div>
     <div class="music-list" @click="openPlayerList">
-      <img src="../image/musiclist.svg" alt="">
+      <img src="../image/musiclist.svg" alt="" />
     </div>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import progressCircle from "@/components/content/progress-circle/progress-circle.vue";
-import { Component, Vue, Prop } from "vue-property-decorator";
-@Component({
-  name:'miniPlayer',
-  components: {
-    progressCircle
-  }
-})
-export default class MiniPlayer extends Vue {
-  private isLike: boolean = false; // 是否是喜欢的音乐
+// @Component({
+//   name:'miniPlayer',
+//   components: {
+//     progressCircle
+//   }
+// })
+export default {
+  // private isLike: boolean = false; // 是否是喜欢的音乐
+  data() {
+    return {
+      isLike: false, // 是否是喜欢的音乐
+    };
+  },
 
-  @Prop({ default: 0 }) percent!: number;
-  @Prop({ default: false }) playStatu!: boolean;
+  // @Prop({ default: 0 }) percent!: number;
+  // @Prop({ default: false }) playStatu!: boolean;
+  props: {
+    percent: {
+      type: Number,
+      default: 0,
+    },
+    playStatu: {
+      type: Boolean,
+      default: false,
+    },
+  },
 
-  created() {}
-  toggle() {
-    this.$emit("toggle", false);
-  }
-  playStatus() {
-    this.$emit("playStatus", !this.playStatu);
-  }
-  openPlayerList(){
-    this.$emit('openPlayerlist','open')
-  }
-}
+  methods: {
+    toggle() {
+      this.$emit("toggle", false);
+    },
+    playStatus() {
+      this.$emit("playStatus", !this.playStatu);
+    },
+    openPlayerList() {
+      this.$emit("openPlayerlist", "open");
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .mini-player {
   position: fixed;
   left: 0;
@@ -73,10 +88,10 @@ export default class MiniPlayer extends Vue {
     flex: 1;
     padding-left: 8px;
     overflow: hidden;
-    .name{
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+    .name {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
     .tip {
       font-size: 12px;
@@ -102,7 +117,7 @@ export default class MiniPlayer extends Vue {
     width: 50px;
     text-align: center;
     padding: 5px 10px;
-    img{
+    img {
       width: 100%;
       height: 100%;
     }

@@ -9,40 +9,53 @@
     <div class="category">
       <div class="title">评论区</div>
       <div class="items">
-        <span :class=" isNew ? 'comment-active' : '' " @click="changeType(true)">最新</span>
-        <span :class=" isNew ? '' : 'comment-active' " @click="changeType(false)">最热</span>
+        <span :class="isNew ? 'comment-active' : ''" @click="changeType(true)"
+          >最新</span
+        >
+        <span :class="isNew ? '' : 'comment-active'" @click="changeType(false)"
+          >最热</span
+        >
       </div>
     </div>
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import topBar from "@/components/common/navbar/navbar.vue";
-import { Component, Vue } from "vue-property-decorator";
-@Component({
-  components: {
-    topBar
-  }
-})
-export default class CommentHead extends Vue {
-  private isNew: boolean = true;
+// @Component({
+//   components: {
+//     topBar
+//   }
+// })
+export default {
+  // private isNew: boolean = true;
 
-  created() {}
+  data() {
+    return {
+      isNew: true,
+    };
+  },
 
-  get title() {
-    return `评论（${(<any>this).$parent.commentTotal}）`;
-  }
+  created() {},
 
-  changeType(val:boolean){
-    this.isNew = val
-    this.$emit('changeType',val)
-  }
-  back() {
-    this.$router.back();
-  }
-}
+  computed: {
+    title() {
+      return `评论（${(<any>this).$parent.commentTotal}）`;
+    },
+  },
+
+  methods: {
+    changeType(val: boolean) {
+      this.isNew = val;
+      this.$emit("changeType", val);
+    },
+    back() {
+      this.$router.back();
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .comment-head {
   position: relative;
   z-index: 233;

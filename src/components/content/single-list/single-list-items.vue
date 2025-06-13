@@ -11,22 +11,30 @@
   </div>
 </template>
 
-<script lang='ts'>
-import { Component, Vue, Prop } from "vue-property-decorator";
-@Component
-export default class SingleListItems extends Vue {
-  @Prop({
-    default() {
-      return {};
-    }
-  })
-  listItems!: any;
-  @Prop() order!: number;
+<script lang="ts">
+export default {
+  // @Prop({
+  //   default() {
+  //     return {};
+  //   }
+  // })
+  // listItems!: any;
+  // @Prop() order!: number;
 
-  openOperation(obj: object) {
-    (<any>this).$bus.$emit("openOperation", obj);
-  }
-}
+  props: {
+    listItems: {
+      type: Object,
+      default: () => ({}),
+    },
+    order: Number,
+  },
+
+  methods: {
+    openOperation(obj: object) {
+      (<any>this).$bus.$emit("openOperation", obj);
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

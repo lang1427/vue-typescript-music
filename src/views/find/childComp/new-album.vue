@@ -4,7 +4,7 @@
       <span class="fl title">新碟</span>
       <span class="fr more">更多新碟</span>
     </div>
-    <template v-if="newalbumlist.length!=0">
+    <template v-if="newalbumlist.length != 0">
       <grid-view :cols="3" :v-margin="8">
         <div
           v-for="item of newalbumlist"
@@ -34,28 +34,36 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import gridView from "components/common/gridview/grid-view.vue";
 import { ContentLoader } from "vue-content-loader";
-import { Component, Vue, Prop } from "vue-property-decorator";
 
-@Component({
-  components: {
-    ContentLoader,
-    gridView
-  }
-})
-export default class NewAlbum extends Vue {
-  @Prop({
-    default() {
-      return [];
-    }
-  })
-  private newalbumlist!: object[];
-  goAlbumContent(id: number) {
-    this.$router.push("/album/" + id);
-  }
-}
+// @Component({
+//   components: {
+//     ContentLoader,
+//     gridView
+//   }
+// })
+export default {
+  // @Prop({
+  //   default() {
+  //     return [];
+  //   }
+  // })
+  // private newalbumlist!: object[];
+
+  props: {
+    newalbumlist: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  methods: {
+    goAlbumContent(id: number) {
+      this.$router.push("/album/" + id);
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

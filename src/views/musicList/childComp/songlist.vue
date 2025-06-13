@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="song-list" v-if="songlist.length!=0">
+    <div class="song-list" v-if="songlist.length != 0">
       <div class="play" @click="play(0)">
         <span class="fa-play-circle-o ico"></span>
         <span class="text">播放全部</span>
@@ -8,14 +8,20 @@
       </div>
       <div class="list">
         <div
-          v-for="(item,index) of songlist"
+          v-for="(item, index) of songlist"
           :key="item.songsId"
           class="list-item"
           @click="play(index)"
         >
-          <div class="index" v-if="item.id!=$store.getters.playMusicID">{{ index+1 }}</div>
+          <div class="index" v-if="item.id != $store.getters.playMusicID">
+            {{ index + 1 }}
+          </div>
           <div class="index" v-else>
-            <img style="height:25px" src="~@/components/common/loading/loading.gif" alt />
+            <img
+              style="height: 25px"
+              src="~@/components/common/loading/loading.gif"
+              alt
+            />
           </div>
           <div class="name">
             <p class="song-name">{{ item.songsName }}</p>
@@ -32,36 +38,44 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import songlistOperation from "@/components/content/songlist-operation/index.vue";
 import { loadingMixin, playMixin } from "@/utils/mixin";
-import { Component, Vue, Prop } from "vue-property-decorator";
-@Component({
-  components: {
-    songlistOperation
+// @Component({
+//   components: {
+//     songlistOperation
+//   },
+//   mixins: [loadingMixin, playMixin]
+// })
+export default {
+  // @Prop({
+  //   default() {
+  //     return [];
+  //   }
+  // })
+  // songlist!: object[];
+
+  props: {
+    songlist: {
+      type: Array,
+      default: () => [],
+    },
   },
-  mixins: [loadingMixin, playMixin]
-})
-export default class SongList extends Vue {
-  @Prop({
-    default() {
-      return [];
-    }
-  })
-  songlist!: object[];
+  computed: {
+    totalCount() {
+      return `(共${this.songlist.length}首)`;
+    },
+  },
 
-  get totalCount() {
-    return `(共${this.songlist.length}首)`;
-  }
-  created() {}
-
-  openOperation(obj: object) {
-    (<any>this).$refs.songOperation.operationShow = true;
-    (<any>this).$refs.songOperation.curSongInfo = obj;
-  }
-}
+  methods: {
+    openOperation(obj: object) {
+      (<any>this).$refs.songOperation.operationShow = true;
+      (<any>this).$refs.songOperation.curSongInfo = obj;
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .song-list {
   margin-top: -45px;
   background: white;

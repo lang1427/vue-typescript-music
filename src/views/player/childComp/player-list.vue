@@ -1,9 +1,13 @@
 <template>
-  <popup :popupShow="playerListShow" bgcolor="#6a936a" @hide="playerListShow = false">
+  <popup
+    :popupShow="playerListShow"
+    bgcolor="#6a936a"
+    @hide="playerListShow = false"
+  >
     <div class="player-list">
       <div class="current-play">
         当前播放
-        <span class="length">{{listLength}}</span>
+        <span class="length">{{ listLength }}</span>
       </div>
       <div class="operation">
         <div class="mode" @click="changeMode">
@@ -21,15 +25,15 @@
         <ul class="list-item">
           <li
             class="items"
-            :class="[item.id===$store.getters.playMusicID?'active':'']"
-            v-for="(item,index) of playerList"
+            :class="[item.id === $store.getters.playMusicID ? 'active' : '']"
+            v-for="(item, index) of playerList"
             :key="item.id"
             @click="play(index)"
           >
             <span class="name">
               <img
                 class="playing-ico"
-                v-if="item.id===$store.getters.playMusicID"
+                v-if="item.id === $store.getters.playMusicID"
                 :src="playingImg"
               />
               {{ item.name }}
@@ -39,11 +43,11 @@
         </ul>
       </div>
     </div>
-    <star-dialog :dialogShow="starShow" @hide="starShow=false">
+    <star-dialog :dialogShow="starShow" @hide="starShow = false">
       <div class="star-box">
         <h3>收藏到歌单</h3>
         <ul class="star-songsheet">
-          <li class="new-create" @click="createSongShow=true">
+          <li class="new-create" @click="createSongShow = true">
             <span class="ico">+</span>
             <span class="name">新建歌单</span>
           </li>
@@ -51,7 +55,7 @@
             class="songsheet-list-items"
             v-for="item of userSongsheetList"
             :key="item.id"
-            @click="SetSongsheetOperation('add',item.id)"
+            @click="SetSongsheetOperation('add', item.id)"
           >
             <span class="ico">
               <img :src="item.imgUrl" alt />
@@ -66,20 +70,20 @@
     </star-dialog>
     <create-song-dialog
       :createSongShow="createSongShow"
-      @close="createSongShow=false"
+      @close="createSongShow = false"
       @complete="createSongComplete"
     />
     <kl-confirm
       :isShow="confirmShow"
       content="确定清空所有播放列表吗？"
-      @cancel="confirmShow=false"
+      @cancel="confirmShow = false"
       @confirm="confirmRemove"
     ></kl-confirm>
     <star-message message="收藏成功" :isShow="messageShow" />
   </popup>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import popup from "@/components/common/bottomPopup/bottom-popup.vue";
 import klConfirm from "@/components/common/kl-confirm/kl-confirm.vue";
 import starDialog from "@/components/common/kl-dialog/kl-dialog.vue";
@@ -88,59 +92,71 @@ import starMessage from "@/components/common/message/message.vue";
 import { getCookie } from "@/utils/cookie";
 import { playMixin, playModeMixin, userSongsManageMixin } from "@/utils/mixin";
 import { createSongSheet, songsheetOperation } from "@/service/songsheet";
-import { Component, Vue } from "vue-property-decorator";
-@Component({
-  components: {
-    popup,
-    klConfirm,
-    starDialog,
-    createSongDialog,
-    starMessage
+// @Component({
+//   components: {
+//     popup,
+//     klConfirm,
+//     starDialog,
+//     createSongDialog,
+//     starMessage
+//   },
+//   mixins: [playMixin, playModeMixin, userSongsManageMixin]
+// })
+export default {
+  // private playerListShow: boolean = false; // 原变量名isShow在playModeMixin中冲突，导致此组件中切换模式之后会自动关闭弹出层
+  // private starShow: boolean = false;
+  // private createSongShow: boolean = false;
+  // private confirmShow: boolean = false;
+  // private messageShow: boolean = false;
+
+  data() {
+    return {
+      playerListShow: false, // 原变量名isShow在playModeMixin中冲突，导致此组件中切换模式之后会自动关闭弹出层
+      starShow: false,
+      createSongShow: false,
+      confirmShow: false,
+      messageShow: false,
+    };
   },
-  mixins: [playMixin, playModeMixin, userSongsManageMixin]
-})
-export default class PlayerList extends Vue {
-  private playerListShow: boolean = false; // 原变量名isShow在playModeMixin中冲突，导致此组件中切换模式之后会自动关闭弹出层
-  private starShow: boolean = false;
-  private createSongShow: boolean = false;
-  private confirmShow: boolean = false;
-  private messageShow: boolean = false;
 
-  get playerList() {
-    return this.$store.state.playList;
-  }
-  get listLength() {
-    return `(${this.$store.state.playList.length})`;
-  }
-  get playingImg() {
-    return require("@/components/common/loading/loading.gif");
-  }
+  computed: {
+    playerList() {
+      return this.$store.state.playList;
+    },
+    listLength() {
+      return `(${this.$store.state.playList.length})`;
+    },
+    playingImg() {
+      return require("@/components/common/loading/loading.gif");
+    },
+  },
 
-  created() {}
-  starAll() {
-    (this as any).getUserSongsheet();
-    this.starShow = true;
-  }
-  confirmRemove() {
-    this.$store.dispatch("removePlayList", -1);
-  }
-  remove(val: number) {
-    if (val === -1) {
-      this.confirmShow = true;
-      return false;
-    }
-    this.$store.dispatch("removePlayList", val);
-  }
-  createSongComplete() {
-    this.starShow = false;
-    this.messageShow = true;
-    window.setTimeout(() => {
-      this.messageShow = false;
-    }, 500);
-  }
-}
+  methods: {
+    starAll() {
+      (this as any).getUserSongsheet();
+      this.starShow = true;
+    },
+    confirmRemove() {
+      this.$store.dispatch("removePlayList", -1);
+    },
+    remove(val: number) {
+      if (val === -1) {
+        this.confirmShow = true;
+        return false;
+      }
+      this.$store.dispatch("removePlayList", val);
+    },
+    createSongComplete() {
+      this.starShow = false;
+      this.messageShow = true;
+      window.setTimeout(() => {
+        this.messageShow = false;
+      }, 500);
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .player-list {
   padding: 10px;
   .current-play {

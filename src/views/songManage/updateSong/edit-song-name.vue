@@ -20,51 +20,61 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { updateSongName } from "@/service/songsheet";
-import { Component, Vue } from "vue-property-decorator";
-@Component
-export default class EditSongName extends Vue {
-  private songName: string | (string | null)[] = "";
-  get isRemove() {
-    return this.songName === "" ? false : true;
-  }
-  get id() {
-    return parseInt(<string>this.$route.query.songid);
-  }
+export default {
+  // private songName: string | (string | null)[] = "";
+
+  data() {
+    return {
+      songName: "",
+    };
+  },
+
+  computed: {
+    isRemove() {
+      return this.songName === "" ? false : true;
+    },
+    id() {
+      return parseInt(<string>this.$route.query.songid);
+    },
+  },
   created() {
     this.songName = this.$route.query.songname;
-  }
-  async setUpdateSongName() {
-    let res = await updateSongName(this.id, <string>this.songName);
-    if (res.code === 200) {
-      this.$toast("修改成功");
-      // this.$route.query.songname = this.songName // query.songname改变了 but 地址栏中的songname并没有发生变化   *错误方式*
-      this.$router.replace({
-        query: { ...this.$route.query, songname: this.songName }
-      });
-    }
-  }
-  back() {
-    this.$router.back();
-  }
-  save() {
-    if (this.songName === "") {
-      this.$toast("请输入歌单名称");
-      return false;
-    }
-    if (this.songName === this.$route.query.songname) {
-      this.$toast("未修改");
-      return false;
-    }
-    this.setUpdateSongName();
-  }
-  remove() {
-    this.songName = "";
-  }
-}
+  },
+
+  methods: {
+    async setUpdateSongName() {
+      let res = await updateSongName(this.id, <string>this.songName);
+      if (res.code === 200) {
+        this.$toast("修改成功");
+        // this.$route.query.songname = this.songName // query.songname改变了 but 地址栏中的songname并没有发生变化   *错误方式*
+        this.$router.replace({
+          query: { ...this.$route.query, songname: this.songName },
+        });
+      }
+    },
+    back() {
+      this.$router.back();
+    },
+    save() {
+      if (this.songName === "") {
+        this.$toast("请输入歌单名称");
+        return false;
+      }
+      if (this.songName === this.$route.query.songname) {
+        this.$toast("未修改");
+        return false;
+      }
+      this.setUpdateSongName();
+    },
+    remove() {
+      this.songName = "";
+    },
+  },
+};
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .edit-song-name {
   position: absolute;
   left: 0;

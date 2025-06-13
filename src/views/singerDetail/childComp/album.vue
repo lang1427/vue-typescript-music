@@ -9,33 +9,45 @@
 </template>
 
 <script lang="ts">
-import albumList from 'components/content/album-list/album-list.vue'
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import albumList from "components/content/album-list/album-list.vue";
 
-@Component({
-  components: {
-    albumList
-  }
-})
-export default class Album extends Vue {
-  @Prop({
-    default() {
-      return []
-    }
-  })
-  albumList!: object[]
-  @Prop({
-    default() {
-      return false
-    }
-  })
-  isMore!: boolean
+// @Component({
+//   components: {
+//     albumList
+//   }
+// })
+export default {
+  // @Prop({
+  //   default() {
+  //     return []
+  //   }
+  // })
+  // albumList!: object[]
+  // @Prop({
+  //   default() {
+  //     return false
+  //   }
+  // })
+  // isMore!: boolean
 
-  get message() {
-    return `很遗憾，仅能浏览以上${this.albumList &&
-      this.albumList.length}条数据`
-  }
-}
+  props: {
+    albumList: {
+      type: Array,
+      default: () => [],
+    },
+    isMore: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  computed: {
+    message() {
+      return `很遗憾，仅能浏览以上${
+        this.albumList && this.albumList.length
+      }条数据`;
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>

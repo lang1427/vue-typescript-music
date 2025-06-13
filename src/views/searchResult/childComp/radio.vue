@@ -2,11 +2,8 @@
   <div class="radio">暂无内容</div>
 </template>
 
-<script lang='ts'>
-import { Component, Vue } from "vue-property-decorator";
-
-@Component
-export default class Radio extends Vue {}
+<script lang="ts">
+export default {};
 </script>
 
 <style lang="less" scoped>
