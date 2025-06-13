@@ -1,13 +1,4 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-
-Vue.use(VueRouter);
-
-// 解决 vue-router 新版本 重复点击路由 浏览器 Console 输出的异常
-const originalPush = VueRouter.prototype.push;
-VueRouter.prototype.push = function push(location: string) {
-  return (<any>originalPush).call(this, location).catch((err: string) => err);
-};
+import { createRouter, createWebHistory } from "vue-router";
 
 import myRoutes from "./my";
 import loginRouters from "./login";
@@ -94,7 +85,8 @@ const routes = [
   },
 ];
 
-const router = new VueRouter({
+const router = createRouter({
+  history: createWebHistory(),
   routes,
 });
 
