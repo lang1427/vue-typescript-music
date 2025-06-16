@@ -12,7 +12,7 @@
           class="new-album-item"
           @click="goAlbumContent(item.id)"
         >
-          <img v-lazy="item.picUrl" alt />
+          <img v-lazy="item.picUrl" />
           <p class="name">{{ item.name }}</p>
         </div>
       </grid-view>
@@ -35,26 +35,23 @@
 </template>
 
 <script lang="ts">
-import gridView from "components/common/gridview/grid-view.vue";
+import gridView from "@/components/common/gridview/grid-view.vue";
 import { ContentLoader } from "vue-content-loader";
 
-// @Component({
-//   components: {
-//     ContentLoader,
-//     gridView
-//   }
-// })
-export default {
-  // @Prop({
-  //   default() {
-  //     return [];
-  //   }
-  // })
-  // private newalbumlist!: object[];
+interface albumItem {
+  id: number;
+  name: string;
+  picUrl: string;
+}
 
+export default {
+  components: {
+    ContentLoader,
+    gridView,
+  },
   props: {
     newalbumlist: {
-      type: Array,
+      type: Array as () => albumItem[],
       default: () => [],
     },
   },

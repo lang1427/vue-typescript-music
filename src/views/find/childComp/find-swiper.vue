@@ -7,7 +7,7 @@
         :key="item.bannerId"
       >
         <a :href="item.url">
-          <img :src="item.pic" alt />
+          <img :src="item.pic" />
         </a>
       </swiper-item>
     </swiper>
@@ -23,21 +23,18 @@
 
 <script lang="ts">
 import { ContentLoader } from "vue-content-loader";
-import swiper from "components/common/swiper/Swiper.vue";
-import swiperItem from "components/common/swiper/SwiperItem.vue";
-
-// @Component({
-//   components: {
-//     ContentLoader,
-//     swiper,
-//     swiperItem
-//   }
-// })
+import Swiper from "@/components/common/swiper/Swiper.vue";
+import SwiperItem from "@/components/common/swiper/SwiperItem.vue";
+import { bannerData } from "@/service/find";
 export default {
-  // @Prop() bannerlist!: object[];
+  components: {
+    ContentLoader,
+    Swiper,
+    SwiperItem,
+  },
   props: {
     bannerlist: {
-      type: Array,
+      type: Array as () => bannerData[],
       default: () => [],
     },
   },

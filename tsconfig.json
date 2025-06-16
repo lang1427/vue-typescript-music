@@ -15,10 +15,9 @@
     "allowJs": true,
     "skipLibCheck": true,
     "paths": {
-      "@/*": ["src/*"],
-      "components/*": ["src/components/*"]
+      "@/*": ["src/*"]
     },
-    "types": ["vite/client", "element-plus/global"]
+    "types": ["vite/client"]
   },
   "include": [
     "src/**/*.ts",

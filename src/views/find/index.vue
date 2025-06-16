@@ -43,23 +43,16 @@ import {
   getNewAlbum,
 } from "@/service/find";
 
-// @Component({
-//   components: {
-//     findSwiper,
-//     recommend,
-//     recmendSonglist,
-//     newAlbum
-//   }
-// })
 export default {
-  /**data */
-  // private bannerList: object[] = [];
-  // private songList: object[] = [];
-  // private albums: object[] = [];
-
+  components: {
+    findSwiper,
+    recommend,
+    recmendSonglist,
+    newAlbum,
+  },
   data() {
     return {
-      bannerList: [],
+      bannerList: [] as bannerData[],
       songList: [],
       albums: [],
     };
@@ -76,7 +69,7 @@ export default {
     async getBannerData() {
       let res = await getBanner(2);
       if (res.code === 200) {
-        let arr: object[] = [];
+        let arr: bannerData[] = [];
         res.banners.forEach((item: object, i: string) => {
           arr.push(new bannerData(item));
         });

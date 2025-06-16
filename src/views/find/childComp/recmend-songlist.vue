@@ -14,9 +14,9 @@
         >
           <span class="play-count">
             <i class="fa-play"></i>
-            {{ item.playCount | finalPlayCount }}
+            {{ $filters.finalPlayCount(item.playCount) }}
           </span>
-          <img v-lazy="item.picUrl" alt />
+          <img v-lazy="item.picUrl" />
           <p class="name">{{ item.name }}</p>
         </div>
       </grid-view>
@@ -39,25 +39,22 @@
 </template>
 
 <script lang="ts">
-import gridView from "components/common/gridview/grid-view.vue";
+import gridView from "@/components/common/gridview/grid-view.vue";
 import { ContentLoader } from "vue-content-loader";
-
-// @Component({
-//   components: {
-//     ContentLoader,
-//     gridView
-//   }
-// })
+interface songItem {
+  id: number;
+  name: string;
+  picUrl: string;
+  playCount: number;
+}
 export default {
-  // @Prop({
-  //   default() {
-  //     return [];
-  //   }
-  // })
-  // private songlist!: object[];
+  components: {
+    ContentLoader,
+    gridView,
+  },
   props: {
     songlist: {
-      type: Array,
+      type: Array as () => songItem[],
       default: () => [],
     },
   },
