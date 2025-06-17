@@ -27,7 +27,7 @@
           >
             <div class="items">
               <div class="img">
-                <img :src="item.imgUrl" alt />
+                <img :src="item.imgUrl" />
               </div>
               <div class="info">
                 <p class="name">{{ item.name }}</p>
@@ -66,23 +66,23 @@
 <script lang="ts">
 import manageDialog from "@/components/common/kl-dialog/kl-dialog.vue";
 import createSongDialog from "@/components/content/create-song-dialog/index.vue";
-// @Component({
-//   components: {
-//     manageDialog,
-//     createSongDialog
-//   }
-// })
+interface SongsItem {
+  id: number;
+  name: string;
+  imgUrl: string;
+  count: number;
+}
 export default {
-  // @Prop({ default: [] }) songsList!: boolean;
+  components: {
+    manageDialog,
+    createSongDialog,
+  },
   props: {
     songsList: {
-      type: Array,
+      type: Array as () => SongsItem[],
       default: () => [],
     },
   },
-  // private isCreateShow: boolean = true;
-  // private isManageDialog: boolean = false;
-  // private createSongShow: boolean = false;
   data() {
     return {
       isCreateShow: true,
@@ -124,10 +124,10 @@ export default {
     .noActive {
       opacity: 0.8;
     }
-    .create-songs {
-    }
-    .star-songs {
-    }
+    // .create-songs {
+    // }
+    // .star-songs {
+    // }
   }
   .tab-content {
     padding: 10px 0;

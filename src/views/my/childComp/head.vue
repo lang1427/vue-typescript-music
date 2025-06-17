@@ -2,7 +2,7 @@
   <div class="my-head">
     <div class="login">
       <div class="avatar">
-        <img :src="isLogin.Avatar" alt />
+        <img :src="isLogin.Avatar" />
       </div>
       <div class="nikename">{{ isLogin.Nikename }}</div>
       <div class="login-btn" v-if="userBaseinfo.userId === -1">
@@ -27,20 +27,14 @@
 
 <script lang="ts">
 import { IProfile } from "@/service/user";
+import defaultAvatar from "@/assets/images/login-avatar.jpg";
 export default {
-  // @Prop() userBaseinfo!: IProfile;
   props: {
     userBaseinfo: {
       type: Object as () => IProfile,
       required: true,
     },
   },
-  // private relevantContent: object[] = [
-  //   { title: "播放历史", path: "/my/playhistory", ico: "fa-history" },
-  //   { title: "我的电台", path: "/my/radio", ico: "fa-video-camera" },
-  //   { title: "我的收藏", path: "/my/star", ico: "fa-star-o" },
-  //   { title: "关注新歌", path: "/my/watchnewmusic", ico: "fa-eye" }
-  // ];
   data() {
     return {
       relevantContent: [
@@ -60,7 +54,7 @@ export default {
         };
       } else {
         return {
-          Avatar: require("@/assets/images/login-avatar.jpg"),
+          Avatar: defaultAvatar,
           Nikename: "登录立享手机电脑多端同步",
         };
       }

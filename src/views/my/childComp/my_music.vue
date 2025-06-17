@@ -22,20 +22,10 @@
 
 <script lang="ts">
 import scrollBar from "@/components/common/scroll/scroll.vue";
-// @Component({
-//   components: {
-//     scrollBar
-//   }
-// })
 export default {
-  // private InfoList: object[] = [
-  //   { ico: "fa-heart", title: "我喜欢的音乐", mes: "心动模式" },
-  //   { ico: "fa-eye-slash", title: "私人FM", mes: "最懂你的推荐" },
-  //   { ico: "fa-tv", title: "热歌放映厅", mes: "好音乐看得见" },
-  //   { ico: "fa-heartbeat", title: "私藏推荐", mes: "私藏冷门音乐" },
-  //   { ico: "fa-venus-double", title: "因乐交友", mes: "找到音乐好友" }
-  // ];
-
+  components: {
+    scrollBar,
+  },
   data() {
     return {
       InfoList: [

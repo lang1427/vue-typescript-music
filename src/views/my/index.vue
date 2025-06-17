@@ -16,19 +16,14 @@ import { UserBaseInfo, IProfile } from "@/service/user";
 import { userSongsManageMixin } from "@/utils/mixin";
 // @Component({
 //   name: "My",
-//   components: {
-//     myHead,
-//     myMusic,
-//     mySongslist
-//   },
 //   mixins: [userSongsManageMixin]
 // })
 export default {
-  // private userBaseInfo: IProfile = {
-  //   userId: -1,
-  //   nickname: "",
-  //   avatarUrl: ""
-  // };
+  components: {
+    myHead,
+    myMusic,
+    mySongslist,
+  },
   data() {
     return {
       userBaseInfo: {
@@ -36,6 +31,7 @@ export default {
         nickname: "",
         avatarUrl: "",
       },
+      mySongsList: [],
     };
   },
 

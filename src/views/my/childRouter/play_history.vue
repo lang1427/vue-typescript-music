@@ -1,10 +1,10 @@
 <template>
   <div class="play-history">
     <head-bar class="head-bar">
-      <div slot="left" @click="back">
-        <span class="fa-arrow-left back"></span>
-      </div>
-      <div slot="center">{{ title }}</div>
+      <template #left>
+        <span @click="back" class="fa-arrow-left back"></span>
+      </template>
+      <template #center>{{ title }}</template>
     </head-bar>
     <scroll-bar class="scroll-wrapper" ref="playHistoryScroll">
       <div class="scroll-content">
@@ -28,13 +28,11 @@
 <script lang="ts">
 import scrollBar from "@/components/common/scroll/scroll.vue";
 import headBar from "@/components/common/navbar/navbar.vue";
-// @Component({
-//   components: {
-//     scrollBar,
-//     headBar
-//   }
-// })
 export default {
+  components: {
+    scrollBar,
+    headBar,
+  },
   created() {},
   mounted() {
     if (this.$store.getters.playListLength != 0) {
