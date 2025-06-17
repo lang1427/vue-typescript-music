@@ -1,10 +1,10 @@
 <template>
   <div class="register">
     <navbar>
-      <div slot="left" @click="back">
-        <span class="fa-arrow-left back"></span>
-      </div>
-      <div slot="center">手机号注册</div>
+      <template #left>
+        <span class="fa-arrow-left back" @click="back"></span>
+      </template>
+      <template #center>手机号注册</template>
     </navbar>
     <input
       class="input"
@@ -17,10 +17,10 @@
     <!-- 昵称框 -->
     <div class="nickname" v-show="isShow">
       <navbar>
-        <div slot="left" @click="isShow = false">
-          <span class="fa-arrow-left back"></span>
-        </div>
-        <div slot="center">手机号注册</div>
+        <template #left>
+          <span class="fa-arrow-left back" @click="isShow = false"></span>
+        </template>
+        <template #center>手机号注册</template>
       </navbar>
       <input
         class="input"
@@ -34,19 +34,12 @@
 </template>
 
 <script lang="ts">
-import navbar from "components/common/navbar/navbar.vue";
+import navbar from "@/components/common/navbar/navbar.vue";
 import { registerAccount } from "@/service/login";
-// @Component({
-//   components: {
-//     navbar
-//   }
-// })
 export default {
-  // private pawd: string = "";
-  // private nickname:string =""
-  // private isShow: boolean = false;
-  // private verifyCode:string = '',
-
+  components: {
+    navbar,
+  },
   data() {
     return {
       pawd: "",

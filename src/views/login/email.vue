@@ -1,10 +1,10 @@
 <template>
   <div class="email">
     <navbar>
-      <div slot="left" @click="back">
-        <span class="fa-arrow-left back"></span>
-      </div>
-      <div slot="center">网易邮箱账号登录</div>
+      <template #left>
+        <span class="fa-arrow-left back" @click="back"></span>
+      </template>
+      <template #center>网易邮箱账号登录</template>
     </navbar>
     <div class="input-box">
       <div class="email-account">
@@ -33,30 +33,12 @@
 </template>
 
 <script lang="ts">
-import navbar from "components/common/navbar/navbar.vue";
+import navbar from "@/components/common/navbar/navbar.vue";
 import { emailLogin } from "@/service/login";
-// @Component({
-//   components: {
-//     navbar
-//   }
-// })
 export default {
-  // private emailAccount: string = "";
-  // private emailPawd: string = "";
-  // private emailList: string[] = [
-  //   "@163.com",
-  //   "@126.com",
-  //   "@yeah.net",
-  //   "@vip.163.com",
-  //   "@vip.126.com",
-  //   "@popo.163.com",
-  //   "@188.com",
-  //   "@qq.com",
-  //   "@yahoo.com",
-  //   "@sina.com",
-  //   "@soho.com",
-  //   "@live.com"
-  // ];
+  components: {
+    navbar,
+  },
   data() {
     return {
       emailAccount: "",
@@ -85,10 +67,10 @@ export default {
   //   }
   //   return false
   // }
-  // checkEmail(val:string){
-  //   this.emailAccount = this.emailAccount+val
-  // }
   methods: {
+    checkEmail(val: string) {
+      this.emailAccount = this.emailAccount + val;
+    },
     async goEmailLogin() {
       let res = await emailLogin(this.emailAccount, this.emailPawd);
       if (res.code === 200) {

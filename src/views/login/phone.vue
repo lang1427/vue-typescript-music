@@ -1,10 +1,10 @@
 <template>
   <div class="phone">
     <navbar>
-      <div slot="left" @click="back">
-        <span class="fa-arrow-left back"></span>
-      </div>
-      <div slot="center">手机号登录</div>
+      <template #left>
+        <span class="fa-arrow-left back" @click="back"></span>
+      </template>
+      <template #center>手机号登录</template>
     </navbar>
 
     <div class="explain">未注册手机号登录后将自动创建账号</div>
@@ -24,14 +24,11 @@
 </template>
 
 <script lang="ts">
-import navbar from "components/common/navbar/navbar.vue";
-// @Component({
-//   components: {
-//     navbar
-//   }
-// })
+import navbar from "@/components/common/navbar/navbar.vue";
 export default {
-  // private phoneNumber:string = '',
+  components: {
+    navbar,
+  },
   data() {
     return {
       phoneNumber: "",

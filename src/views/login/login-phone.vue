@@ -1,10 +1,10 @@
 <template>
   <div class="login-phone">
     <navbar>
-      <div slot="left" @click="back">
-        <span class="fa-arrow-left back"></span>
-      </div>
-      <div slot="center">手机号验证</div>
+      <template #left>
+        <span class="fa-arrow-left back" @click="back"></span>
+      </template>
+      <template #center>手机号验证</template>
     </navbar>
     <div class="send-out">
       <div class="info">
@@ -24,10 +24,10 @@
     <!-- 密码输入层 -->
     <div class="pawd-box" v-show="pawdShow">
       <navbar>
-        <div slot="left" @click="pawdShow = false">
-          <span class="fa-arrow-left back"></span>
-        </div>
-        <div slot="center">手机号登录</div>
+        <template #left>
+          <span class="fa-arrow-left back" @click="pawdShow = false"></span>
+        </template>
+        <template #center>手机号登录</template>
       </navbar>
       <input
         class="pawd-input"
@@ -41,25 +41,23 @@
 </template>
 
 <script lang="ts">
-import navbar from "components/common/navbar/navbar.vue";
-import vCode from "components/content/verify-code/verify-code.vue";
+import navbar from "@/components/common/navbar/navbar.vue";
+import vCode from "@/components/content/verify-code/verify-code.vue";
 import {
   sendVerifyCode,
   testVerifyCode,
   testIsRegister,
   phoneLogin,
 } from "@/service/login";
-// @Component({
-//   components: {
-//     navbar,
-//     vCode
-//   }
-// })
 export default {
   // private timer: number = 59;
   // private verifycodeVal: string = "";
   // private pawd: string = "";
   // private pawdShow: boolean = false;
+  components: {
+    navbar,
+    vCode,
+  },
   data() {
     return {
       timer: 59,

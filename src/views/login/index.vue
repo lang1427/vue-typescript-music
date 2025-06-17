@@ -59,7 +59,7 @@ export default {
     left: 50%;
     top: 120px;
     transform: translateX(-50%);
-    background: url("~@/assets/images/logo.png") no-repeat 0px 0px;
+    background: url("@/assets/images/logo.png") no-repeat 0px 0px;
   }
   .login-mode {
     position: absolute;
