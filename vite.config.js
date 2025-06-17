@@ -17,4 +17,13 @@ export default defineConfig({
     },
   },
   plugins: [vue()],
+  css: {
+    preprocessorOptions: {
+      less: {
+        additionalData: `
+          @import "@/assets/less/reset.less";
+        `,
+      },
+    },
+  },
 });
