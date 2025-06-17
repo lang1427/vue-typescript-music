@@ -1,5 +1,6 @@
 import { ComponentCustomProperties } from "vue";
 import { Router, RouteLocationNormalizedLoaded } from "vue-router";
+import { Store } from "vuex";
 
 declare module "*.vue" {
   import Vue from "vue";
@@ -14,6 +15,7 @@ declare module "vue" {
   interface ComponentCustomProperties {
     $router: Router;
     $route: RouteLocationNormalizedLoaded;
+    $store: Store;
     $filters: {
       finalPlayCount(playCount: number): number | string;
       // 其他过滤器...
