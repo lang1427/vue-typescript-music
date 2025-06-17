@@ -9,11 +9,14 @@ const app = createApp(App);
 
 // Vue.config.productionTip = false
 
-// import LazyLoad from "vue-lazyload";
-// app.use(LazyLoad, {
-//   loading: require("./assets/images/music-load.jpg"),
-//   error: require("./assets/images/music-error.svg"),
-// });
+import loadingImage from "./assets/images/music-load.jpg";
+import errorImage from "./assets/images/music-error.svg";
+
+import VueLazyLoad from "vue3-lazyload";
+app.use(VueLazyLoad, {
+  loading: loadingImage,
+  error: errorImage,
+});
 
 // import Toast from "./components/common/toast/index.js";
 // app.use(Toast);
