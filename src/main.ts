@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import { Longpress } from "@/directive/longpress";
 
 import "font-awesome/css/font-awesome.css";
 
@@ -17,6 +18,8 @@ app.use(VueLazyLoad, {
   loading: loadingImage,
   error: errorImage,
 });
+
+app.directive("longpress", Longpress);
 
 // import Toast from "./components/common/toast/index.js";
 // app.use(Toast);
