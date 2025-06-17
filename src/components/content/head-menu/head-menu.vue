@@ -2,7 +2,7 @@
   <div class="head-menu">
     <navbar>
       <template #left>
-        <span :class="['fa fa-list-ul', isMyPageColor]"></span>
+        <span :class="['fa-list-ul', isMyPageColor]"></span>
       </template>
       <template #center>
         <div class="center">
@@ -20,7 +20,7 @@
         </div>
       </template>
       <template #right @click="goSearch">
-        <span :class="['fa fa-search', isMyPageColor]"></span>
+        <span :class="['fa-search', isMyPageColor]"></span>
       </template>
     </navbar>
   </div>
