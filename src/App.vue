@@ -4,26 +4,27 @@
     <h-menu />
     <!-- 仅保存singer路由时的缓存 -->
     <keep-alive include="singer">
-      <router-view></router-view>
+      <div class="router-wrapper">
+        <!-- 添加包装元素  transition 和 keep-alive 只能有一个直接子节点 -->
+        <router-view></router-view>
+      </div>
     </keep-alive>
     <player />
   </div>
 </template>
 
 <script lang="ts">
-import hMenu from "components/content/head-menu/head-menu.vue";
-import player from "views/player/index.vue";
+import hMenu from "@/components/content/head-menu/head-menu.vue";
+import player from "@/views/player/index.vue";
 import {
   playerSetMarginBottom,
   playerRemoveMarginBottom,
 } from "@/conf/playlist";
-// @Component({
-//   components: {
-//     hMenu,
-//     player
-//   }
-// })
 export default {
+  components: {
+    hMenu,
+    player,
+  },
   created() {
     let first_loading = document.getElementById("first-loading");
     if (!!first_loading) {

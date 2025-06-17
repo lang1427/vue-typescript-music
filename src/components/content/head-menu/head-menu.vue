@@ -1,35 +1,37 @@
 <template>
   <div class="head-menu">
     <navbar>
-      <div slot="left">
-        <span :class="['fa-list-ul', isMyPageColor]"></span>
-      </div>
-      <div class="center" slot="center">
-        <span
-          :class="[
-            'menu-item',
-            { 'item-active': index === currentIndex },
-            isMyPageColor,
-          ]"
-          v-for="(item, index) of headTitles"
-          @click="menuClick(index)"
-          :key="item"
-          >{{ item }}</span
-        >
-      </div>
-      <div slot="right" @click="goSearch">
-        <span :class="['fa-search', isMyPageColor]"></span>
-      </div>
+      <template #left>
+        <span :class="['fa fa-list-ul', isMyPageColor]"></span>
+      </template>
+      <template #center>
+        <div class="center">
+          <span
+            :class="[
+              'menu-item',
+              { 'item-active': index === currentIndex },
+              isMyPageColor,
+            ]"
+            v-for="(item, index) of headTitles"
+            @click="menuClick(index)"
+            :key="item"
+            >{{ item }}</span
+          >
+        </div>
+      </template>
+      <template #right @click="goSearch">
+        <span :class="['fa fa-search', isMyPageColor]"></span>
+      </template>
     </navbar>
   </div>
 </template>
 
 <script lang="ts">
-import navbar from "components/common/navbar/navbar.vue";
+import navbar from "@/components/common/navbar/navbar.vue";
 export default {
-  // private headTitles: string[] = ["我的", "嘤乐馆", "视频"];
-  // private currentIndex: number = 1;
-
+  components: {
+    navbar,
+  },
   data() {
     return {
       headTitles: ["我的", "嘤乐馆", "视频"],
@@ -65,7 +67,7 @@ export default {
   },
 
   watch: {
-    "$route.path": (newVal: string) => {
+    "$route.path": function (newVal: string) {
       switch (newVal) {
         case "/my":
           this.currentIndex = 0;
@@ -79,21 +81,6 @@ export default {
       }
     },
   },
-
-  // @Watch('$route.path')
-  // changeRouter(newVal:string) {
-  //   switch(newVal){
-  //     case '/my':
-  //       this.currentIndex = 0
-  //       break;
-  //     case '/find':
-  //       this.currentIndex = 1
-  //       break;
-  //     case '/video':
-  //       this.currentIndex = 2
-  //       break;
-  //   }
-  // }
 };
 </script>
 
