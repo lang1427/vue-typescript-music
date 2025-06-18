@@ -1,12 +1,12 @@
 <template>
   <div>
     <topbar class="album-head">
-      <div slot="left" @click="back">
-        <span class="fa-arrow-left back"></span>
-      </div>
-      <div slot="center">
+      <template #left>
+        <span class="fa-arrow-left back" @click="back"></span>
+      </template>
+      <template #center>
         <h2 class="title">{{ topTitle }}</h2>
-      </div>
+      </template>
       <div slot="right" v-if="operation" @click="operationShow = true">
         <span class="fa-ellipsis-v"></span>
       </div>
@@ -35,20 +35,17 @@
 
 <script lang="ts">
 import topbar from "@/components/common/navbar/navbar.vue";
-// @Component({
-//   components: {
-//     topbar
-//   }
-// })
 export default {
-  // @Prop({ default: false }) operation!: boolean;
+  components: {
+    topbar,
+  },
   props: {
     operation: {
       type: Boolean,
       default: false,
     },
   },
-  // private operationShow: boolean = false;
+
   data() {
     return {
       operationShow: false,

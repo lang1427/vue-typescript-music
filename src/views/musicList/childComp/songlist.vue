@@ -13,14 +13,13 @@
           class="list-item"
           @click="play(index)"
         >
-          <div class="index" v-if="item.id != $store.getters.playMusicID">
+          <div class="index" v-if="item.songsId != $store.getters.playMusicID">
             {{ index + 1 }}
           </div>
           <div class="index" v-else>
             <img
               style="height: 25px"
               src="~@/components/common/loading/loading.gif"
-              alt
             />
           </div>
           <div class="name">
@@ -41,23 +40,15 @@
 <script lang="ts">
 import songlistOperation from "@/components/content/songlist-operation/index.vue";
 import { loadingMixin, playMixin } from "@/utils/mixin";
-// @Component({
-//   components: {
-//     songlistOperation
-//   },
-//   mixins: [loadingMixin, playMixin]
-// })
+import { SongsInfoClass } from "@/conf/songsInfo";
 export default {
-  // @Prop({
-  //   default() {
-  //     return [];
-  //   }
-  // })
-  // songlist!: object[];
-
+  mixins: [loadingMixin, playMixin],
+  components: {
+    songlistOperation,
+  },
   props: {
     songlist: {
-      type: Array,
+      type: Array as () => SongsInfoClass[],
       default: () => [],
     },
   },
@@ -68,9 +59,10 @@ export default {
   },
 
   methods: {
-    openOperation(obj: object) {
-      (<any>this).$refs.songOperation.operationShow = true;
-      (<any>this).$refs.songOperation.curSongInfo = obj;
+    openOperation(obj: SongsInfoClass) {
+      (this.$refs.songOperation as typeof songlistOperation).operationShow =
+        true;
+      (this.$refs.songOperation as typeof songlistOperation).curSongInfo = obj;
     },
   },
 };

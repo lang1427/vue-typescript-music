@@ -7,7 +7,7 @@
     <div class="operation-box">
       <div class="info">
         <div class="avatar">
-          <img :src="curSongInfo.imgUrl" alt />
+          <img :src="curSongInfo.imgUrl" />
         </div>
         <div class="name">
           <p>{{ curSongInfo.songsName }}</p>
@@ -30,14 +30,15 @@
 
 <script lang="ts">
 import popup from "@/components/common/bottomPopup/bottom-popup.vue";
+import { SongsInfoClass } from "@/conf/songsInfo";
 export default {
-  // private operationShow: boolean = false;
-  // private curSongInfo: object = {}; // 当前歌曲信息 需要从外界赋值
-
+  components: {
+    popup,
+  },
   data() {
     return {
       operationShow: false,
-      curSongInfo: {},
+      curSongInfo: {} as SongsInfoClass,
     };
   },
 
@@ -59,7 +60,7 @@ export default {
       this.$store.commit("insertPlaylist", obj);
       this.operationShow = false;
     },
-    goComment(songsId: string) {
+    goComment(songsId: number) {
       this.$router.push({
         path: "/comment/songs",
         query: {

@@ -2,7 +2,7 @@
   <div class="bg-info">
     <div class="info">
       <div class="img">
-        <img :src="info.imgUrl" alt />
+        <img :src="info.imgUrl" />
       </div>
       <div class="album-info">
         <h3 class="title">{{ info.title }}</h3>
@@ -12,7 +12,7 @@
             class="publish-time"
             :style="info.publishTime ? '' : 'visibility: hidden;'"
           >
-            发行时间 : {{ info.publishTime | newTime }}
+            发行时间 : {{ newTime(info.publishTime) }}
           </div>
           <div class="desc">{{ info.description }}</div>
         </div>
@@ -41,22 +41,7 @@
 
 <script lang="ts">
 import { formatDate } from "@/utils/formatDate";
-// @Component({
-//   filters: {
-//     newTime(oldVal: number) {
-//       let date = new Date(oldVal);
-//       return formatDate(date, "yyyy.MM.dd");
-//     }
-//   }
-// })
 export default {
-  // @Prop({
-  //   default() {
-  //     return {};
-  //   }
-  // })
-  // info!: object;
-
   props: {
     info: {
       type: Object,
@@ -98,6 +83,10 @@ export default {
             query: { id: (<any>this).info.singerId },
           });
       }
+    },
+    newTime(oldVal: number) {
+      let date = new Date(oldVal);
+      return formatDate(date, "yyyy.MM.dd");
     },
   },
 };

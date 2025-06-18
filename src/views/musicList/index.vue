@@ -16,26 +16,23 @@ import topbar from "./childComp/head.vue";
 import bgInfo from "./childComp/bg-info.vue";
 import songslist from "./childComp/songlist.vue";
 // @Component({
-//   components: {
-//     topbar,
-//     bgInfo,
-//     songslist
-//   },
 //   mixins: [userSongsManageMixin]
 // })
 export default {
-  // private baseInfo = {};
-  // private songList: object[] = [];
-
+  components: {
+    topbar,
+    bgInfo,
+    songslist,
+  },
   data() {
     return {
       baseInfo: {},
-      songList: [],
+      songList: [] as SongsInfoClass[],
     };
   },
   computed: {
     id() {
-      return parseInt(this.$route.params.id);
+      return parseInt(<string>this.$route.params.id);
     },
     isUserSong() {
       if (
