@@ -1,29 +1,23 @@
 <template>
   <navbar class="topbar">
-    <div slot="left" @click="back">
-      <span class="fa-arrow-left back"></span>
-    </div>
-    <div class="search-input-box" slot="center">
+    <template #left>
+      <span class="fa-arrow-left back" @click="back"></span>
+    </template>
+    <template class="search-input-box" #center>
       <input
         class="search-input"
         type="text"
         v-model="$store.state.searchKeyWrold"
       />
-    </div>
-    <div slot="right" @click="empty">
-      <span class="fa-close close"></span>
-    </div>
+    </template>
+    <template #right>
+      <span class="fa-close close" @click="empty"></span>
+    </template>
   </navbar>
 </template>
 
 <script lang="ts">
-import navbar from "components/common/navbar/navbar.vue";
-
-// @Component({
-//   components: {
-//     navbar
-//   }
-// })
+import navbar from "@/components/common/navbar/navbar.vue";
 export default {
   // @Prop() searchContent!: string;
   // @Watch("searchContent")
@@ -34,6 +28,9 @@ export default {
   // trueSearchContent: string = "";
 
   // private SearchContent: string = '';
+  components: {
+    navbar,
+  },
   methods: {
     back() {
       this.$router.back();

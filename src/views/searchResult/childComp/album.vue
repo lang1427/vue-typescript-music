@@ -17,17 +17,13 @@
 </template>
 
 <script lang="ts">
-import scroll from "components/common/scroll/scroll.vue";
-import albumList from "components/content/album-list/album-list.vue";
+import scroll from "@/components/common/scroll/scroll.vue";
+import albumList from "@/components/content/album-list/album-list.vue";
 
 import { formatDate } from "@/utils/formatDate";
 import { loadingMixin } from "@/utils/mixin";
 
 // @Component({
-//   components: {
-//     scroll,
-//     albumList
-//   },
 //   mixins: [loadingMixin]
 // })
 export default {
@@ -37,6 +33,10 @@ export default {
   //   }
   // })
   // albumList!: object[];
+  components: {
+    scroll,
+    albumList,
+  },
   props: {
     albumList: {
       type: Array,

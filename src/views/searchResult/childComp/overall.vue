@@ -50,7 +50,7 @@
               <div class="info">
                 <p>{{ item.title }}</p>
                 <p class="desc">
-                  {{ item.durationms | newTime }} by
+                  {{ newTime(item.durationms) }} by
                   {{ item.creator[0].userName }}
                 </p>
               </div>
@@ -111,7 +111,7 @@
               <div class="info">
                 <p>{{ item.name }}</p>
                 <p class="desc">
-                  {{ item.artist.name }} {{ item.publishTime | ymd }}
+                  {{ item.artist.name }} {{ ymd(item.publishTime) }}
                 </p>
               </div>
             </div>
@@ -143,7 +143,7 @@
                 <p>{{ item.name }}</p>
                 <p class="desc">
                   {{ item.trackCount }}首 by {{ item.creator.nickname }} 播放{{
-                    item.playCount | finalPlayCount
+                    $filters.finalPlayCount(item.playCount)
                   }}次
                 </p>
               </div>
@@ -227,36 +227,16 @@ interface IOverallList {
     songs: [];
   };
 }
-import scroll from "components/common/scroll/scroll.vue";
+import scroll from "@/components/common/scroll/scroll.vue";
 import { formatDate } from "@/utils/formatDate";
-import { debounce } from "@/utils/debounce.js";
 import { SongsInfoClass } from "@/conf/songsInfo";
 import { loadingMixin, singlePlayMixin } from "@/utils/mixin";
 
-// @Component({
-//   components: {
-//     scroll
-//   },
-//   mixins: [loadingMixin, singlePlayMixin],
-//   filters: {
-//     newTime(durationms: number) {
-//       let data = new Date(durationms);
-//       return formatDate(data, "mm:ss");
-//     },
-//     ymd(date: Date) {
-//       let newDate = new Date(date);
-//       return formatDate(newDate, "yyyy.M.d");
-//     }
-//   }
-// })
 export default {
-  // @Prop({
-  //   default() {
-  //     return {};
-  //   }
-  // })
-  // overallList!: IOverallList;
-
+  mixins: [loadingMixin, singlePlayMixin],
+  components: {
+    scroll,
+  },
   props: {
     overallList: {
       type: Object,
@@ -274,6 +254,14 @@ export default {
     },
   },
   methods: {
+    newTime(durationms: number) {
+      let data = new Date(durationms);
+      return formatDate(data, "mm:ss");
+    },
+    ymd(date: Date) {
+      let newDate = new Date(date);
+      return formatDate(newDate, "yyyy.M.d");
+    },
     imgLoad() {
       // 解决 refresh() of  undefined 的问题
       this.$refs.overallScroll && (this.$refs.overallScroll as any).refresh();

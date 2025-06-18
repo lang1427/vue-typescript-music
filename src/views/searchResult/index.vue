@@ -66,18 +66,8 @@ interface ISearchResult {
   code: number;
   result: object;
 }
-interface ICurrentSearchResult {
-  overallList: object;
-  singleList: object;
-  videoList: object;
-  singerList: object;
-  albumList: object;
-  songSheetList: object;
-  radioList: object;
-  userList: object;
-}
 import searchResultBar from "./childComp/topbar.vue";
-import navBar from "components/common/scrollNavBar/scroll-nav-bar.vue";
+import navBar from "@/components/common/scrollNavBar/scroll-nav-bar.vue";
 import overall from "./childComp/overall.vue";
 import single from "./childComp/single.vue";
 import resultVideo from "./childComp/video.vue";
@@ -89,113 +79,66 @@ import user from "./childComp/user.vue";
 
 import { search } from "@/service/search";
 
-// @Component({
-//   components: {
-//     searchResultBar,
-//     navBar,
-//     overall,
-//     single,
-//     resultVideo,
-//     singer,
-//     album,
-//     songSheet,
-//     radio,
-//     user
-//   }
-// })
 export default {
-  // private searchValue: string = "";
-  // private title: string[] = [
-  //   '综合', // 1018
-  //   '单曲', // 1
-  //   '视频', // 1014
-  //   '歌手', // 100
-  //   '专辑', // 10
-  //   '歌单', // 1000
-  //   '主播电台', // 1009
-  //   '用户' // 1002
-  // ] // 传入navbar的标题
-  // private searchType: number[] = [1018, 1, 1014, 100, 10, 1000, 1009, 1002] // 搜索类型
-  // private currentSearchType: number = this.searchType[0] // 当前搜索的类型
-  // private currentSearchResult: ICurrentSearchResult = {
-  //   overallList: {},
-  //   singleList: {
-  //     page: 0,
-  //     result: {}
-  //   },
-  //   videoList: {
-  //     page: 0,
-  //     result: {}
-  //   },
-  //   singerList: {
-  //     page: 0,
-  //     result: {}
-  //   },
-  //   albumList: {
-  //     page: 0,
-  //     result: {}
-  //   },
-  //   songSheetList: {
-  //     page: 0,
-  //     result: {}
-  //   },
-  //   radioList: {
-  //     page: 0,
-  //     result: {}
-  //   },
-  //   userList: {
-  //     page: 0,
-  //     result: {}
-  //   }
-  // } // 当前搜索的结果集合（用于对navbar对应点击的请求保存数据）
-  // private resultData: string[] = [
-  //   '0',
-  //   'songs',
-  //   'videos',
-  //   'artists',
-  //   'albums',
-  //   'playlists',
-  //   '0',
-  //   'userprofiles'
-  // ] // 当前搜索结果的数组，其中第一个（综合）和电台为null，后面为对应的服务器返回来的对象数组,用于数量+1
-  // private count: number = 30 // 请求过来的数量
-  // private clickedNavbar: number[] = [], // 记录点击过navbar的index的数组
-
+  components: {
+    searchResultBar,
+    navBar,
+    overall,
+    single,
+    resultVideo,
+    singer,
+    album,
+    songSheet,
+    radio,
+    user,
+  },
   data() {
     return {
+      // 传入navbar的标题
       title: [
-        "综合",
-        "单曲",
-        "视频",
-        "歌手",
-        "专辑",
-        "歌单",
-        "主播电台",
-        "用户",
+        "综合", // 1018
+        "单曲", // 1
+        "视频", // 1014
+        "歌手", // 100
+        "专辑", // 10
+        "歌单", // 1000
+        "主播电台", // 1009
+        "用户", // 1002
       ],
-      searchType: [1018, 1, 1014, 100, 10, 1000, 1009, 1002],
-      currentSearchType: 1018,
+      searchType: [1018, 1, 1014, 100, 10, 1000, 1009, 1002], // 搜索类型
+      currentSearchType: 1018, //  当前搜索的类型
       currentSearchResult: {
+        // 当前搜索的结果集合（用于对navbar对应点击的请求保存数据）
         overallList: {},
         singleList: {
           page: 0,
-          result: {},
+          result: {
+            songs: [],
+          },
         },
         videoList: {
           page: 0,
-          result: {},
+          result: {
+            videos: [],
+          },
         },
         singerList: {
           page: 0,
-          result: {},
+          result: {
+            artists: [],
+          },
         },
         albumList: {
           page: 0,
-          result: {},
+          result: {
+            albums: [],
+          },
         },
         songSheetList: {
           page: 0,
-          result: {},
+          result: {
+            playlists: [],
+          },
         },
         radioList: {
           page: 0,
@@ -203,9 +146,12 @@ export default {
         },
         userList: {
           page: 0,
-          result: {},
+          result: {
+            userprofiles: [],
+          },
         },
       },
+      // 当前搜索结果的数组，其中第一个（综合）和电台为null，后面为对应的服务器返回来的对象数组,用于数量+1
       resultData: [
         "0",
         "songs",
@@ -216,15 +162,14 @@ export default {
         "0",
         "userprofiles",
       ],
-      count: 30,
-      clickedNavbar: [],
+      count: 30, // 请求过来的数量
+      clickedNavbar: [] as number[], // 记录点击过navbar的index的数组
     };
   },
 
   created() {
     // 初次进入 获取 综合类型
     // (<any>this).$bus.$on("searchResult", (keywords: string) => {
-    //   this.searchValue = keywords;
     search(this.$store.state.searchKeyWrold, this.currentSearchType, 5, 1).then(
       (res: ISearchResult) => {
         if (res.code === 200) {

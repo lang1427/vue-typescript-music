@@ -30,34 +30,29 @@
 </template>
 
 <script lang="ts">
-import scroll from "components/common/scroll/scroll.vue";
+import scroll from "@/components/common/scroll/scroll.vue";
 import { loadingMixin } from "@/utils/mixin";
-
-// @Component({
-//   components: {
-//     scroll
-//   },
-//   mixins: [loadingMixin]
-// })
+interface IUser {
+  avatarUrl: string;
+  nickname: string;
+  signature: string;
+}
 export default {
-  // @Prop({
-  //   default() {
-  //     return [];
-  //   }
-  // })
-  // userList!: object[];
-
+  components: {
+    scroll,
+  },
+  mixins: [loadingMixin],
   props: {
     userList: {
-      type: Array,
+      type: Array as () => IUser[],
       default: () => [],
     },
   },
 
   mounted() {
     (<any>this).$bus.$on("finishPullUp", () => {
-      this.$refs.userScroll && (<any>this.$refs.userScroll).finishPullUp();
-      this.$refs.userScroll && (<any>this.$refs.userScroll).refresh();
+      (<typeof scroll>this.$refs.userScroll)?.finishPullUp();
+      (<typeof scroll>this.$refs.userScroll)?.refresh();
     });
   },
   destroyed() {
@@ -66,7 +61,7 @@ export default {
 
   methods: {
     imgLoad() {
-      this.$refs.userScroll && (this.$refs.userScroll as any).refresh();
+      (<typeof scroll>this.$refs.userScroll)?.refresh();
     },
     pullingUp() {
       this.$emit("pullingUp", 7);

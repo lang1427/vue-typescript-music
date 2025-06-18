@@ -1,4 +1,4 @@
-interface ISonginfo {
+export interface ISonginfo {
   id: number;
   name: string;
   al: {

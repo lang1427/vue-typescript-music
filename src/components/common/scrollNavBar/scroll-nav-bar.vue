@@ -28,25 +28,15 @@
 </template>
 
 <script lang="ts">
-import scroll from "components/common/scroll/scroll.vue";
-// @Component({
-//   components: {
-//     scroll
-//   }
-// })
+import scroll from "@/components/common/scroll/scroll.vue";
 export default {
-  // @Prop({
-  //   default() {
-  //     return [];
-  //   },
-  //   required: true
-  // })
-  // text!: string | number[];
-  // @Prop() private active!: boolean;
-
+  components: {
+    scroll,
+  },
   props: {
     text: {
-      type: [String, Array],
+      type: Array as () => string[],
+      required: true,
       default: () => [],
     },
     active: {
@@ -79,9 +69,13 @@ export default {
     /** 调整距离至中间 */
     adjust() {
       // 获取scroll可视区域的宽度
-      const clientWidth = (this.$refs.scrollNavBar as Vue).$el["clientWidth"]; // 375
+      const clientWidth = (this.$refs.scrollNavBar as typeof scroll).$el[
+        "clientWidth"
+      ]; // 375
       // 获取可滚动区域的宽度
-      const scrollWidth = (this.$refs.listItems as any)["clientWidth"]; // 924
+      const scrollWidth = (this.$refs.listItems as HTMLDivElement)[
+        "clientWidth"
+      ]; // 924
       // 计算最小的移动距离: 可视区域的宽度 - 可滚动区域的宽度 || 0
       const minTranslate = Math.min(0, clientWidth - scrollWidth); // -549
       // scroll 可视区域宽度的中间值
@@ -89,7 +83,7 @@ export default {
       // 获取所有经过遍历text数组的div元素
       const items = (<HTMLDivElement>this.$refs.listItems).children;
       let size: number = 0;
-      (this.text as []).every((text: string | number[], index: number) => {
+      this.text.every((_, index: number) => {
         if (this.currentIndex === index) {
           size += items[index]["clientWidth"] / 2;
           return false;

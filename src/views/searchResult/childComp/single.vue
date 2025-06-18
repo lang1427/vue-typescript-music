@@ -35,32 +35,20 @@
 </template>
 
 <script lang="ts">
-import scroll from "components/common/scroll/scroll.vue";
-import { SongsInfoClass } from "@/conf/songsInfo";
+import scroll from "@/components/common/scroll/scroll.vue";
+import { ISonginfo, SongsInfoClass } from "@/conf/songsInfo";
 import { loadingMixin, playMixin, singlePlayMixin } from "@/utils/mixin";
-
-// @Component({
-//   components: {
-//     scroll
-//   },
-//   mixins: [loadingMixin,playMixin, singlePlayMixin]
-// })
 export default {
-  // @Prop({
-  //   default() {
-  //     return [];
-  //   }
-  // })
-  // songlist!: [];
-
+  components: {
+    scroll,
+  },
+  mixins: [loadingMixin, playMixin, singlePlayMixin],
   props: {
     songlist: {
-      type: Array,
+      type: Array as () => ISonginfo[],
       default: () => [],
     },
   },
-
-  // timer: any = null;
   data() {
     return {
       timer: null,

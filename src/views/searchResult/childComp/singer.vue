@@ -30,33 +30,25 @@
 </template>
 
 <script lang="ts">
-import scroll from "components/common/scroll/scroll.vue";
+import scroll from "@/components/common/scroll/scroll.vue";
 import { loadingMixin } from "@/utils/mixin";
 
-// @Component({
-//   components: {
-//     scroll
-//   },
-//   mixins: [loadingMixin]
-// })
 export default {
-  // @Prop({
-  //   default() {
-  //     return [];
-  //   }
-  // })
-  // singerList!: object[];
+  components: {
+    scroll,
+  },
+  mixins: [loadingMixin],
   props: {
     singerList: {
-      type: Array,
+      type: Array as () => { id: number; name: string; img1v1Url: string }[],
       default: () => [],
     },
   },
 
   mounted() {
     (<any>this).$bus.$on("finishPullUp", () => {
-      this.$refs.singerScroll && (<any>this.$refs.singerScroll).finishPullUp();
-      this.$refs.singerScroll && (<any>this.$refs.singerScroll).refresh();
+      (this.$refs.singerScroll as typeof scroll)?.finishPullUp();
+      (this.$refs.singerScroll as typeof scroll)?.refresh();
     });
   },
   destroyed() {
@@ -69,7 +61,7 @@ export default {
     },
 
     imgLoad() {
-      this.$refs.singerScroll && (this.$refs.singerScroll as any).refresh();
+      (this.$refs.singerScroll as typeof scroll)?.refresh();
     },
 
     pullingUp() {

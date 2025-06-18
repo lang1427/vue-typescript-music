@@ -21,7 +21,7 @@
               <div class="name">{{ item.name }}</div>
               <div class="desc">
                 {{ item.trackCount }}首 by {{ item.creator.nickname }} 播放{{
-                  item.playCount | finalPlayCount
+                  $filters.finalPlayCount(item.playCount)
                 }}次
               </div>
             </div>
@@ -34,26 +34,27 @@
 </template>
 
 <script lang="ts">
-import scroll from "components/common/scroll/scroll.vue";
+import scroll from "@/components/common/scroll/scroll.vue";
 import { loadingMixin } from "@/utils/mixin";
 
-// @Component({
-//   components: {
-//     scroll
-//   },
-//   mixins: [loadingMixin]
-// })
+interface ISongSheet {
+  id: number;
+  name: string;
+  trackCount: number;
+  coverImgUrl: string;
+  creator: {
+    nickname: string;
+  };
+  playCount: number;
+}
 export default {
-  // @Prop({
-  //   default() {
-  //     return [];
-  //   }
-  // })
-  // songSheetList!: object[];
-
+  components: {
+    scroll,
+  },
+  mixins: [loadingMixin],
   props: {
     songSheetList: {
-      type: Array,
+      type: Array as () => ISongSheet[],
       default: () => [],
     },
   },

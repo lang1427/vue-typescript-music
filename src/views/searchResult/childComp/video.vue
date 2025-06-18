@@ -31,34 +31,32 @@
 </template>
 
 <script lang="ts">
-import scroll from "components/common/scroll/scroll.vue";
+import scroll from "@/components/common/scroll/scroll.vue";
 import { loadingMixin } from "@/utils/mixin";
-
-// @Component({
-//   components: {
-//     scroll
-//   },
-//   mixins: [loadingMixin]
-// })
+interface IVideo {
+  title: string;
+  coverUrl: string;
+  durationms: string;
+  creator: {
+    userName: string;
+  }[];
+}
 export default {
-  // @Prop({
-  //   default() {
-  //     return [];
-  //   }
-  // })
-  // videoList!: object[];
-
+  components: {
+    scroll,
+  },
+  mixins: [loadingMixin],
   props: {
     videoList: {
-      type: Array,
+      type: Array as () => IVideo[],
       default: () => [],
     },
   },
 
   mounted() {
     (<any>this).$bus.$on("finishPullUp", () => {
-      this.$refs.videoScroll && (<any>this.$refs.videoScroll).finishPullUp();
-      this.$refs.videoScroll && (<any>this.$refs.videoScroll).refresh();
+      (<typeof scroll>this.$refs.videoScroll).finishPullUp();
+      (<typeof scroll>this.$refs.videoScroll).refresh();
     });
   },
   destroyed() {
@@ -67,7 +65,7 @@ export default {
 
   methods: {
     imgLoad() {
-      this.$refs.videoScroll && (this.$refs.videoScroll as any).refresh();
+      (<typeof scroll>this.$refs.videoScroll).refresh();
     },
 
     pullingUp() {
