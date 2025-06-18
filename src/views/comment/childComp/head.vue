@@ -1,10 +1,10 @@
 <template>
   <div class="comment-head">
     <top-bar>
-      <div slot="left" @click="back">
-        <span class="fa-arrow-left back"></span>
-      </div>
-      <div slot="center" class="title">{{ title }}</div>
+      <template #left>
+        <span class="fa-arrow-left back" @click="back"></span>
+      </template>
+      <template #center class="title">{{ title }}</template>
     </top-bar>
     <div class="category">
       <div class="title">评论区</div>
@@ -22,14 +22,10 @@
 
 <script lang="ts">
 import topBar from "@/components/common/navbar/navbar.vue";
-// @Component({
-//   components: {
-//     topBar
-//   }
-// })
 export default {
-  // private isNew: boolean = true;
-
+  components: {
+    topBar,
+  },
   data() {
     return {
       isNew: true,

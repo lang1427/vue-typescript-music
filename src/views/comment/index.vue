@@ -6,7 +6,10 @@
       :commentList="mode ? commentNewData : commentHotData"
       @pullingUp="nextPage"
     ></comment-main>
-    <comment-footer @sendComment="setOperationComment"></comment-footer>
+    <comment-footer
+      @sendComment="setOperationComment"
+      @testLogin="testLogin"
+    ></comment-footer>
   </div>
 </template>
 
@@ -16,21 +19,12 @@ import commentMain from "./childComp/main.vue";
 import commentFooter from "./childComp/footer.vue";
 import { getCookie } from "@/utils/cookie";
 import {
-  IComment,
   CommentClass,
   operationComment,
   songSheetComment,
   albumComment,
   songsComment,
 } from "@/service/comment";
-
-// @Component({
-//   components: {
-//     commentHead,
-//     commentMain,
-//     commentFooter
-//   }
-// })
 export default {
   // private page: number = 0;
   // private commentNewData: object[] = [];
@@ -39,16 +33,20 @@ export default {
   // private commentType: number = -1; // 评论类型 (0:歌曲  1:mv  2:歌单  3:专辑  4:电台  5:视频  6:动态)
   // private mode: boolean = true; // 评论模式（最新、最热）
   // private timer: any = null;
-
+  components: {
+    commentHead,
+    commentMain,
+    commentFooter,
+  },
   data() {
     return {
       page: 0,
-      commentNewData: [],
-      commentHotData: [],
+      commentNewData: [] as CommentClass[],
+      commentHotData: [] as CommentClass[],
       commentTotal: 0,
       commentType: -1,
       mode: true,
-      timer: null,
+      timer: undefined as undefined | number,
     };
   },
   computed: {
@@ -86,7 +84,7 @@ export default {
         switch (t) {
           case 0:
             let index = this.commentNewData.findIndex((item) => {
-              return (<IComment>item).commentId === commentId;
+              return (<CommentClass>item).commentId === commentId;
             });
             this.commentNewData.splice(index, 1);
             this.commentTotal -= 1;

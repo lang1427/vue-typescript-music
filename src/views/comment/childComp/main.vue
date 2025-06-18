@@ -14,11 +14,11 @@
         >
           <div class="user-baseinfo">
             <div class="avatar">
-              <img :src="comment.userAvatar" alt />
+              <img :src="comment.userAvatar" />
             </div>
             <div class="base-info">
               <p class="name">{{ comment.userName }}</p>
-              <p class="time">{{ comment.commentTime | handleTime }}</p>
+              <p class="time">{{ handleTime(comment.commentTime) }}</p>
             </div>
             <div class="liked">
               <span
@@ -87,47 +87,23 @@
 </template>
 
 <script lang="ts">
-import "@/utils/longpress";
 import moment from "moment";
 import "moment/locale/zh-cn";
 import scrollBar from "@/components/common/scroll/scroll.vue";
 import commentDialog from "@/components/common/kl-dialog/kl-dialog.vue";
-import { IComment, likeComment } from "@/service/comment";
-
-// @Component({
-//   components: {
-//     scrollBar,
-//     commentDialog
-//   },
-//   filters: {
-//     handleTime(oldTime: number) {
-//       moment().locale("zh-cn");
-//       let date = moment(oldTime).format("YYYY-MM-DD HH:mm:ss");
-//       return moment(date).calendar();
-//     }
-//   }
-// })
+import { likeComment, CommentClass } from "@/service/comment";
 export default {
-  // @Prop({
-  //   default() {
-  //     return [];
-  //   }
-  // })
-  // commentList!: object[];
-
+  name: "CommentMain",
   props: {
     commentList: {
-      type: Array,
+      type: Array as () => CommentClass[],
       default: () => [],
     },
   },
-
-  // private longpress: boolean = false; // 用于阻止长按事件与点击事件冲突
-  // private isDialogShow: boolean = false;
-  // private content: string = ""; // 用于保存长按的文本内容  （针对于复制评论内容操作）
-  // private commentUserID: number = -1; // 用于保存长按的用户id  （针对于是否可删除评论操作）
-  // private commentContentId: number = -1; // 评论内容id （针对于是否可删除评论操作）
-
+  components: {
+    scrollBar,
+    commentDialog,
+  },
   data() {
     return {
       longpress: false,
@@ -137,19 +113,19 @@ export default {
       commentContentId: -1,
     };
   },
-
   computed: {
-    commentData() {
-      return this.commentList.filter((item) => {
-        return (<IComment>item).parentCommentId === 0;
+    commentData(): CommentClass[] {
+      return this.commentList.filter((item: CommentClass) => {
+        return item.parentCommentId === 0;
       });
     },
-    replyData() {
-      return this.commentList.filter((item) => {
-        return (<IComment>item).parentCommentId !== 0;
+    replyData(): CommentClass[] {
+      return this.commentList.filter((item: CommentClass) => {
+        return item.parentCommentId !== 0;
       });
     },
   },
+
   methods: {
     async setLikeComment(cid: number) {
       (<any>this).$parent.testLogin();
@@ -196,7 +172,6 @@ export default {
         }
       }
     },
-
     longpressDialog(obj: any) {
       this.longpress = true;
       this.isDialogShow = true;
@@ -227,21 +202,21 @@ export default {
       this.content = "";
       this.commentUserID = -1;
     },
+    handleTime(oldTime: number) {
+      moment().locale("zh-cn");
+      let date = moment(oldTime).format("YYYY-MM-DD HH:mm:ss");
+      return moment(date).calendar();
+    },
   },
-
   watch: {
     commentList: {
       handler() {
-        this.$refs.commentScroll && (this as any).$refs.commentScroll.refresh();
+        (this.$refs.commentScroll as typeof scrollBar)?.refresh();
       },
-      implements: true,
+      // implements: true,
+      immediate: true,
     },
   },
-
-  // @Watch("commentList", { immediate: true })
-  // changeCommentList() {
-  //   this.$refs.commentScroll && (this as any).$refs.commentScroll.refresh();
-  // }
 };
 </script>
 <style scoped lang="less">

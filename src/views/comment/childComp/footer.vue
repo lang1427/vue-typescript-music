@@ -6,7 +6,7 @@
         placeholder="随乐而起，有感而发"
         ref="commentInput"
         v-model="commentVal"
-        @focus="$parent.testLogin()"
+        @focus="$emit('testLogin')"
       />
       <span></span>
       <span></span>
