@@ -1,43 +1,49 @@
-import { service } from '@/service/service'
+import { service } from "@/service/service";
 
 /** 获取100个热门歌手 */
 export function getSinger() {
   return service({
-    url: '/top/artists?limit=100'
-  })
+    url: "/top/artists?limit=100",
+  });
 }
 export interface ISinger {
-  id: number
-  name: string
-  picUrl: string
-  pin: string
+  id: number;
+  name: string;
+  picUrl: string;
+  pin: string;
+  title: string;
+  items: {
+    id: number;
+    name: string;
+    imgUrl: string;
+  }[];
 }
 export class SingerData {
-  id!: number
-  name!: string
-  imgUrl!: string
+  id!: number;
+  name!: string;
+  imgUrl!: string;
 
   constructor(artists: ISinger) {
-    this.id = artists.id
-    this.name = artists.name
-    this.imgUrl = artists.picUrl
+    this.id = artists.id;
+    this.name = artists.name;
+    this.imgUrl = artists.picUrl;
   }
 }
 
 /** 获取歌手单曲（可获得部分信息和热门歌曲） 用于歌手详情页 */
 export function getSingerDetail(id: number) {
   return service({
-    url: '/artists',
+    url: "/artists",
     params: {
-      id
-    }
-  })
+      id,
+    },
+  });
 }
 export interface ISingerHeadInfo {
-  musicSize?: number
-  albumSize?: number
-  mvSize?: number
-  img1v1Url?: string
+  musicSize?: number;
+  albumSize?: number;
+  mvSize?: number;
+  img1v1Url?: string;
 }
 
 /** 获取歌手专辑 */
@@ -47,21 +53,21 @@ export function getSingerAlbum(
   limit: number = 50
 ) {
   return service({
-    url: '/artist/album',
+    url: "/artist/album",
     params: {
       id,
       offset: limit * offset,
-      limit
-    }
-  })
+      limit,
+    },
+  });
 }
 
 /** 获取歌手MV */
 export function getSingerMv(id: number) {
   return service({
-    url: '/artist/mv',
+    url: "/artist/mv",
     params: {
-      id
-    }
-  })
+      id,
+    },
+  });
 }

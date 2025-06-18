@@ -18,7 +18,7 @@
                   :key="item.id"
                   @click="selector(item.id)"
                 >
-                  <img v-lazy="item.imgUrl" class="items-img" alt />
+                  <img v-lazy="item.imgUrl" class="items-img" />
                   <span class="items-name">{{ item.name }}</span>
                 </li>
               </ul>
@@ -61,27 +61,18 @@ interface IPosition {
 
 const ANCHOR_HEIGHT = 20;
 
-import scroll from "components/common/scroll/scroll.vue";
+import scroll from "@/components/common/scroll/scroll.vue";
 import { getData } from "@/utils/dom";
 import { loadingMixin } from "@/utils/mixin";
-
-// @Component({
-//   components: {
-//     scroll
-//   },
-//   mixins: [loadingMixin]
-// })
+import { ISinger } from "@/service/singer";
 export default {
-  // @Prop({
-  //   default() {
-  //     return [];
-  //   }
-  // })
-  // data!: object[];
-
+  components: {
+    scroll,
+  },
+  mixins: [loadingMixin],
   props: {
     data: {
-      type: Array,
+      type: Array as () => ISinger[],
       default: () => [],
     },
   },
@@ -94,7 +85,7 @@ export default {
         y2: 0,
         anchorIndex: "",
       },
-      listHeight: [], // 用于存储每个类型对应的高度
+      listHeight: [] as number[], // 用于存储每个类型对应的高度
     };
   },
 

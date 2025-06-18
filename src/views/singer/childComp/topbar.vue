@@ -1,23 +1,20 @@
 <template>
   <navbar class="topbar">
-    <div slot="left" @click="back">
+    <template #left>
       <span class="fa-arrow-left back"></span>
-    </div>
-    <div slot="center">
+    </template>
+    <template #center @click="back">
       <h2 class="title">歌手分类</h2>
-    </div>
+    </template>
   </navbar>
 </template>
 
 <script lang="ts">
-import navbar from "components/common/navbar/navbar.vue";
-
-// @Component({
-//   components: {
-//     navbar
-//   }
-// })
+import navbar from "@/components/common/navbar/navbar.vue";
 export default {
+  components: {
+    navbar,
+  },
   methods: {
     back() {
       this.$router.back();

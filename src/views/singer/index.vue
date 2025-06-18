@@ -8,26 +8,21 @@
 
 <script lang="ts">
 import topBar from "./childComp/topbar.vue";
-import ListView from "components/content/scroll-list-view/scroll-list-view.vue";
+import ListView from "@/components/content/scroll-list-view/scroll-list-view.vue";
 
 import { getSinger, SingerData, ISinger } from "@/service/singer";
 
-const pinyin = require("pinyin");
+import pinyin from "pinyin";
 const HOT_NAME = "热门";
 const HOT_COUNT = 10;
-
-// @Component({
-//   name: "singer",
-//   components: {
-//     topBar,
-//     ListView
-//   }
-// })
 export default {
-  // private artists: object[] = [];
+  components: {
+    topBar,
+    ListView,
+  },
   data() {
     return {
-      artists: [],
+      artists: [] as ISinger[],
     };
   },
 
