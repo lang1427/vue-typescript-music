@@ -1,36 +1,24 @@
 <template>
   <div class="mv">
-    <mv-list :mvList="mvList">
+    <mv-list-comp :mvList="mvList">
       <div v-show="mvList.hasMore" class="hasMore" slot="bottom">
         {{ message }}
       </div>
-    </mv-list>
+    </mv-list-comp>
   </div>
 </template>
 
 <script lang="ts">
-interface IMv {
-  mvs: object[];
-}
-import mvList from "components/content/mv-list/mv-list.vue";
-
-// @Component({
-//   components: {
-//     mvList
-//   }
-// })
+import mvListComp from "@/components/content/mv-list/mv-list.vue";
+import { IMv } from "@/components/content/mv-list/mv-list.vue";
 export default {
-  // @Prop({
-  //   default() {
-  //     return [];
-  //   }
-  // })
-  // mvList!: IMv;
-
+  components: {
+    mvListComp,
+  },
   props: {
     mvList: {
-      type: Array,
-      default: () => [],
+      type: Object as () => IMv,
+      default: () => {},
     },
   },
   computed: {

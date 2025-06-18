@@ -54,11 +54,10 @@
 interface IPosition {
   y: number;
 }
-import scroll from "components/common/scroll/scroll.vue";
-
-import topbar from "components/common/navbar/navbar.vue";
+import scroll from "@/components/common/scroll/scroll.vue";
+import topbar from "@/components/common/navbar/navbar.vue";
 import detailHead from "./childComp/head.vue";
-import detailTabBar from "components/content/tab-bar/tab-bar.vue";
+import detailTabBar from "@/components/content/tab-bar/tab-bar.vue";
 import detailHome from "./childComp/home.vue";
 import detailAlbum from "./childComp/album.vue";
 import detailMv from "./childComp/mv.vue";
@@ -70,20 +69,6 @@ import {
   getSingerAlbum,
   getSingerMv,
 } from "@/service/singer";
-
-// @Component({
-//   name: "singerDetail",
-//   components: {
-//     scroll,
-//     topbar,
-//     detailHead,
-//     detailTabBar,
-//     detailHome,
-//     detailAlbum,
-//     detailMv,
-//     songlistOperation
-//   }
-// })
 export default {
   // private singerHeadInfo: ISingerHeadInfo = {};
   // private tabbarContentIndex: number = 0; // 用于控制显示tabbar 主页、专辑、Mv 的内容
@@ -96,15 +81,31 @@ export default {
   // private isShowTabbar: boolean = true;
   // private activeHeight: number = -1; // 计算到 用于显示顶部导航栏中的名字 的高度
   // private opacity: number = 1; // 用于设置detailHead组件中的文字的透明度
-
+  components: {
+    scroll,
+    topbar,
+    detailHead,
+    detailTabBar,
+    detailHome,
+    detailAlbum,
+    detailMv,
+    songlistOperation,
+  },
   data() {
     return {
-      singerHeadInfo: {},
+      singerHeadInfo: {
+        name: "",
+        albumSize: 0,
+        mvSize: 0,
+      },
       tabbarContentIndex: 0,
-      hotSongs: [],
+      hotSongs: [] as SongsInfoClass[],
       hotAlbumsData: [],
       hotAlbumsMore: false,
-      mvsData: [],
+      mvsData: {
+        hasMore: true,
+        mvs: [],
+      },
       scrollY: 0,
       isShowName: true,
       isShowTabbar: true,
@@ -115,7 +116,7 @@ export default {
 
   computed: {
     id() {
-      return parseInt(this.$route.params.id);
+      return parseInt(<string>this.$route.params.id);
     },
     tabbarList() {
       return [
@@ -157,11 +158,18 @@ export default {
     this.getSingerMvData(this.id);
   },
   deactivated() {
-    this.singerHeadInfo = {};
+    this.singerHeadInfo = {
+      name: "",
+      albumSize: 0,
+      mvSize: 0,
+    };
     this.hotSongs = [];
     this.hotAlbumsData = [];
     this.hotAlbumsMore = false;
-    this.mvsData = [];
+    this.mvsData = {
+      hasMore: true,
+      mvs: [],
+    };
   },
   beforeDestroy() {
     (<any>this).$bus.$emit("leaveSingerDetail");

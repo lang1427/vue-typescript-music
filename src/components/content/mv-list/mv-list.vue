@@ -10,18 +10,18 @@
 
 <script lang="ts">
 import mvListItems from "./mv-list-items.vue";
+export interface IMv {
+  hasMore: boolean;
+  mvs: object[];
+}
 export default {
-  // @Prop({
-  //   default() {
-  //     return [];
-  //   },
-  // })
-  // mvList!: object[];
-
+  components: {
+    mvListItems,
+  },
   props: {
-    myList: {
-      type: Array,
-      default: () => [],
+    mvList: {
+      type: Object as () => IMv,
+      default: () => {},
     },
   },
 };

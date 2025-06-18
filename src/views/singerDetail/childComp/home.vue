@@ -10,22 +10,13 @@
 </template>
 
 <script lang="ts">
-import singleList from "components/content/single-list/single-list.vue";
+import singleList from "@/components/content/single-list/single-list.vue";
 import { loadingMixin } from "@/utils/mixin";
-
-// @Component({
-//   components: {
-//     singleList
-//   },
-//   mixins: [loadingMixin]
-// })
 export default {
-  // @Prop({
-  //   default() {
-  //     return []
-  //   }
-  // })
-  // singleList!: object[]
+  components: {
+    singleList,
+  },
+  mixins: [loadingMixin],
   props: {
     singleList: {
       type: Array,

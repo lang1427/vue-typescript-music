@@ -8,18 +8,10 @@
 </template>
 
 <script lang="ts">
-import { ISingerHeadInfo } from "@/service/singer";
-
 export default {
-  // @Prop({
-  //   default() {
-  //     return [];
-  //   }
-  // })
-  // singerHeadInfo!: ISingerHeadInfo;
   props: {
     singerHeadInfo: {
-      type: Object as () => ISingerHeadInfo,
+      type: Object,
       default: () => ({}),
     },
   },

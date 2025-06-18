@@ -3,7 +3,7 @@
     <div class="mv-img">
       <img v-lazy="mvListItems.imgurl" />
       <span class="play-count"
-        >▷{{ mvListItems.playCount | finalPlayCount }}</span
+        >▷{{ $filters.finalPlayCount(mvListItems.playCount) }}</span
       >
     </div>
     <div class="info">
@@ -15,13 +15,6 @@
 
 <script lang="ts">
 export default {
-  // @Prop({
-  //   default() {
-  //     return {}
-  //   }
-  // })
-  // mvListItems!: object
-
   props: {
     mvListItems: {
       type: Object,

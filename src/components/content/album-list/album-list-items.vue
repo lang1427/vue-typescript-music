@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-interface IAlbum {
+export interface IAlbum {
   id: number;
   name: string;
   blurPicUrl: string;
@@ -23,13 +23,6 @@ interface IAlbum {
 }
 import { formatDate } from "@/utils/formatDate";
 export default {
-  // @Prop({
-  //   default() {
-  //     return {}
-  //   }
-  // })
-  // albumListItems!: IAlbum
-
   props: {
     albumListItems: {
       type: Object as () => IAlbum,

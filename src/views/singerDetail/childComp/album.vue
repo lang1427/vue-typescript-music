@@ -9,30 +9,15 @@
 </template>
 
 <script lang="ts">
-import albumList from "components/content/album-list/album-list.vue";
-
-// @Component({
-//   components: {
-//     albumList
-//   }
-// })
+import albumList from "@/components/content/album-list/album-list.vue";
+import { IAlbum } from "@/components/content/album-list/album-list-items.vue";
 export default {
-  // @Prop({
-  //   default() {
-  //     return []
-  //   }
-  // })
-  // albumList!: object[]
-  // @Prop({
-  //   default() {
-  //     return false
-  //   }
-  // })
-  // isMore!: boolean
-
+  components: {
+    albumList,
+  },
   props: {
     albumList: {
-      type: Array,
+      type: Array as () => IAlbum[],
       default: () => [],
     },
     isMore: {

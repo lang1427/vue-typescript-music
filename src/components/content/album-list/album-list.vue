@@ -10,16 +10,14 @@
 
 <script lang="ts">
 import albumListItems from "./album-list-items.vue";
+import { IAlbum } from "./album-list-items.vue";
 export default {
-  // @Prop({
-  //   default() {
-  //     return []
-  //   }
-  // })
-  // albumList!: object[]
+  components: {
+    albumListItems,
+  },
   props: {
     albumList: {
-      type: Array,
+      type: Array as () => IAlbum[],
       default: () => [],
     },
   },
