@@ -13,16 +13,12 @@ import hotSearchList from "./childComp/hot-search-list.vue";
 
 import { hotSearch } from "@/service/search";
 
-// @Component({
-//   components: {
-//     searchTab,
-//     searchHistory,
-//     hotSearchList
-//   }
-// })
 export default {
-  // private hotSearchListData: object[] = [];
-
+  components: {
+    searchTab,
+    searchHistory,
+    hotSearchList,
+  },
   data() {
     return {
       hotSearchListData: [],

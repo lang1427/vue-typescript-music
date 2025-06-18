@@ -1,9 +1,9 @@
 <template>
   <navbar class="search-tab">
-    <div slot="left" @click="back">
-      <span class="fa-arrow-left back"></span>
-    </div>
-    <div class="search-input-box" slot="center">
+    <template #left>
+      <span class="fa-arrow-left back" @click="back"></span>
+    </template>
+    <template class="search-input-box" #center>
       <input
         class="search-input"
         type="text"
@@ -25,34 +25,26 @@
           {{ item.keyword }}
         </li>
       </ul>
-    </div>
-    <div slot="right" @click="goSinger">
-      <span class="fa-user singer"></span>
-    </div>
+    </template>
+    <template #right>
+      <span class="fa-user singer" @click="goSinger"></span>
+    </template>
   </navbar>
 </template>
 
 <script lang="ts">
-import navbar from "components/common/navbar/navbar.vue";
+import navbar from "@/components/common/navbar/navbar.vue";
 import { searchSuggest } from "@/service/search";
-
-// @Component({
-//   components: {
-//     navbar
-//   }
-// })
 export default {
-  // private searchContent: string = ''
-  // private allMatch: object[] = [] // 输入框搜索内容全匹配
-  // private isActive: boolean = true // 用于动态显示搜索列表
-  // private timer: any = null
-
+  components: {
+    navbar,
+  },
   data() {
     return {
       searchContent: "",
-      allMatch: [], // 输入框搜索内容全匹配
+      allMatch: [] as { keyword: string }[], // 输入框搜索内容全匹配
       isActive: true, // 用于动态显示搜索列表
-      timer: null,
+      timer: null as number | null,
     };
   },
   computed: {

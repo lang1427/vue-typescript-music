@@ -20,14 +20,11 @@
 </template>
 
 <script lang="ts">
-import scrollBar from "components/common/scroll/scroll.vue";
-
-// @Component({
-//   components: {
-//     scrollBar
-//   }
-// })
+import scrollBar from "@/components/common/scroll/scroll.vue";
 export default {
+  components: {
+    scrollBar,
+  },
   computed: {
     historyArr() {
       return this.$store.state.searchHistory;

@@ -27,18 +27,17 @@
 
 <script lang="ts">
 import { loadingMixin } from "@/utils/mixin";
-
-// @Component({ mixins: [loadingMixin] })
+interface IHotSearch {
+  searchWord: string;
+  content: string;
+  iconUrl: string;
+  score: number;
+}
 export default {
-  // @Prop({
-  //   default() {
-  //     return []
-  //   }
-  // })
-  // hotsearch!: object[]
+  mixins: [loadingMixin],
   props: {
     hotsearch: {
-      type: Array,
+      type: Array as () => IHotSearch[],
       default: () => [],
     },
   },
