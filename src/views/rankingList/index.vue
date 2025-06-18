@@ -1,10 +1,10 @@
 <template>
   <div class="ranking-list">
     <top-bar class="top-bar">
-      <div slot="left" @click="back">
-        <span class="fa-arrow-left"></span>
-      </div>
-      <div slot="center" class="title">排行榜</div>
+      <template #left>
+        <span class="fa-arrow-left" @click="back"></span>
+      </template>
+      <template #center><span class="title">排行榜</span></template>
     </top-bar>
     <h4 class="title">官方榜</h4>
     <section class="official">
@@ -59,18 +59,14 @@
 import topBar from "@/components/common/navbar/navbar.vue";
 import gridView from "@/components/common/gridview/grid-view.vue";
 import { rankIdx, topListDetail, RankData } from "@/service/rankinglist";
-// @Component({
-//   components: {
-//     topBar,
-//     gridView
-//   }
-// })
 export default {
-  // private rankList: object[] = [];
-
+  components: {
+    topBar,
+    gridView,
+  },
   data() {
     return {
-      rankList: [],
+      rankList: [] as RankData[],
     };
   },
 
