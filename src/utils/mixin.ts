@@ -1,9 +1,9 @@
-import loading from 'components/common/loading/loading.vue'
+import loading from "@/components/common/loading/loading.vue";
 export const loadingMixin = {
   components: {
-    loading
-  }
-}
+    loading,
+  },
+};
 
 // 播放方法play(index)  设置当前的播放索引
 import { PlayList } from "@/conf/playlist";
@@ -19,34 +19,36 @@ export const playMixin = {
         });
         (this as any).$store.dispatch("changePlayList", playArr);
       }
-    }
-  }
-}
+    },
+  },
+};
 
 // 添加单曲播放
-import { ISongs } from '@/conf/playlist'
+import { ISongs } from "@/conf/playlist";
 export const singlePlayMixin = {
   methods: {
     playSingle(item: ISongs) {
-      let currentIndex = (this as any).$store.state.playList.findIndex((list: any) => {
-        return list.id === item.songsId
-      })
+      let currentIndex = (this as any).$store.state.playList.findIndex(
+        (list: any) => {
+          return list.id === item.songsId;
+        }
+      );
       if (currentIndex === -1) {
-        (this as any).$store.commit('addSingle', new PlayList(item))
+        (this as any).$store.commit("addSingle", new PlayList(item));
       } else {
-        (this as any).$store.dispatch('changeCurrentPlayIndex', currentIndex)
+        (this as any).$store.dispatch("changeCurrentPlayIndex", currentIndex);
       }
-    }
-  }
-}
+    },
+  },
+};
 
 // 播放模式
-import { EPlayMode } from '@/store/interface'
+import { EPlayMode } from "@/store/interface";
 export const playModeMixin = {
   data() {
     return {
-      modeName: ["列表循环", "单曲循环", "随机模式"]
-    }
+      modeName: ["列表循环", "单曲循环", "随机模式"],
+    };
   },
   computed: {
     modeICON() {
@@ -63,9 +65,9 @@ export const playModeMixin = {
           break;
       }
       return mode;
-    }
-  }
-  , methods: {
+    },
+  },
+  methods: {
     changeMode() {
       switch ((this as any).$store.state.playMode) {
         case 0:
@@ -85,18 +87,18 @@ export const playModeMixin = {
           window.clearTimeout(timer);
         }, 1000);
       }
-    }
-  }
-}
+    },
+  },
+};
 
 // 用户歌单管理者
-import { userSongsheet, UserSongsheetInfo } from '@/service/songsheet'
-import { getCookie } from './cookie'
+import { userSongsheet, UserSongsheetInfo } from "@/service/songsheet";
+import { getCookie } from "./cookie";
 export const userSongsManageMixin = {
   data() {
     return {
-      userSongsheetList: []
-    }
+      userSongsheetList: [] as UserSongsheetInfo[],
+    };
   },
   methods: {
     async getUserSongsheet() {
@@ -109,11 +111,15 @@ export const userSongsManageMixin = {
         }
         (this as any).userSongsheetList = arr;
       }
-    }
+    },
   },
   computed: {
     userID(): number {
-      return (this as any).$store.state.account.account && (this as any).$store.state.account.account.id || -1
+      return (
+        ((this as any).$store.state.account.account &&
+          (this as any).$store.state.account.account.id) ||
+        -1
+      );
     },
     // 我的歌单（排除 我喜欢） 我喜欢的歌单为用户歌单中第一个索引值
     mySongsList() {
@@ -122,6 +128,6 @@ export const userSongsManageMixin = {
           return index != 0;
         }
       );
-    }
-  }
-}
+    },
+  },
+};

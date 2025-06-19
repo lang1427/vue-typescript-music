@@ -1,7 +1,7 @@
 <template>
   <div class="mini-player">
     <div class="player-img">
-      <img :src="$store.getters.playMusicImg" alt />
+      <img :src="$store.getters.playMusicImg" />
     </div>
     <div class="singer-info" @click="toggle">
       <p class="name">{{ $store.getters.playMusicName }}</p>
@@ -21,14 +21,11 @@
 
 <script lang="ts">
 import progressCircle from "@/components/content/progress-circle/progress-circle.vue";
-// @Component({
-//   name:'miniPlayer',
-//   components: {
-//     progressCircle
-//   }
-// })
 export default {
   // private isLike: boolean = false; // 是否是喜欢的音乐
+  components: {
+    progressCircle,
+  },
   data() {
     return {
       isLike: false, // 是否是喜欢的音乐

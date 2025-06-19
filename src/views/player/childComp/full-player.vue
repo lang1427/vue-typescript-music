@@ -18,7 +18,7 @@
           @touchstart="toggleStart"
           @touchend="toggleEnd"
         >
-          <img :src="$store.getters.playMusicImg" alt />
+          <img :src="$store.getters.playMusicImg" />
         </div>
         <!-- 歌词部分 -->
         <div
@@ -33,7 +33,7 @@
                   ref="lyricLine"
                   v-for="(line, index) of lyricData.lines"
                   :key="line.key"
-                  :class="{ current: $parent.currnetLineNum === index }"
+                  :class="{ current: $parent?.currnetLineNum === index }"
                   class="text"
                 >
                   {{ line.txt }}
@@ -93,10 +93,7 @@
           class="fa-outdent songs-list list-items"
         ></div>
       </div>
-      <kl-message
-        :message="modeName[this.$store.state.playMode]"
-        :isShow="isShow"
-      />
+      <kl-message :message="modeName[$store.state.playMode]" :isShow="isShow" />
     </div>
   </transition>
 </template>
@@ -109,13 +106,6 @@ import klMessage from "@/components/common/message/message.vue";
 import { playModeMixin } from "@/utils/mixin";
 import { EPlayMode } from "@/store/interface";
 // @Component({
-//   components: {
-//     noticeBar,
-//     lyricScroll,
-//     progressBar,
-//     klMessage
-//   },
-//   mixins: [playModeMixin],
 //   watch: {
 //     // 这里的操作比较有意思，因为顶部的noticeBar在隐藏的情况下是没有宽度的，需要监听到隐藏状态，当是全屏播放容器时则需要开启滚动
 //     "$parent.isMiniShow": {
@@ -128,6 +118,7 @@ import { EPlayMode } from "@/store/interface";
 //     }
 //   }
 // })
+import Lyric from "@/utils/lyric-parser";
 export default {
   // @Prop({ default: 0 }) percent!: number;
   // @Prop({ default: false }) playStatu!: boolean;
@@ -136,7 +127,13 @@ export default {
   // @Prop() downloadUrl!: string;
   // @Prop() lyricData!: object;
   // @Prop() lyricState!: string;
-
+  components: {
+    noticeBar,
+    lyricScroll,
+    progressBar,
+    klMessage,
+  },
+  mixins: [playModeMixin],
   props: {
     percent: {
       type: Number,
@@ -159,8 +156,8 @@ export default {
       default: "",
     },
     lyricData: {
-      type: Object,
-      default: null,
+      type: Object as () => Lyric,
+      default: {},
     },
     lyricState: {
       type: String,

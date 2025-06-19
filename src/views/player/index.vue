@@ -44,7 +44,6 @@
 <script lang="ts">
 // import { mapGetters } from 'vuex'
 import Lyric from "@/utils/lyric-parser";
-// const Lyric = require("@/utils/lyric-parser");
 import fullPlayer from "./childComp/full-player.vue";
 import miniPlayer from "./childComp/mini-player.vue";
 import playerList from "./childComp/player-list.vue";
@@ -52,41 +51,28 @@ import klMessage from "@/components/common/message/message.vue";
 import { isCanMusic, musicUrl, musicLyric } from "@/service/player";
 // @Component({
 //   name: "Player",
-//   components: {
-//     fullPlayer,
-//     miniPlayer,
-//     playerList,
-//     klMessage
-//   }
 //   // computed:{
 //   //   ...mapGetters(['playMusicID'])
 //   // }
 // })
 export default {
-  // private isMiniShow: boolean = true; // 默认播放时 显示 迷你播放器
-  // private url: string | null = null;
-  // private duration: number = 0; // 总时长
-  // private currentTime: number = 0; // 当前播放的时间
-  // private isPlay: boolean = false;
-  // private isMove: boolean = false;
-  // private isLoading: boolean = false;
-  // // 歌词部分
-  // private currentLyrics: any= null; // 当前歌词
-  // private currnetLineNum: number = 0; // 当前歌词行数
-  // private playingLyric: string = ""; // 正在播放的歌词
-  // private noLyric: boolean = false; // 是否有歌词
-
+  components: {
+    fullPlayer,
+    miniPlayer,
+    playerList,
+    klMessage,
+  },
   data() {
     return {
       isMiniShow: true, // 默认播放时 显示 迷你播放器
-      url: null,
+      url: "",
       duration: 0, // 总时长
       currentTime: 0, // 当前播放的时间
       isPlay: false,
       isMove: false,
       isLoading: false,
       // 歌词部分
-      currentLyrics: null, // 当前歌词
+      currentLyrics: undefined as Lyric | undefined, // 当前歌词
       currnetLineNum: 0, // 当前歌词行数
       playingLyric: "", // 正在播放的歌词
       noLyric: false, // 是否有歌词
@@ -126,12 +112,12 @@ export default {
           this.$toast(res.message);
           this.isLoading = false;
           this.stop();
-          this.url = null;
+          this.url = "";
         }
       } catch (e) {
         this.$toast("亲爱的,暂无版权");
         this.isLoading = false;
-        this.url = null;
+        this.url = "";
         this.stop();
       }
     },
@@ -155,7 +141,7 @@ export default {
       // 如果当前有歌词 则先来波清空操作
       if (this.currentLyrics) {
         this.currentLyrics.stop();
-        this.currentLyrics = null;
+        this.currentLyrics = undefined;
       }
       this.noLyric = false;
       try {
@@ -175,7 +161,7 @@ export default {
         }
       } catch (e) {
         console.log("歌词加载失败: " + e);
-        this.currentLyrics = null;
+        this.currentLyrics = undefined;
         this.currnetLineNum = 0;
         this.noLyric = true;
       }
@@ -215,7 +201,7 @@ export default {
       (<HTMLAudioElement>this.$refs.audio).currentTime = 0;
       this.play();
       if (this.currentLyrics) {
-        this.currentLyrics.seek();
+        this.currentLyrics.seek(0);
       }
     },
     prev() {
@@ -296,7 +282,7 @@ export default {
     },
 
     // 操作歌词事件
-    handleLyric({ lineNum, txt }: any) {
+    handleLyric({ lineNum, txt }: { lineNum: number; txt: string }) {
       this.currnetLineNum = lineNum;
       if (lineNum > 5) {
         let lineEl = (<any>this).$refs.fullPlayer
@@ -349,7 +335,7 @@ export default {
       }
     },
     error() {
-      if (this.url != null) {
+      if (this.url != "") {
         this.$toast("加载失败");
         this.isLoading = false;
       }

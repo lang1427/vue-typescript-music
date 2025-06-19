@@ -11,12 +11,11 @@ const tagRegMap = {
   by: "by",
 };
 
-function noop() {}
 // export default class Lyric{
 export default class Lyric {
   lrc: string;
   tags: { [key: string]: string };
-  lines: { time: number; txt: string }[];
+  lines: { time: number; txt: string; key?: string }[];
   handler: (arg: { txt: string; lineNum: number }) => void;
   state: number;
   curLine: number;
@@ -25,7 +24,10 @@ export default class Lyric {
   count: number | undefined;
   startStamp: number | undefined;
   pauseStamp: number | undefined;
-  constructor(lrc: string, hanlder = noop) {
+  constructor(
+    lrc: string,
+    hanlder: (arg: { txt: string; lineNum: number }) => void
+  ) {
     this.lrc = lrc;
     this.tags = {};
     this.lines = [];

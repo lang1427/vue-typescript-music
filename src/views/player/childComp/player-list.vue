@@ -12,7 +12,7 @@
       <div class="operation">
         <div class="mode" @click="changeMode">
           <div class="ico" :class="modeICON"></div>
-          <div class="title">{{ modeName[this.$store.state.playMode] }}</div>
+          <div class="title">{{ modeName[$store.state.playMode] }}</div>
         </div>
         <div class="star">
           <span @click="starAll">
@@ -58,7 +58,7 @@
             @click="SetSongsheetOperation('add', item.id)"
           >
             <span class="ico">
-              <img :src="item.imgUrl" alt />
+              <img :src="item.imgUrl" />
             </span>
             <span class="info">
               <span class="name">{{ item.name }}</span>
@@ -92,23 +92,21 @@ import starMessage from "@/components/common/message/message.vue";
 import { getCookie } from "@/utils/cookie";
 import { playMixin, playModeMixin, userSongsManageMixin } from "@/utils/mixin";
 import { createSongSheet, songsheetOperation } from "@/service/songsheet";
-// @Component({
-//   components: {
-//     popup,
-//     klConfirm,
-//     starDialog,
-//     createSongDialog,
-//     starMessage
-//   },
-//   mixins: [playMixin, playModeMixin, userSongsManageMixin]
-// })
+import loadingGIF from "@/components/common/loading/loading.gif";
 export default {
   // private playerListShow: boolean = false; // 原变量名isShow在playModeMixin中冲突，导致此组件中切换模式之后会自动关闭弹出层
   // private starShow: boolean = false;
   // private createSongShow: boolean = false;
   // private confirmShow: boolean = false;
   // private messageShow: boolean = false;
-
+  components: {
+    popup,
+    klConfirm,
+    starDialog,
+    createSongDialog,
+    starMessage,
+  },
+  mixins: [playMixin, playModeMixin, userSongsManageMixin],
   data() {
     return {
       playerListShow: false, // 原变量名isShow在playModeMixin中冲突，导致此组件中切换模式之后会自动关闭弹出层
@@ -127,7 +125,7 @@ export default {
       return `(${this.$store.state.playList.length})`;
     },
     playingImg() {
-      return require("@/components/common/loading/loading.gif");
+      return loadingGIF;
     },
   },
 
