@@ -23,8 +23,6 @@
 <script lang="ts">
 import { updateSongName } from "@/service/songsheet";
 export default {
-  // private songName: string | (string | null)[] = "";
-
   data() {
     return {
       songName: "",
@@ -40,7 +38,7 @@ export default {
     },
   },
   created() {
-    this.songName = this.$route.query.songname;
+    this.songName = this.$route.query.songname as string;
   },
 
   methods: {

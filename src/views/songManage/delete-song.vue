@@ -1,11 +1,13 @@
 <template>
   <div class="delete-song">
     <top-bar class="topbar">
-      <div slot="left" @click="back">
-        <span class="fa-arrow-left"></span>
-      </div>
-      <div slot="center">{{ selectedItems }}</div>
-      <div slot="right" @click="allCheck">{{ isAllCheckText }}</div>
+      <template #left>
+        <span class="fa-arrow-left" @click="back"></span>
+      </template>
+      <template #center>{{ selectedItems }}</template>
+      <template #right
+        ><span @click="allCheck">{{ isAllCheckText }}</span></template
+      >
     </top-bar>
     <div class="body">
       <div v-if="mySongsList.length != 0" ref="songlistREF">
@@ -20,7 +22,7 @@
           </div>
           <div class="info">
             <div class="img">
-              <img :src="item.imgUrl" alt />
+              <img :src="item.imgUrl" />
             </div>
             <div class="name-count">
               <p>{{ item.name }}</p>
@@ -50,20 +52,15 @@ import { userSongsManageMixin } from "@/utils/mixin";
 import { deleteSongsheet } from "@/service/songsheet";
 import topBar from "@/components/common/navbar/navbar.vue";
 import deleteConfirm from "@/components/common/kl-confirm/kl-confirm.vue";
-// @Component({
-//   components: {
-//     topBar,
-//     deleteConfirm
-//   },
-//   mixins: [userSongsManageMixin]
-// })
 export default {
-  // private isChecks: number[] = [];
-  // private deleteShow: boolean = false;
-
+  components: {
+    topBar,
+    deleteConfirm,
+  },
+  mixins: [userSongsManageMixin],
   data() {
     return {
-      isChecks: [],
+      isChecks: [] as string[],
       deleteShow: false,
     };
   },
@@ -99,14 +96,14 @@ export default {
       this.$router.go(-1);
     },
     allCheck() {
-      let checkBox = this.$refs.songlistREF;
-      let checkItems = (checkBox as HTMLElement).querySelectorAll(
-        ".checkbox-items"
-      );
+      let checkBox = this.$refs.songlistREF as HTMLElement;
+      let checkItems = Array.from(
+        checkBox.querySelectorAll(".checkbox-items")
+      ) as HTMLInputElement[];
       if (this.isAllCheckText === "全选") {
         this.isChecks = [];
         for (let item of checkItems) {
-          this.isChecks.push((item as any).value);
+          this.isChecks.push(item.value);
         }
       } else {
         this.isChecks = [];

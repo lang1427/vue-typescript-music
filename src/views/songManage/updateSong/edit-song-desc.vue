@@ -17,7 +17,6 @@
 <script lang="ts">
 import { updateSongDesc } from "@/service/songsheet";
 export default {
-  // private descInfo: string | (string | null)[] = "";
   data() {
     return {
       descInfo: "",
@@ -33,7 +32,7 @@ export default {
     },
   },
   created() {
-    this.descInfo = this.$route.query.desc;
+    this.descInfo = this.$route.query.desc as string;
   },
 
   methods: {

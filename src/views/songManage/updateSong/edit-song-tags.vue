@@ -13,7 +13,7 @@
             <tr>
               <td class="key" rowspan="2">
                 <p>
-                  <img class="ico" src="./image/language.svg" alt />
+                  <img class="ico" src="./image/language.svg" />
                 </p>
                 <p class="text">语言</p>
               </td>
@@ -60,7 +60,7 @@
             <tr>
               <td class="key" rowspan="2">
                 <p>
-                  <img class="ico" src="./image/style.svg" alt />
+                  <img class="ico" src="./image/style.svg" />
                 </p>
                 <p class="text">风格</p>
               </td>
@@ -227,7 +227,7 @@
             <tr>
               <td class="key" rowspan="2">
                 <p>
-                  <img class="ico" src="./image/scene.svg" alt />
+                  <img class="ico" src="./image/scene.svg" />
                 </p>
                 <p class="text">场景</p>
               </td>
@@ -316,7 +316,7 @@
             <tr>
               <td class="key" rowspan="2">
                 <p>
-                  <img class="ico" src="./image/emotion.svg" alt />
+                  <img class="ico" src="./image/emotion.svg" />
                 </p>
                 <p class="text">情感</p>
               </td>
@@ -410,7 +410,7 @@
             <tr>
               <td class="key" rowspan="2">
                 <p>
-                  <img class="ico" src="./image/theme.svg" alt />
+                  <img class="ico" src="./image/theme.svg" />
                 </p>
                 <p class="text">主题</p>
               </td>
@@ -542,9 +542,6 @@
 import { htmlDecode } from "@/utils/html";
 import { updateSongTags } from "@/service/songsheet";
 export default {
-  // private songTags: string | (string | null)[] = "";
-  // private checkCount: number = 0;
-
   data() {
     return {
       songTags: "",
@@ -562,7 +559,7 @@ export default {
   },
 
   created() {
-    this.songTags = this.$route.query.tags;
+    this.songTags = this.$route.query.tags as string;
   },
   mounted() {
     this.setCheckCount();

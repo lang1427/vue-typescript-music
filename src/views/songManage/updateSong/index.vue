@@ -46,20 +46,16 @@ interface IBaseinfo {
   description: string;
 }
 import { songsDetail, SongsBaseInfo } from "@/service/songsheet";
-
-// Component.registerHooks(["beforeRouteUpdate"]);
-// @Component
 export default {
-  // private baseInfo = {};
   data() {
     return {
-      baseInfo: {},
+      baseInfo: {} as IBaseinfo,
     };
   },
 
-  beforeRouteUpdate(to: any, from: any, next: any) {
+  beforeRouteUpdate(to, from, next) {
     if (to.path === "/songmanage/update") {
-      this.getSongDetail(to.query.id);
+      this.getSongDetail();
     }
     next();
   },
@@ -72,18 +68,15 @@ export default {
   computed: {
     songName() {
       // return this.$route.query.name;
-      return (this.baseInfo as IBaseinfo).title;
+      return this.baseInfo.title;
     },
     songTags() {
       // return this.$route.query.tags;
-      return (
-        (this.baseInfo as IBaseinfo).tags &&
-        (this.baseInfo as IBaseinfo).tags.join("-")
-      );
+      return this.baseInfo.tags?.join("-");
     },
     songDesc() {
       // return this.$route.query.desc;
-      return (this.baseInfo as IBaseinfo).description;
+      return this.baseInfo.description;
     },
     id() {
       return parseInt(<string>this.$route.query.id);

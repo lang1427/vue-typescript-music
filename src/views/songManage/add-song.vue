@@ -76,14 +76,14 @@
 
 <script lang="ts">
 interface ISearchRes {
-  id: number;
+  id: string;
   name: string;
   album: {
     name: string;
   };
 }
 class SearchResClass {
-  id: number;
+  id: string;
   name: string;
   desc: string;
   constructor(songs: ISearchRes) {
@@ -95,27 +95,17 @@ class SearchResClass {
 import { searchSuggest, search } from "@/service/search";
 import { songsheetOperation } from "@/service/songsheet";
 import searchResScroll from "@/components/common/scroll/scroll.vue";
-
-// @Component({
-//   components: {
-//     searchResScroll
-//   }
-// })
 export default {
-  // private searchContent: string = "";
-  // private searchRes: object[] = [];
-  // private allMatch: object[] = []; // 输入框搜索内容全匹配
-  // private isActive: boolean = true; // 用于动态显示搜索列表
-  // private timer: any = null;
-  // private page: number = 0;
-
+  components: {
+    searchResScroll,
+  },
   data() {
     return {
       searchContent: "",
-      searchRes: [],
-      allMatch: [],
+      searchRes: [] as SearchResClass[],
+      allMatch: [] as { keyword: string }[],
       isActive: true,
-      timer: null,
+      timer: null as null | number,
       page: 0,
     };
   },
