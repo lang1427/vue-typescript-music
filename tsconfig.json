@@ -17,7 +17,8 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "outDir": "./dist"
   },
   "include": [
     "src/**/*.ts",

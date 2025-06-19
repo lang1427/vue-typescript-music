@@ -43,8 +43,8 @@
 
 <script lang="ts">
 // import { mapGetters } from 'vuex'
-// import Lyric from '@/utils/lyric-parser'
-const Lyric = require("@/utils/lyric-parser");
+import Lyric from "@/utils/lyric-parser";
+// const Lyric = require("@/utils/lyric-parser");
 import fullPlayer from "./childComp/full-player.vue";
 import miniPlayer from "./childComp/mini-player.vue";
 import playerList from "./childComp/player-list.vue";
