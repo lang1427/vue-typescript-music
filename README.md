@@ -1,14 +1,10 @@
 # vue-typescript-music
 
-## Vue+TypeScript better-music-webapp (音乐项目)
+## Vue3 + TypeScript better-music-webapp (音乐项目)
 
 [English](./README.en.md)
 
-**线上访问地址**  [网易云音乐在线项目体验入口](http://47.93.187.37/)
-
 **项目解析上线啦** [源码解析地址](https://blog.csdn.net/weixin_42661283/article/details/106552202)
-
-> vue-content-loader [TypeScript Support](https://github.com/egoist/vue-content-loader/pull/13)
 
 > 项目不断完善进行中 持续更新...
 
@@ -18,7 +14,7 @@
 2. **若在使用过程中，存在某些问题，欢迎 Issues**
 
 > 详细注释 完美解读 你值得拥有
-> 零UI组件库，纯手打造
+> 零 UI 组件库，纯手打造
 
 ### 后端 API 依赖
 
@@ -29,21 +25,21 @@
 
 ### 涉及相关技术
 
-**node.js版本：v12.16.1**
+**node.js 版本：v18+**
 
-1. Vue全家桶  `vue 2.6.10`    `vue-router 3.1.3` `vuex 3.1.2`   `vue-cli 3.10.0`
+1. Vue 全家桶 `vue 3.5.16` `vue-router 4.5.1` `vuex 4.1.0` `vite 6.0.6`
 2. 网络请求 `axios`
-3. `better-scroll 1.13.2` 
-4. js强大的Api库 `lodash`
+3. `better-scroll 1.13.2`
+4. js 强大的 Api 库 `lodash`
 5. 日期格式化插件 `moment`
 6. 汉语拼音 `pinyin`
-7. 图片懒加载 `vue-lazyload`
-8. 图标 `svg`  `font-awesome`
+7. 图片懒加载 `vue3-lazyload`
+8. 图标 `svg` `font-awesome`
 9. 布局 `flex`
 10. `ES6语法`
 
-
 ### 示例效果图
+
 <details>
 <summary> 推荐直接访问线上地址 (图片文件大,可能加载不出来)</summary>
 
@@ -54,7 +50,6 @@
 ![评论](./src/doc/images/comment.gif)
 
 </details>
-
 
 ### 界面、功能模块介绍
 
@@ -82,7 +77,6 @@
 - [ ] 推荐节目
 - [ ] 推荐 MV
 
-
 **搜索页面**
 
 - [x] 热搜榜
@@ -109,6 +103,7 @@
 - [x] MV
 
 **评论界面**
+
 - [x] 评论点赞、取消点赞
 - [x] 发表评论
 - [x] 回复评论
@@ -133,7 +128,6 @@
 
 </details>
 
-
 ### 文件目录结构树
 
 ```
@@ -142,9 +136,9 @@
  | ├─ images
  | | ├─  singer-bg.png      // 歌手背景图
  | | ├─  music-load.jpg     // 歌曲加载中背景图
- | | ├─  music-ico.svg      
+ | | ├─  music-ico.svg
  | | ├─  music-error.svg    // 歌曲加载失败背景图
- | | ├─  logo.png           
+ | | ├─  logo.png
  | | └─  login-avatar.jpg  // 默认用户登陆头像
  | ├─ less
  | | └─  reset.less         // 重置的less样式
@@ -166,7 +160,7 @@
  | | ├─ navbar              // 封装的导航栏
  | | | └─  navbar.vue
  | | ├─ noticeBar           // 封装的 消息通知
- | | | └─  notice-bar.vue   
+ | | | └─  notice-bar.vue
  | | ├─ scroll              // 对better-scroll 二次封装
  | | | └─  scroll.vue
  | | ├─ scrollNavBar        // better-scroll 二次封装的可滚动菜单与可滚动内容
@@ -201,7 +195,7 @@
  | | | └─  single-list-items.vue
  | | ├─ songlist-operation      // 歌曲列表操作组件
  | | | └─  index.vue
- | | ├─ tab-bar         
+ | | ├─ tab-bar
  | | | └─  tab-bar.vue
  | | ├─ verify-code         // 验证码组件
  | | | └─  verify-code.vue
@@ -247,7 +241,7 @@
  | ├─  formatDate.ts        // 日期格式化
  | ├─  dom.ts               // dom操作
  | ├─  debounce.ts          // 防抖
- | └─  cookie.ts            
+ | └─  cookie.ts
  ├─ views
  | ├─ comment               // 评论组件
  | | ├─ childComp
@@ -279,7 +273,7 @@
  | | | ├─  songlist.vue
  | | | ├─  head.vue
  | | | └─  bg-info.vue
- | | └─  index.vue  
+ | | └─  index.vue
  | ├─ my                   // 我的  组件
  | | ├─ childComp
  | | | ├─  my_songslist.vue
@@ -335,7 +329,7 @@
  | | | └─  album.vue
  | | └─  index.vue
  | ├─ songManage        // 歌单管理者组件
- | | ├─ updateSong          
+ | | ├─ updateSong
  | | | ├─ image
  | | | | ├─  theme.svg
  | | | | ├─  style.svg
@@ -355,14 +349,12 @@
  ├─  shims-tsx.d.ts
  ├─  main.ts
  └─  App.vue        //  主入口
- ```
+```
 
 ---
 
-
-> 笔者最近正在学node相关知识体系，正在打造 koa + typescript 实现美食天下项目 欢迎感兴趣的小伙伴参考指点 
-[美食天下项目](https://github.com/lang1427/gourmet-world)
-
+> 笔者最近正在学 node 相关知识体系，正在打造 koa + typescript 实现美食天下项目 欢迎感兴趣的小伙伴参考指点
+> [美食天下项目](https://github.com/lang1427/gourmet-world)
 
 ## Project setup
 
