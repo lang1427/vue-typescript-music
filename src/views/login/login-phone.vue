@@ -72,7 +72,7 @@ export default {
   },
   beforeDestory() {
     window.clearInterval((<any>this).flagTimer);
-    (<any>this).$bus.$emit("verifycodeVal", this.verifycodeVal);
+    this.$bus.emit("verifycodeVal", this.verifycodeVal);
   },
   methods: {
     async getSendVerifyCode() {

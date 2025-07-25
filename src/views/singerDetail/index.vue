@@ -141,7 +141,7 @@ export default {
       "none"
     );
 
-    (<any>this).$bus.$on("openOperation", (val: any) => {
+    this.$bus.on("openOperation", (val: any) => {
       (<any>this).$refs.songOperation
         ? ((<any>this).$refs.songOperation.operationShow = true)
         : null;
@@ -172,8 +172,8 @@ export default {
     };
   },
   beforeDestroy() {
-    (<any>this).$bus.$emit("leaveSingerDetail");
-    (<any>this).$bus.$off("openOperation");
+    this.$bus.emit("leaveSingerDetail");
+    this.$bus.off("openOperation");
   },
   methods: {
     async getSingerDateilData(id: number) {

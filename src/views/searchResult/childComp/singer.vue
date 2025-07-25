@@ -46,13 +46,13 @@ export default {
   },
 
   mounted() {
-    (<any>this).$bus.$on("finishPullUp", () => {
+    this.$bus.on("finishPullUp", () => {
       (this.$refs.singerScroll as typeof scroll)?.finishPullUp();
       (this.$refs.singerScroll as typeof scroll)?.refresh();
     });
   },
   destroyed() {
-    (<any>this).$bus.$off("finishPullUp");
+    this.$bus.off("finishPullUp");
   },
 
   methods: {

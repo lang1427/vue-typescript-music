@@ -278,7 +278,7 @@ export default {
     },
 
     goMarryView(index: number) {
-      (<any>this).$bus.$emit("goMarryView", index);
+      this.$bus.emit("goMarryView", index);
     },
   },
 };

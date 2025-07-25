@@ -60,14 +60,14 @@ export default {
   },
 
   mounted() {
-    (<any>this).$bus.$on("finishPullUp", () => {
+    this.$bus.on("finishPullUp", () => {
       this.$refs.songsheetScroll &&
         (<any>this.$refs.songsheetScroll).finishPullUp();
       this.$refs.songsheetScroll && (<any>this.$refs.songsheetScroll).refresh();
     });
   },
   destroyed() {
-    (<any>this).$bus.$off("finishPullUp");
+    this.$bus.off("finishPullUp");
   },
 
   methods: {

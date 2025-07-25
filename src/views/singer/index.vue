@@ -35,7 +35,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$bus)
     this.$bus.on("leaveSingerDetail", () => {
       (<HTMLElement>(
         document.getElementById("singer-list-view")

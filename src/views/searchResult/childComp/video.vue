@@ -54,13 +54,13 @@ export default {
   },
 
   mounted() {
-    (<any>this).$bus.$on("finishPullUp", () => {
+    this.$bus.on("finishPullUp", () => {
       (<typeof scroll>this.$refs.videoScroll).finishPullUp();
       (<typeof scroll>this.$refs.videoScroll).refresh();
     });
   },
   destroyed() {
-    (<any>this).$bus.$off("finishPullUp");
+    this.$bus.off("finishPullUp");
   },
 
   methods: {

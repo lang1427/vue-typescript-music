@@ -57,12 +57,12 @@ export default {
    *  当滑动热搜榜时，如果当前的搜索列表（isActive）为true状态，则设置为失效状态
    */
   mounted() {
-    (<any>this).$bus.$on("isShow", (state: boolean) => {
+    this.$bus.on("isShow", (state: boolean) => {
       this.isActive = state;
     });
   },
   destroyed() {
-    (<any>this).$bus.$off("isShow");
+    this.$bus.off("isShow");
   },
 
   methods: {

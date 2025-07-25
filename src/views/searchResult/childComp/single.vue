@@ -66,13 +66,13 @@ export default {
   },
 
   mounted() {
-    (<any>this).$bus.$on("finishPullUp", () => {
+    this.$bus.on("finishPullUp", () => {
       this.$refs.singleScroll && (<any>this.$refs.singleScroll).finishPullUp();
       this.$refs.singleScroll && (<any>this.$refs.singleScroll).refresh();
     });
   },
   destroyed() {
-    (<any>this).$bus.$off("finishPullUp");
+    this.$bus.off("finishPullUp");
   },
 
   methods: {

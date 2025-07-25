@@ -31,7 +31,7 @@ export default {
 
   methods: {
     openOperation(obj: object) {
-      (<any>this).$bus.$emit("openOperation", obj);
+      this.$bus.emit("openOperation", obj);
     },
   },
 };

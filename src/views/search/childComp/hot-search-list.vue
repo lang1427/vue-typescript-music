@@ -44,7 +44,7 @@ export default {
 
   methods: {
     touchStart() {
-      (<any>this).$bus.$emit("isShow", false);
+      this.$bus.emit("isShow", false);
     },
 
     // private keywords: string = "";

@@ -180,7 +180,7 @@ export default {
       this.commentContentId = obj.commentId;
     },
     reply(replyID: number, userName: string) {
-      (<any>this).$bus.$emit("replyComment", replyID, userName);
+      this.$bus.emit("replyComment", replyID, userName);
     },
     pullingUp() {
       this.$emit("pullingUp");

@@ -17,9 +17,9 @@ declare module "vue" {
     $route: RouteLocationNormalizedLoaded;
     $store: Store;
     $bus:{
-      emit(event: string, data: any): void;
-      on(event: string, callback: (data: any) => void): void;
-      off(event: string, callback?: (data: any) => void): void;
+      emit(event: string, ...arg: any): void;
+      on(event: string, callback: (...arg: any) => void): void;
+      off(event: string, callback?: (...arg: any) => void): void;
     }
     $filters: {
       finalPlayCount(playCount: number): number | string;

@@ -45,13 +45,13 @@ export default {
   },
 
   mounted() {
-    (<any>this).$bus.$on("finishPullUp", () => {
+    this.$bus.on("finishPullUp", () => {
       this.$refs.albumScroll && (<any>this.$refs.albumScroll).finishPullUp();
       this.$refs.albumScroll && (<any>this.$refs.albumScroll).refresh();
     });
   },
   destroyed() {
-    (<any>this).$bus.$off("finishPullUp");
+    this.$bus.off("finishPullUp");
   },
   methods: {
     pullingUp() {

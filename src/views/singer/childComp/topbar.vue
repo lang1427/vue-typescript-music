@@ -1,9 +1,9 @@
 <template>
   <navbar class="topbar">
     <template #left>
-      <span class="fa-arrow-left back"></span>
+      <span class="fa-arrow-left back" @click="back"></span>
     </template>
-    <template #center @click="back">
+    <template #center >
       <h2 class="title">歌手分类</h2>
     </template>
   </navbar>

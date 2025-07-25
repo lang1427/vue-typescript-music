@@ -50,7 +50,7 @@ export default {
   },
 
   created() {
-    (<any>this).$bus.$on("verifycodeVal", (code: string) => {
+    this.$bus.on("verifycodeVal", (code: string) => {
       this.verifyCode = code;
     });
   },

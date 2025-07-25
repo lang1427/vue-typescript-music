@@ -52,12 +52,12 @@ export default {
 
   /**此两生命周期并非封装组件库的相关代码，而是搜索结果综合类型跳转到其他类型页面的功能代码 */
   mounted() {
-    (<any>this).$bus.$on("goMarryView", (index: number) => {
+    this.$bus.on("goMarryView", (index: number) => {
       this.changeHandler(index);
     });
   },
   destroyed() {
-    (<any>this).$bus.$off("goMarryView");
+    this.$bus.off("goMarryView");
   },
   methods: {
     changeHandler(index: number) {

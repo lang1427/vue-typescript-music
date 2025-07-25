@@ -169,7 +169,6 @@ export default {
 
   created() {
     // 初次进入 获取 综合类型
-    // (<any>this).$bus.$on("searchResult", (keywords: string) => {
     search(this.$store.state.searchKeyWrold, this.currentSearchType, 5, 1).then(
       (res: ISearchResult) => {
         if (res.code === 200) {
@@ -177,11 +176,7 @@ export default {
         }
       }
     );
-    // });
   },
-  // destroyed() {
-  //   (<any>this).$bus.$off("searchResult");
-  // }
   methods: {
     itemClick(index: number) {
       this.currentSearchType = this.searchType[index];
@@ -240,7 +235,7 @@ export default {
         if (!res.result.hasOwnProperty(currentResultArr)) {
           return !0;
         }
-        (<any>this).$bus.$emit("finishPullUp"); // 请求完数据 再finishPullUp
+        this.$bus.emit("finishPullUp"); // 请求完数据 再finishPullUp
         (this.currentSearchResult as any)[currentResultObj].result[
           currentResultArr
         ].push(...(<any>res.result)[currentResultArr]);
