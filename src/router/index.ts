@@ -1,21 +1,21 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 
 import myRoutes from "./my";
 import loginRouters from "./login";
 import musicListRouters from "./musiclist";
 import songManage from "./songManage";
-const find = () => import("views/find/index.vue");
-const rankingList = () => import("views/rankingList/index.vue");
-const video = () => import("views/video/index.vue");
+const find = () => import("@/views/find/index.vue");
+const rankingList = () => import("@/views/rankingList/index.vue");
+const video = () => import("@/views/video/index.vue");
 
-const search = () => import("views/search/index.vue");
-const searchResult = () => import("views/searchResult/index.vue");
-const singer = () => import("views/singer/index.vue");
-const singerDetail = () => import("views/singerDetail/index.vue");
+const search = () => import("@/views/search/index.vue");
+const searchResult = () => import("@/views/searchResult/index.vue");
+const singer = () => import("@/views/singer/index.vue");
+const singerDetail = () => import("@/views/singerDetail/index.vue");
 
 const comment = () => import("@/views/comment/index.vue");
 
-const test = () => import("views/test.vue");
+const test = () => import("@/views/test.vue");
 
 const routes = [
   ...myRoutes,
@@ -86,7 +86,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes,
 });
 

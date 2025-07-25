@@ -1,6 +1,6 @@
-const album = () => import("views/musicList/index.vue");
-const songsheet = () => import("views/musicList/index.vue");
-const topList = () => import("views/musicList/index.vue"); // 排行榜
+const album = () => import("@/views/musicList/index.vue");
+const songsheet = () => import("@/views/musicList/index.vue");
+const topList = () => import("@/views/musicList/index.vue"); // 排行榜
 
 export default [
   {
