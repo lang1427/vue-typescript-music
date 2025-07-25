@@ -34,14 +34,9 @@ export default {
       this.getSingerData();
     }
   },
-  // 由于在singerDetail子路由回跳到singer路由中，并不会激活activated生命周期钩子函数，可通过bus总线传递
-  // activated() {
-  //   (<HTMLElement>document.getElementById("singer-list-view")).classList.remove(
-  //     "none"
-  //   );
-  // }
   mounted() {
-    (<any>this).$bus.$on("leaveSingerDetail", () => {
+    console.log(this.$bus)
+    this.$bus.on("leaveSingerDetail", () => {
       (<HTMLElement>(
         document.getElementById("singer-list-view")
       )).classList.remove("none");
@@ -58,22 +53,19 @@ export default {
     }
   },
   destroyed() {
-    (<any>this).$bus.$off("leaveSingerDetail");
+    this.$bus.off("leaveSingerDetail");
   },
   methods: {
     async getSingerData() {
-      let res = await getSinger();
-      if (res.code === 200) {
-        let s = res.artists;
+      let res = await getSinger();;
         /** 添加一个字段（pin：首字母的拼音大写） */
-        s.map((item: ISinger) => {
+        res.map((item: ISinger) => {
           let py = pinyin(item.name[0], {
             style: pinyin.STYLE_FIRST_LETTER,
           });
           (<any>item).pin = py[0][0].toUpperCase();
         });
-        this.artists = this.normalizeSinger(s);
-      }
+        this.artists = this.normalizeSinger(res);    
     },
 
     /** 重置数据：过滤掉一些不需要的数据，并整合数据的分布（title，items） */
@@ -112,6 +104,7 @@ export default {
       all.sort((a, b) => {
         return a.title.charCodeAt(0) - b.title.charCodeAt(0);
       });
+      console.log(hot, all);
       return hot.concat(all);
     },
   },

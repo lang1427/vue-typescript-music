@@ -16,6 +16,11 @@ declare module "vue" {
     $router: Router;
     $route: RouteLocationNormalizedLoaded;
     $store: Store;
+    $bus:{
+      emit(event: string, data: any): void;
+      on(event: string, callback: (data: any) => void): void;
+      off(event: string, callback?: (data: any) => void): void;
+    }
     $filters: {
       finalPlayCount(playCount: number): number | string;
       // 其他过滤器...

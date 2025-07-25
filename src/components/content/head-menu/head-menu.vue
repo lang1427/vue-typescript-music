@@ -19,22 +19,22 @@
           >
         </div>
       </template>
-      <template #right @click="goSearch">
-        <span :class="['fa-search', isMyPageColor]"></span>
+      <template #right>
+        <span @click="goSearch" :class="['fa-search', isMyPageColor]"></span>
       </template>
     </navbar>
   </div>
 </template>
 
 <script lang="ts">
-import navbar from "@/components/common/navbar/navbar.vue";
+import navbar from '@/components/common/navbar/navbar.vue';
 export default {
   components: {
     navbar,
   },
   data() {
     return {
-      headTitles: ["我的", "嘤乐馆", "视频"],
+      headTitles: ['我的', '嘤乐馆', '视频'],
       currentIndex: 1,
     };
   },
@@ -44,38 +44,39 @@ export default {
       this.currentIndex = index;
       switch (index) {
         case 0:
-          this.$router.push("/my");
+          this.$router.push('/my');
           break;
         case 1:
-          this.$router.push("/find");
+          this.$router.push('/find');
           break;
         case 2:
-          this.$router.push("/video");
+          this.$router.push('/video');
           break;
       }
     },
 
     goSearch() {
-      this.$router.push("/search");
+      console.log('go search');
+      this.$router.push('/search');
     },
   },
 
   computed: {
     isMyPageColor() {
-      return this.$route.path === "/my" ? "isMyPageColor" : "";
+      return this.$route.path === '/my' ? 'isMyPageColor' : '';
     },
   },
 
   watch: {
-    "$route.path": function (newVal: string) {
+    '$route.path': function (newVal: string) {
       switch (newVal) {
-        case "/my":
+        case '/my':
           this.currentIndex = 0;
           break;
-        case "/find":
+        case '/find':
           this.currentIndex = 1;
           break;
-        case "/video":
+        case '/video':
           this.currentIndex = 2;
           break;
       }

@@ -2,13 +2,10 @@ import axios from 'axios'
 
 import $store from '@/store/index'
 
-const baseURL =
-  process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000'
-
 export function service(options: object): any {
   return new Promise((resolve, reject) => {
     const instance = axios.create({
-      baseURL,
+      baseURL: '/api',
       withCredentials: true
     })
     instance.interceptors.request.use(req => {

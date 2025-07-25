@@ -3,7 +3,7 @@ import { service } from "@/service/service";
 /** 获取100个热门歌手 */
 export function getSinger() {
   return service({
-    url: "/top/artists?limit=100",
+    url: "/music/singer/all",
   });
 }
 export interface ISinger {

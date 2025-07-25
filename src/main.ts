@@ -25,6 +25,9 @@ app.directive("longpress", Longpress);
 // app.use(Toast);
 
 // Vue.prototype.$bus = new Vue()
+import mitt from 'mitt';
+const eventBus = mitt();
+app.config.globalProperties.$bus = eventBus;
 
 app.config.globalProperties.$filters = {
   finalPlayCount(playCount: number): number | string {
