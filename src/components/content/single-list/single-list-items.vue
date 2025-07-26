@@ -3,7 +3,7 @@
     <div class="order">{{ order }}</div>
     <div class="info">
       <p class="name">{{ listItems.songsName }}</p>
-      <p class="desc">{{ listItems.singerName }}</p>
+      <p class="desc">{{ listItems.introduction }}</p>
     </div>
     <div class="operation" @click.stop="openOperation(listItems)">
       <span class="fa-ellipsis-v"></span>

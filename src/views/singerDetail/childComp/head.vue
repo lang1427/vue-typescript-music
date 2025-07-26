@@ -2,7 +2,7 @@
   <div class="singer-detail-head" :style="bgImg">
     <div class="info">
       <h3 class="name">{{ singerHeadInfo.name }}</h3>
-      <p class="desc">{{ singerHeadInfo.briefDesc }}</p>
+      <p class="desc">{{ singerHeadInfo.introduction }}</p>
     </div>
   </div>
 </template>
@@ -35,7 +35,7 @@ export default {
   left: 0;
   right: 0;
   background-size: 100%;
-
+  background-color: #ccc;
   span,
   p,
   h3 {

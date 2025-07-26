@@ -22,20 +22,11 @@
 import { playMixin } from "@/utils/mixin";
 import singleListItems from "./single-list-items.vue";
 
-// @Component({
-//   components: {
-//     singleListItems
-//   },
-//   mixins:[playMixin]
-// })
 export default {
-  // @Prop({
-  //   default() {
-  //     return [];
-  //   }
-  // })
-  // songlist!: object;
-
+  components: {
+    singleListItems,
+  },
+  mixins: [playMixin],
   props: {
     songlist: {
       type: Array,

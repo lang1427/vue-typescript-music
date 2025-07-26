@@ -33,10 +33,7 @@ export class SingerData {
 /** 获取歌手单曲（可获得部分信息和热门歌曲） 用于歌手详情页 */
 export function getSingerDetail(id: number) {
   return service({
-    url: "/artists",
-    params: {
-      id,
-    },
+    url: "/music/singer/detail/"+id,
   });
 }
 export interface ISingerHeadInfo {

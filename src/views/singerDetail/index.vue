@@ -178,14 +178,13 @@ export default {
   methods: {
     async getSingerDateilData(id: number) {
       let res = await getSingerDetail(id);
-      if (res.code === 200) {
         this.singerHeadInfo = res.artist;
         let arr = [];
         for (const item of res.hotSongs) {
           arr.push(new SongsInfoClass(item));
         }
-        this.hotSongs = arr;
-      }
+        console.log(arr);
+        this.hotSongs = arr;  
     },
     async getSingerAlbumData(id: number, page?: number) {
       let res = await getSingerAlbum(id, page);
