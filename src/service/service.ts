@@ -5,7 +5,7 @@ import $store from '@/store/index'
 export function service(options: object): any {
   return new Promise((resolve, reject) => {
     const instance = axios.create({
-      baseURL: '/api',
+      baseURL: '/api/music',
       withCredentials: true
     })
     instance.interceptors.request.use(req => {

@@ -31,7 +31,7 @@
                 >{{
                   comment.commentLikedCount !== 0
                     ? comment.commentLikedCount
-                    : ""
+                    : ''
                 }}
                 &nbsp;&nbsp;</span
               >
@@ -70,7 +70,7 @@
       <div class="dialog-box">
         <div @click="copyComment">复制评论</div>
         <div
-          v-if="$store.state.account.account.id === commentUserID"
+          v-if="$store.state.account.account?.id === commentUserID"
           @click="removeComment"
         >
           删除评论
@@ -87,13 +87,13 @@
 </template>
 
 <script lang="ts">
-import moment from "moment";
-import "moment/locale/zh-cn";
-import scrollBar from "@/components/common/scroll/scroll.vue";
-import commentDialog from "@/components/common/kl-dialog/kl-dialog.vue";
-import { likeComment, CommentClass } from "@/service/comment";
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+import scrollBar from '@/components/common/scroll/scroll.vue';
+import commentDialog from '@/components/common/kl-dialog/kl-dialog.vue';
+import { likeComment, CommentClass } from '@/service/comment';
 export default {
-  name: "CommentMain",
+  name: 'CommentMain',
   props: {
     commentList: {
       type: Array as () => CommentClass[],
@@ -108,7 +108,7 @@ export default {
     return {
       longpress: false,
       isDialogShow: false,
-      content: "",
+      content: '',
       commentUserID: -1,
       commentContentId: -1,
     };
@@ -135,13 +135,13 @@ export default {
         parseInt(<string>this.$route.query.id),
         cid,
         // 这里不能采用数据的commentLiked属性进行判断是点赞还是取消点赞  需要通过类样式进行判断
-        (<any>domEvent).target.classList.contains("liked-active") ? 0 : 1,
-        (<any>this).$parent.commentType
+        (<any>domEvent).target.classList.contains('liked-active') ? 0 : 1,
+        (<any>this).$parent.commentType,
       );
       if (res.code === 200) {
-        if (!(<any>domEvent).target.classList.contains("liked-active")) {
-          (<any>domEvent).target.classList.add("liked-active");
-          if ((<any>domEvent).target.innerHTML == "") {
+        if (!(<any>domEvent).target.classList.contains('liked-active')) {
+          (<any>domEvent).target.classList.add('liked-active');
+          if ((<any>domEvent).target.innerHTML == '') {
             (<any>domEvent).target.innerHTML = 1;
           } else {
             (<any>domEvent).target.innerHTML =
@@ -156,11 +156,11 @@ export default {
           // });
           // this.$forceUpdate();
         } else {
-          (<any>domEvent).target.classList.remove("liked-active");
+          (<any>domEvent).target.classList.remove('liked-active');
           (<any>domEvent).target.innerHTML -= 1;
           // 因为这里的数据不是响应式了，所以点赞数量=0的判断在这里不起效，需手动设置为空字符串
           if ((<any>domEvent).target.innerHTML == 0) {
-            (<any>domEvent).target.innerHTML = "";
+            (<any>domEvent).target.innerHTML = '';
           }
           // this.$set(this.commentData, index, {
           //   ...this.commentData[index],
@@ -180,16 +180,16 @@ export default {
       this.commentContentId = obj.commentId;
     },
     reply(replyID: number, userName: string) {
-      this.$bus.emit("replyComment", replyID, userName);
+      this.$bus.emit('replyComment', replyID, userName);
     },
     pullingUp() {
-      this.$emit("pullingUp");
+      this.$emit('pullingUp');
     },
     copyComment() {
-      let input = document.getElementById("copyinput");
+      let input = document.getElementById('copyinput');
       (<HTMLInputElement>input).value = this.content;
       (<HTMLInputElement>input).select();
-      document.execCommand("copy");
+      document.execCommand('copy');
       this.resetDialog();
     },
     removeComment() {
@@ -199,12 +199,12 @@ export default {
     resetDialog() {
       this.longpress = false;
       this.isDialogShow = false;
-      this.content = "";
+      this.content = '';
       this.commentUserID = -1;
     },
     handleTime(oldTime: number) {
-      moment().locale("zh-cn");
-      let date = moment(oldTime).format("YYYY-MM-DD HH:mm:ss");
+      moment().locale('zh-cn');
+      let date = moment(oldTime).format('YYYY-MM-DD HH:mm:ss');
       return moment(date).calendar();
     },
   },
@@ -238,7 +238,7 @@ export default {
           }
         }
         &::after {
-          content: "";
+          content: '';
           position: absolute;
           bottom: 0;
           left: 0;
@@ -310,9 +310,9 @@ export default {
 }
 // 将font-awesome 的 fa-thumbs-o-u（竖大拇指）字体图标 改成 after 显示
 .fa-thumbs-o-up:before {
-  content: "";
+  content: '';
 }
 .fa-thumbs-o-up:after {
-  content: "  \f087";
+  content: '  \f087';
 }
 </style>

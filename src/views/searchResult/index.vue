@@ -3,48 +3,48 @@
     <search-result-bar />
     <div style="padding-top: 50px"></div>
     <nav-bar class="navbar" :text="title" @changeHandler="itemClick">
-      <section slot="综合">
+      <template #综合>
         <overall :overallList="currentSearchResult.overallList" />
-      </section>
-      <section slot="单曲">
+      </template>
+      <template #单曲>
         <single
           @pullingUp="addPage"
           :songlist="currentSearchResult.singleList.result.songs"
         />
-      </section>
-      <section slot="视频">
+      </template>
+      <template #视频>
         <result-video
           @pullingUp="addPage"
           :videoList="currentSearchResult.videoList.result.videos"
         />
-      </section>
-      <section slot="歌手">
+      </template>
+      <template #歌手>
         <singer
           @pullingUp="addPage"
           :singerList="currentSearchResult.singerList.result.artists"
         />
-      </section>
-      <section slot="专辑">
+      </template>
+      <template #专辑>
         <album
           @pullingUp="addPage"
           :albumList="currentSearchResult.albumList.result.albums"
         />
-      </section>
-      <section slot="歌单">
+      </template>
+      <template #歌单>
         <song-sheet
           @pullingUp="addPage"
           :songSheetList="currentSearchResult.songSheetList.result.playlists"
         />
-      </section>
-      <section slot="主播电台">
+      </template>
+      <template #主播电台>
         <radio />
-      </section>
-      <section slot="用户">
+      </template>
+      <template #用户>
         <user
           @pullingUp="addPage"
           :userList="currentSearchResult.userList.result.userprofiles"
         />
-      </section>
+      </template>
     </nav-bar>
   </div>
 </template>
@@ -66,18 +66,18 @@ interface ISearchResult {
   code: number;
   result: object;
 }
-import searchResultBar from "./childComp/topbar.vue";
-import navBar from "@/components/common/scrollNavBar/scroll-nav-bar.vue";
-import overall from "./childComp/overall.vue";
-import single from "./childComp/single.vue";
-import resultVideo from "./childComp/video.vue";
-import singer from "./childComp/singer.vue";
-import album from "./childComp/album.vue";
-import songSheet from "./childComp/song-sheet.vue";
-import radio from "./childComp/radio.vue";
-import user from "./childComp/user.vue";
+import searchResultBar from './childComp/topbar.vue';
+import navBar from '@/components/common/scrollNavBar/scroll-nav-bar.vue';
+import overall from './childComp/overall.vue';
+import single from './childComp/single.vue';
+import resultVideo from './childComp/video.vue';
+import singer from './childComp/singer.vue';
+import album from './childComp/album.vue';
+import songSheet from './childComp/song-sheet.vue';
+import radio from './childComp/radio.vue';
+import user from './childComp/user.vue';
 
-import { search } from "@/service/search";
+import { search } from '@/service/search';
 
 export default {
   components: {
@@ -96,14 +96,14 @@ export default {
     return {
       // 传入navbar的标题
       title: [
-        "综合", // 1018
-        "单曲", // 1
-        "视频", // 1014
-        "歌手", // 100
-        "专辑", // 10
-        "歌单", // 1000
-        "主播电台", // 1009
-        "用户", // 1002
+        '综合', // 1018
+        '单曲', // 1
+        '视频', // 1014
+        '歌手', // 100
+        '专辑', // 10
+        '歌单', // 1000
+        '主播电台', // 1009
+        '用户', // 1002
       ],
       searchType: [1018, 1, 1014, 100, 10, 1000, 1009, 1002], // 搜索类型
       currentSearchType: 1018, //  当前搜索的类型
@@ -153,14 +153,14 @@ export default {
       },
       // 当前搜索结果的数组，其中第一个（综合）和电台为null，后面为对应的服务器返回来的对象数组,用于数量+1
       resultData: [
-        "0",
-        "songs",
-        "videos",
-        "artists",
-        "albums",
-        "playlists",
-        "0",
-        "userprofiles",
+        '0',
+        'songs',
+        'videos',
+        'artists',
+        'albums',
+        'playlists',
+        '0',
+        'userprofiles',
       ],
       count: 30, // 请求过来的数量
       clickedNavbar: [] as number[], // 记录点击过navbar的index的数组
@@ -174,7 +174,7 @@ export default {
         if (res.code === 200) {
           this.currentSearchResult.overallList = res.result;
         }
-      }
+      },
     );
   },
   methods: {
@@ -200,7 +200,7 @@ export default {
             this.$store.state.searchKeyWrold,
             this.currentSearchType,
             this.count,
-            page
+            page,
           ).then((res: ISearchResult) => {
             if (res.code === 200) {
               (this.currentSearchResult as any)[currentResultObj].result =
@@ -227,7 +227,7 @@ export default {
         this.$store.state.searchKeyWrold,
         this.currentSearchType,
         this.count,
-        page
+        page,
       );
       if (res.code === 200) {
         // 解决 对象解构赋值中没有值的问题：
@@ -235,7 +235,7 @@ export default {
         if (!res.result.hasOwnProperty(currentResultArr)) {
           return !0;
         }
-        this.$bus.emit("finishPullUp"); // 请求完数据 再finishPullUp
+        this.$bus.emit('finishPullUp'); // 请求完数据 再finishPullUp
         (this.currentSearchResult as any)[currentResultObj].result[
           currentResultArr
         ].push(...(<any>res.result)[currentResultArr]);

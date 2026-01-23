@@ -1,8 +1,8 @@
 export interface ISonginfo {
   id: number;
-  song_name: string;
+  name: string;
   cover_url: string;
-  introduction:string;
+  introduction: string;
 }
 
 export class SongsInfoClass {
@@ -12,7 +12,7 @@ export class SongsInfoClass {
   introduction: string;
   constructor(songsInfo: ISonginfo) {
     this.songsId = songsInfo.id;
-    this.songsName = songsInfo.song_name;
+    this.songsName = songsInfo.name;
     this.imgUrl = songsInfo.cover_url;
     this.introduction = songsInfo.introduction;
   }

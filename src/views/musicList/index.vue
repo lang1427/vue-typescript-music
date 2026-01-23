@@ -7,18 +7,16 @@
 </template>
 
 <script lang="ts">
-import { albumContent, AlbumBaseInfo } from "@/service/musiclist";
-import { IUserSongList, songsDetail, SongsBaseInfo } from "@/service/songsheet";
-import { topList, RankBaseInfo } from "@/service/rankinglist";
-import { userSongsManageMixin } from "@/utils/mixin";
-import { SongsInfoClass } from "@/conf/songsInfo";
-import topbar from "./childComp/head.vue";
-import bgInfo from "./childComp/bg-info.vue";
-import songslist from "./childComp/songlist.vue";
-// @Component({
-//   mixins: [userSongsManageMixin]
-// })
+import { albumContent, AlbumBaseInfo } from '@/service/musiclist';
+import { IUserSongList, songsDetail, SongsBaseInfo } from '@/service/songsheet';
+import { topList, RankBaseInfo } from '@/service/rankinglist';
+import { userSongsManageMixin } from '@/utils/mixin';
+import { SongsInfoClass } from '@/conf/songsInfo';
+import topbar from './childComp/head.vue';
+import bgInfo from './childComp/bg-info.vue';
+import songslist from './childComp/songlist.vue';
 export default {
+  mixins: [userSongsManageMixin],
   components: {
     topbar,
     bgInfo,
@@ -42,7 +40,7 @@ export default {
         let res = (this as any).userSongsheetList.find(
           (item: IUserSongList) => {
             return item.id === (this.baseInfo as SongsBaseInfo).singerId;
-          }
+          },
         );
         if (res != undefined) {
           return true;
