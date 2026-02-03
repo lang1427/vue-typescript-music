@@ -7,9 +7,11 @@
       <template #center>
         <h2 class="title">{{ topTitle }}</h2>
       </template>
-      <div slot="right" v-if="operation" @click="operationShow = true">
-        <span class="fa-ellipsis-v"></span>
-      </div>
+      <template #right>
+        <div v-if="operation" @click="operationShow = true">
+          <span class="fa-ellipsis-v"></span>
+        </div>
+      </template>
     </topbar>
     <!-- 操作框 -->
     <div>
@@ -34,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import topbar from "@/components/common/navbar/navbar.vue";
+import topbar from '@/components/common/navbar/navbar.vue';
 export default {
   components: {
     topbar,
@@ -54,11 +56,11 @@ export default {
   computed: {
     topTitle() {
       if (this.$route.path.match(/\/album\//)) {
-        return "专辑";
+        return '专辑';
       } else if (this.$route.path.match(/\/songsheet\//)) {
-        return "歌单";
+        return '歌单';
       } else if (this.$route.path.match(/\/toplist\//)) {
-        return "排行榜";
+        return '排行榜';
       }
     },
   },
@@ -68,7 +70,7 @@ export default {
     },
     goEditSong() {
       this.$router.push({
-        path: "/songmanage/update?id=" + this.$route.params.id,
+        path: '/songmanage/update?id=' + this.$route.params.id,
         // query: {
         //   songId: this.$route.params.id,
         //   name: (this.$parent as any).baseInfo.title,
@@ -78,7 +80,7 @@ export default {
       });
     },
     goAddSongPage() {
-      this.$router.push("/songmanage/add?id=" + this.$route.params.id);
+      this.$router.push('/songmanage/add?id=' + this.$route.params.id);
     },
 
     hide() {

@@ -55,7 +55,9 @@
             class="songsheet-list-items"
             v-for="item of userSongsheetList"
             :key="item.id"
-            @click="SetSongsheetOperation('add', item.id)"
+            @click="
+              $refs.createSongDialog.SetSongsheetOperation('add', item.id)
+            "
           >
             <span class="ico">
               <img :src="item.imgUrl" />
@@ -69,6 +71,7 @@
       </div>
     </star-dialog>
     <create-song-dialog
+      ref="createSongDialog"
       :createSongShow="createSongShow"
       @close="createSongShow = false"
       @complete="createSongComplete"
@@ -84,15 +87,15 @@
 </template>
 
 <script lang="ts">
-import popup from "@/components/common/bottomPopup/bottom-popup.vue";
-import klConfirm from "@/components/common/kl-confirm/kl-confirm.vue";
-import starDialog from "@/components/common/kl-dialog/kl-dialog.vue";
-import createSongDialog from "@/components/content/create-song-dialog/index.vue";
-import starMessage from "@/components/common/message/message.vue";
-import { getCookie } from "@/utils/cookie";
-import { playMixin, playModeMixin, userSongsManageMixin } from "@/utils/mixin";
-import { createSongSheet, songsheetOperation } from "@/service/songsheet";
-import loadingGIF from "@/components/common/loading/loading.gif";
+import popup from '@/components/common/bottomPopup/bottom-popup.vue';
+import klConfirm from '@/components/common/kl-confirm/kl-confirm.vue';
+import starDialog from '@/components/common/kl-dialog/kl-dialog.vue';
+import createSongDialog from '@/components/content/create-song-dialog/index.vue';
+import starMessage from '@/components/common/message/message.vue';
+import { getCookie } from '@/utils/cookie';
+import { playMixin, playModeMixin, userSongsManageMixin } from '@/utils/mixin';
+import { createSongSheet, songsheetOperation } from '@/service/songsheet';
+import loadingGIF from '@/components/common/loading/loading.gif';
 export default {
   // private playerListShow: boolean = false; // 原变量名isShow在playModeMixin中冲突，导致此组件中切换模式之后会自动关闭弹出层
   // private starShow: boolean = false;
@@ -135,14 +138,14 @@ export default {
       this.starShow = true;
     },
     confirmRemove() {
-      this.$store.dispatch("removePlayList", -1);
+      this.$store.dispatch('removePlayList', -1);
     },
     remove(val: number) {
       if (val === -1) {
         this.confirmShow = true;
         return false;
       }
-      this.$store.dispatch("removePlayList", val);
+      this.$store.dispatch('removePlayList', val);
     },
     createSongComplete() {
       this.starShow = false;

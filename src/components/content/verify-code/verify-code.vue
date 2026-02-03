@@ -7,8 +7,8 @@
         v-for="item of count"
         :key="item"
         type="text"
-        :data-index="item"
-        v-model="valueList[item]"
+        :data-index="item - 1"
+        v-model="valueList[item - 1]"
         maxlength="1"
         @keypress="rule"
         @input="rule2"
@@ -24,25 +24,25 @@ export default {
   props: {
     count: {
       type: Number,
-      required: true
+      required: true,
     },
     mode: {
       type: String,
-      default: "number",
-      validator: function(value) {
-        return ["letter", "number", "letter-number"].indexOf(value) !== -1;
-      }
-    }
+      default: 'number',
+      validator: function (value) {
+        return ['letter', 'number', 'letter-number'].indexOf(value) !== -1;
+      },
+    },
   },
   data() {
     return {
       InputBoxWidth: 0,
-      valueList: [-1]
+      valueList: Array.from({ length: this.count }, () => ''),
     };
   },
   methods: {
     rule(event) {
-      if (this.mode === "number") {
+      if (this.mode === 'number') {
         let keyCode = event.keyCode;
         if (keyCode >= 48 && keyCode <= 57) {
           event.returnValue = true;
@@ -54,39 +54,51 @@ export default {
     rule2(event) {
       // 不能输入中文
       if (/[\u4e00-\u9fa5]/.test(event.target.value)) {
-        event.target.value = "";
+        event.target.value = '';
         event.returnValue = false;
       }
       // 根据mode进行正则匹配，不适合的过滤
       switch (this.mode) {
-        case "number":
+        case 'number':
           if (/[a-zA-Z]/.test(event.target.value)) {
-            event.target.value = "";
+            event.target.value = '';
             event.returnValue = false;
           }
           break;
-        case "letter":
-          if(/[0-9]/.test(event.target.value)){
-            this.$set(this.valueList,event.target.getAttribute('data-index'),'')
+        case 'letter':
+          if (/[0-9]/.test(event.target.value)) {
+            this.$set(
+              this.valueList,
+              event.target.getAttribute('data-index'),
+              '',
+            );
             event.returnValue = false;
           }
           break;
-        case "letter-number":
+        case 'letter-number':
           break;
       }
     },
-    backSpace(event){
-       let value = event.target.value
-      if(event.keyCode ===8 &&  (value===undefined || value===""||value===null)){
-        event.target.previousElementSibling && event.target.previousElementSibling.focus()
+    backSpace(event) {
+      let value = event.target.value;
+      if (
+        event.keyCode === 8 &&
+        (value === undefined || value === '' || value === null)
+      ) {
+        event.target.previousElementSibling &&
+          event.target.previousElementSibling.focus();
       }
     },
-    nextFocus(event){
-      let value = event.target.value
-      if( event.keyCode!=8 && (value!=undefined || value!=""||value!=null)){
-        event.target.nextElementSibling &&  event.target.nextElementSibling.focus()       
+    nextFocus(event) {
+      let value = event.target.value;
+      if (
+        event.keyCode != 8 &&
+        (value != undefined || value != '' || value != null)
+      ) {
+        event.target.nextElementSibling &&
+          event.target.nextElementSibling.focus();
       }
-    }
+    },
   },
   mounted() {
     this.InputBoxWidth = this.$refs.verifiCodeInput.offsetWidth;
@@ -96,32 +108,31 @@ export default {
       if (this.InputBoxWidth != 0) {
         let eachInputWidth = this.InputBoxWidth / (this.count * 2);
         return {
-          width: eachInputWidth + "px"
+          width: eachInputWidth + 'px',
         };
       }
-    }
+    },
   },
   watch: {
-    valueList: function(newVal) {
-      let arr = [];
-      if (newVal.length === this.count + 1) {
+    valueList: {
+      handler(newVal) {
+        console.log('watch  ', newVal);
+        let arr = [];
         for (let item of newVal) {
-          if (item == undefined || item == null || item == "") {
+          if (item == undefined || item == null || item == '') {
             return false;
           } else {
             arr.push(item);
           }
         }
-        if (arr.length === this.count + 1) {
-          var str = "";
-          for (let i = 1; i < arr.length; i++) {
-            str += arr[i];
-          }
-          this.$emit("inputComplete", str);
+        if (arr.length === this.count) {
+          var str = arr.join('');
+          this.$emit('inputComplete', str);
         }
-      }
-    }
-  }
+      },
+      deep: true,
+    },
+  },
 };
 </script>
 

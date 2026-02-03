@@ -8,17 +8,14 @@
 </template>
 
 <script lang="ts">
-import myHead from "./childComp/head.vue";
-import myMusic from "./childComp/my_music.vue";
-import mySongslist from "./childComp/my_songslist.vue";
-import { loginStatus } from "@/service/user";
-import { UserBaseInfo, IProfile } from "@/service/user";
-import { userSongsManageMixin } from "@/utils/mixin";
-// @Component({
-//   name: "My",
-//   mixins: [userSongsManageMixin]
-// })
+import myHead from './childComp/head.vue';
+import myMusic from './childComp/my_music.vue';
+import mySongslist from './childComp/my_songslist.vue';
+import { loginStatus } from '@/service/user';
+import { UserBaseInfo, IProfile } from '@/service/user';
+import { userSongsManageMixin } from '@/utils/mixin';
 export default {
+  mixins: [userSongsManageMixin],
   components: {
     myHead,
     myMusic,
@@ -28,10 +25,10 @@ export default {
     return {
       userBaseInfo: {
         userId: -1, // 这里的userId是number类型
-        nickname: "",
-        avatarUrl: "",
+        nickname: '',
+        avatarUrl: '',
       },
-      mySongsList: [],
+      // mySongsList: [],
     };
   },
 
@@ -47,7 +44,7 @@ export default {
           (this as any).getUserSongsheet();
         }
       } catch (err) {
-        console.log("loginStatus" + err);
+        console.log('loginStatus' + err);
       }
     },
   },

@@ -1,41 +1,57 @@
 <template>
-  <kl-dialog :overlayZIndex="111112" :zIndex="111113" :dialogShow="createSongShow" @hide="close">
+  <kl-dialog
+    :overlayZIndex="111112"
+    :zIndex="111113"
+    :dialogShow="createSongShow"
+    @hide="close"
+  >
     <div class="create-song-box">
       <h3>新建歌单</h3>
       <div class="input-box">
-        <input class="input" type="text" placeholder="请输入歌单标题" autofocus v-model="songTitle" />
+        <input
+          class="input"
+          type="text"
+          placeholder="请输入歌单标题"
+          autofocus
+          v-model="songTitle"
+        />
         <span class="limit">{{ inputLimit }}</span>
       </div>
       <div class="operation">
         <span class="btn" @click="close">取消</span>
-        <span class="btn" :style="submitStyle" @click="submitNewCreate(isAddSong)">提交</span>
+        <span
+          class="btn"
+          :style="submitStyle"
+          @click="submitNewCreate(isAddSong)"
+          >提交</span
+        >
       </div>
     </div>
   </kl-dialog>
 </template>
 
 <script>
-import { getCookie } from "@/utils/cookie";
-import { createSongSheet, songsheetOperation } from "@/service/songsheet";
-import klDialog from "@/components/common/kl-dialog/kl-dialog.vue";
+import { getCookie } from '@/utils/cookie';
+import { createSongSheet, songsheetOperation } from '@/service/songsheet';
+import klDialog from '@/components/common/kl-dialog/kl-dialog.vue';
 export default {
   components: {
-    klDialog
+    klDialog,
   },
   props: {
     isAddSong: {
       type: Boolean,
-      default: true
+      default: true,
     },
     createSongShow: {
       // 新建歌单弹框的显示与隐藏 决定性变量
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      songTitle: ""
+      songTitle: '',
     };
   },
   computed: {
@@ -43,36 +59,38 @@ export default {
       return `${this.songTitle.length}/20`;
     },
     submitStyle() {
-      return this.songTitle.length === 0 ? { opacity: 0.6 } : "";
-    }
+      return this.songTitle.length === 0 ? { opacity: 0.6 } : '';
+    },
   },
   methods: {
     // 新建歌单操作， 输入歌单名称即可完成新建 （新建过程中 <提交时> 是否需要将当前播放列表中的数据加入到新建歌单中？ 默认为需要 通过props（isAddSong）可取消加入）
     async NewCreateSongSheet(isAddSong) {
-      if (getCookie("MUSIC_U") == undefined) {
-        this.$router.push("/login");
+      console.log(getCookie('MUSIC_U'));
+      if (getCookie('MUSIC_U') == undefined) {
+        this.$router.push('/login');
       }
       let res = await createSongSheet(this.songTitle);
       if (res.code === 200) {
-        this.songTitle = "";
+        this.songTitle = '';
+        console.log('isAddSong', isAddSong);
         if (isAddSong) {
-          this.SetSongsheetOperation("add", res.id);
+          this.SetSongsheetOperation('add', res.id);
         } else {
           this.close();
-          this.$emit("complete", "新建歌单完成");
+          this.$emit('complete', '新建歌单完成');
         }
       }
     },
     // 将当前播放列表中的数据加入到新建歌单中
     async SetSongsheetOperation(operation, pid) {
-      let ids = this.$store.state.playList.map(item => {
+      let ids = this.$store.state.playList.map((item) => {
         return item.id;
       });
-      ids = ids.join(",");
+      ids = ids.join(',');
       let res = await songsheetOperation(operation, pid, ids);
       if (res.code === 200) {
         this.close();
-        this.$emit("complete", "当前播放列表数据已成功加入新建歌单中");
+        this.$emit('complete', '当前播放列表数据已成功加入新建歌单中');
       }
     },
     submitNewCreate(isAdd) {
@@ -81,12 +99,12 @@ export default {
     },
 
     close() {
-      this.$emit("close", "关闭新建歌单弹框");
-    }
-  }
+      this.$emit('close', '关闭新建歌单弹框');
+    },
+  },
 };
 </script>
-<style scoped lang='less'>
+<style scoped lang="less">
 .create-song-box {
   padding: 10px;
   .input-box {

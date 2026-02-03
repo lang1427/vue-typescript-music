@@ -41,14 +41,14 @@
 </template>
 
 <script lang="ts">
-import navbar from "@/components/common/navbar/navbar.vue";
-import vCode from "@/components/content/verify-code/verify-code.vue";
+import navbar from '@/components/common/navbar/navbar.vue';
+import vCode from '@/components/content/verify-code/verify-code.vue';
 import {
   sendVerifyCode,
   testVerifyCode,
   testIsRegister,
   phoneLogin,
-} from "@/service/login";
+} from '@/service/login';
 export default {
   // private timer: number = 59;
   // private verifycodeVal: string = "";
@@ -61,8 +61,8 @@ export default {
   data() {
     return {
       timer: 59,
-      verifycodeVal: "",
-      pawd: "",
+      verifycodeVal: '',
+      pawd: '',
       pawdShow: false,
     };
   },
@@ -72,12 +72,12 @@ export default {
   },
   beforeDestory() {
     window.clearInterval((<any>this).flagTimer);
-    this.$bus.emit("verifycodeVal", this.verifycodeVal);
+    this.$bus.emit('verifycodeVal', this.verifycodeVal);
   },
   methods: {
     async getSendVerifyCode() {
       let res = await sendVerifyCode(this.$store.state.loginAccount);
-      if (res.code === 200) this.$toast("已发送验证码");
+      // if (res.code === 200) this.$toast('已发送验证码');
     },
     async getTestVerifyCode(inputVal: string) {
       this.verifycodeVal = inputVal;
@@ -89,7 +89,7 @@ export default {
       let res = await testIsRegister(this.$store.state.loginAccount);
       if (res.code === 200) {
         if (res.exist === -1) {
-          this.$router.push("/register");
+          this.$router.push('/register');
         } else {
           // 手机登陆
           this.pawdShow = true;
@@ -97,17 +97,17 @@ export default {
       }
     },
     async login() {
-      if (this.pawd == "") {
-        this.$toast("请输入密码，在进行登录");
+      if (this.pawd == '') {
+        this.$toast('请输入密码，在进行登录');
         return !1;
       }
       let res = await phoneLogin(this.$store.state.loginAccount, this.pawd);
       if (res.code === 200) {
-        this.$store.dispatch("loginMode", res);
-        this.$router.push("/my");
+        this.$store.dispatch('loginMode', res);
+        this.$router.push('/my');
       } else {
         this.$toast(res.message || res.msg);
-        this.pawd = "";
+        this.pawd = '';
       }
     },
 
